@@ -1,0 +1,13 @@
+
+  - How to make your own EPISODES ?
+
+  It's very easy...
+
+   1. Make some levels and name files LEVEL1.LEV,LEVEL2.LEV...LEVEL999.LEV.
+   2. Make new directory under LEVS directory eg. LEVS\DEATH
+   3. Move your LEVELx.LEV files to directory
+   4. Run GAME.EXE and start 1pl or 2pl game... your episode should be
+      found at the Choose Episode Menu. Select and KILL ALL!!!!
+
+   Allu / Error Free
+

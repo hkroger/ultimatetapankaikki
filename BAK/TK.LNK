@@ -1,0 +1,5 @@
+system dos4g
+file game,error,efp,ipx,int,rgbhsl,globvar,miscfunc,draw,fade,write,classes,rout,newfuncs,options
+library midas.lib
+name ..\game
+

@@ -1,0 +1,2 @@
+TEST.CPP(181): Warning! W014: (col 1) no reference to symbol 'dest' 
+TEST.CPP(181): Note! N392: (col 1) 'int dest' in 'void sendipx( int, int, ... )' defined in: TEST.CPP(161) (col 19) 

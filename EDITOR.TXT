@@ -1,0 +1,58 @@
+
+                      - How to use TK level editor v1.3 -
+
+
+ TK level editor isn't so hard to use :) Press F1 for HELP !!!
+
+ About mouse...
+
+  You can choose different block for left and right mouse button.
+  It's adviseable to choose floor block for another button (right button).
+  Because then you can easily erase walls.
+
+ By reading these chapters you'll learn how to make awesome levels...
+ 
+ Chapter 1 --
+
+      Create a new level by pressing F4 or load existing file by pressing F3.
+      Level x-size and y-size are in blocks. Block for right button will be 
+      used to fill the new level.
+
+ Chapter 2 --
+
+      Design and build the walls and floor. If you want to fill
+      big area with one blocktype you should use FILL by pressing F.
+      When ready, add some lights and steams.
+
+ Chapter 3 --
+
+      Press F6 for automatic shadowing. After that you can edit shadows
+      manually. Just for nicer outlook...
+
+ Chapter 4 --
+
+      Place starting places for players.
+
+ Chapter 5 --
+
+      Press F7 and edit general level variables.
+      You can edit crate(weapon,bullet,energy) data by pressing F8 or F9
+      (these crates will be randomly set on level) and you can also place
+      crates with mouse to any place on level by using Z,X and C.
+
+ Chapter 6 --
+
+      Press F2 and save the level !
+
+ Chapter 7 --
+
+      Run TK and test your level...
+
+
+ We hope you get something done :)
+ You can always e-mail your questions to us.
+
+ ef@tuusniemi.fi
+
+ - This crap was written by Allu / Error Free
+

@@ -1,0 +1,39 @@
+.ERASE
+compopt= -oneatx -zp4 -5r -7 -fp5 -wx
+cc= wcl386 -c
+
+all: ..\game.exe
+
+..\game.exe: game.obj efp.obj ipx.obj error.obj int.obj midas.lib rgbhsl.obj globvar.obj miscfunc.obj fade.obj draw.obj write.obj classes.obj rout.obj newfuncs.obj options.obj ipxdefs.obj
+	wlink @tk.lnk
+
+ipxdefs.obj: ipxdefs.cpp ipxdefs.h
+        $(cc) $(compopt) ipxdefs.cpp
+options.obj: options.cpp globvar.h types.h defines.h
+        $(cc) $(compopt) options.cpp
+newfuncs.obj: newfuncs.cpp globvar.h types.h defines.h
+        $(cc) $(compopt) newfuncs.cpp
+rout.obj: rout.cpp globvar.h types.h defines.h
+        $(cc) $(compopt) rout.cpp
+classes.obj: classes.cpp globvar.h types.h defines.h
+        $(cc) $(compopt) classes.cpp
+write.obj: write.cpp globvar.h types.h defines.h
+        $(cc) $(compopt) write.cpp
+fade.obj: fade.cpp globvar.h types.h defines.h
+        $(cc) $(compopt) fade.cpp
+draw.obj: draw.cpp draw.h types.h globvar.h defines.h
+        $(cc) $(compopt) draw.cpp
+miscfunc.obj: miscfunc.cpp miscfunc.h types.h globvar.h defines.h
+        $(cc) $(compopt) miscfunc.cpp
+globvar.obj: globvar.cpp globvar.h defines.h types.h
+        $(cc) $(compopt) globvar.cpp
+rgbhsl.obj: rgbhsl.c rgbhsl.h
+        $(cc) $(compopt) rgbhsl.c
+error.obj: error\error.cpp error\error.h
+        $(cc) $(compopt) error\error.cpp
+game.obj: game.cpp efp\efp.h error\error.h ipx/ipx.h defines.h types.h globvar.h miscfunc.h newfuncs.h options.h
+        $(cc) $(compopt) game.cpp
+ipx.obj: ipx/ipx.cpp ipx/ipx.h int/int.h
+        $(cc) $(compopt) ipx\ipx.cpp
+efp.obj: efp\efp.cpp efp\efp.h error\error.h
+        $(cc) $(compopt) efp\efp.cpp

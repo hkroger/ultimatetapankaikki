@@ -1,0 +1,4 @@
+GAME.CPP(1099): Warning! W389: (col 101) integral value may be truncated during assignment or initialization 
+GAME.CPP(1292): Warning! W389: (col 53) integral value may be truncated during assignment or initialization 
+GAME.CPP(1390): Warning! W014: (col 1) no reference to symbol 'b' 
+GAME.CPP(1390): Note! N392: (col 1) 'int b' in 'void server_add_player( char *, nodeaddr * )' defined in: GAME.CPP(1369) (col 15) 

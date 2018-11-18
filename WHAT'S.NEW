@@ -1,0 +1,59 @@
+
+                     + History of The --TK-- (Tapan Kaikki) +
+ 
+ ----------------------------------------------------------------------------
+
+ * The Ultimate TK ------->
+
+ 1.2 - * LAN (IPX) - Game!
+       * More Music. 3 More In-game songs added.
+       * TK has moved to SVGA! 320*240 resolution gives more visibility.
+       * Mines added.
+       * Shortcut keys for weapons added.
+       * Limits for bullet amounts added. 
+       * Screen capture to PCX.
+       * Player rotation has now 40 positions instead of 32.
+       * Some new episodes by Blanket
+       * With editor v1.3 crates can be placed to certain points on levels.
+       + Many bugs fixed.
+
+ 1.1 - Lots of work done with the source code. Episodes added ->
+       Users can make their own episodes by creating new directories under
+       LEVS dir. Flamethrower added !!!!! Some other improvements
+       (can't remember them all). One new episode (Blanket) included.
+       Moving speed for deathmatch can now be set to normal or fast. 
+       This version was supposed to have network game but we had no time to
+       make it :( Maybe in next version...
+
+ 1.0 - The first version of The Ultimate TK !!!!!!
+       Totally new game including Deathmatch game and Level editor. 
+       Lots of other new features...
+       Because of new graphic effects game needs much more CPU speed 
+       than The Original TK -> Pentium rules !!!  
+       Lots of Original TK is still remaining for the spirit (ugh ugh).     
+
+ * The Original TK ------->
+
+ 2.1 - The update to version 2.0 !!!!!!
+       Graphically better than v2.0. Some cool LIGHT EFFECTS added !!!!
+       Player can kick body parts and you have 900 money when you begin.
+       Screen fades are even more faster and some optimizations to code have
+       been made. For player rotation there are 32 positions instead of 16 now.
+
+ 2.0 - MANY new things !!! New weapons (including auto shotgun),
+       few new levels and many other nice features. Now all enemies have
+       different graphics and if you want, you can't see through walls. 
+       Screen fades were too slow in earlier versions and so they are
+       faster now. Changes to GUS problems have NOT been made !!!
+       STRAFE added and in two player game screen follows player very nicely !
+       Even if it's not possible some bugs were found in version 1.1.
+       These bugs are now fixed and there are no known bugs in this version !!!
+
+ 2.0 beta - The beta version of version 2.0. Lots of things were fixed
+       after this for full version 2.0 !!!!!
+
+ 1.1 - Faster than v 1.0 because of optimized compiling. Now uses DOS4G
+       instead of PMODEW (just for fun). Still problems with GUS ???
+
+ 1.0 - The First version of TK ! GUS sounds didn't work properly in some
+       machines ???

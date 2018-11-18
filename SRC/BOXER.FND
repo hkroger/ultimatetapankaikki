@@ -1,0 +1,3 @@
+
+c:\srcs\dos\tk\src\globvar.h:
+61    extern General_level_info general_level_info;
