@@ -175,7 +175,7 @@ fwrite(&explo_l.data,sizeof(explo_l.data),1,tab);
 fclose(tab);
 }
 
-main(){
+int main(){
 
 load_efp_pal("efps\\walls1.efp",pal);
 do_trans_table();

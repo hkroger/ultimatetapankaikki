@@ -2531,7 +2531,7 @@ void logo()
 	}
 }
 
-main( int argc, char *argv[] ) 
+int main( int argc, char *argv[] )
 {
 	int a = 0, b;
 	int pause = 0;
