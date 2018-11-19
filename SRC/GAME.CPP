@@ -5,13 +5,12 @@
 #include <conio.h> 
 #include <stdiobuf.h> 
 #include <stdlib.h> 
-#include <midasdll.h> 
-#include <gfunc.h> 
+#include <gfunc.h>
 #include <math.h> 
 #include <time.h> 
 #include <iostream>
 #include <image.hpp> 
-#include <keyb.hpp> 
+#include "keyb.h"
 
 #include "defines.h"
 #include "error/error.h"
@@ -64,7 +63,7 @@ void peli_biisi()
 	biisi_count%= 5;
 }
 
-void MIDAS_CALL prevr( void ) 
+void prevr( void )
 {
 	framecount++;
 }
@@ -152,17 +151,12 @@ void do_all()
 	else cout << "IPX _NOT_ detected!\n";
 	if ( MIDASstartup()  ) 
 	{
-		if ( MIDASloadConfig( "sound.cfg" )  ) 
+		if ( MIDASinit()  )
 		{
-			cout << "Sound configuration loaded\n";
-			if ( MIDASinit()  ) 
-			{
-				cout << "MIDAS initialized\n";
-				if ( MIDASsetTimerCallbacks( target_frames*1000, FALSE, &prevr, NULL, NULL )  ) cout << "Timer synchronized\n";
-			}
-			else error( "Midas initialization failed\n" );
+			cout << "MIDAS initialized\n";
+			if ( MIDASsetTimerCallbacks( target_frames*1000, FALSE, &prevr, NULL, NULL )  ) cout << "Timer synchronized\n";
 		}
-		else error( "Sound configuration not found! run SETUP.exe\n" );
+		else error( "Midas initialization failed\n" );
 		if (!MIDASopenChannels( 20 )) error( "Error opening sound channels\n" );
 		if (!MIDASallocAutoEffectChannels( 4 )) error( "Error allocating effect channels\n" );
 		cout << "Loading sounds";fflush(stdout);

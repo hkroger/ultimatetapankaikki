@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-#include <midasdll.h>
 #include <math.h>
 #include <stdlib.h>
 #include <gfunc.h>

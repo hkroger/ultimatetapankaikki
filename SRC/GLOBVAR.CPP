@@ -3,7 +3,9 @@
 #include "types.h"
 #include "classes.h"
 #include <time.h>
-#include <keyb.hpp>
+#include "keyb.h"
+#include "sound.h"
+
 int BACK_TO_MENU = 0;
 int scr_y_size = 200;
 int ipxavail = 0;
