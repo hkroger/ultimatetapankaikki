@@ -6,6 +6,8 @@
 #include "ipxdefs.h"
 #include "types.h"
 #include "classes.h"
+#include "sound.h"
+
 extern int saved_game_mode;
 extern int saved_killing_mode;
 extern int ipxavail;
