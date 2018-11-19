@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <conio.h>
-#include <dos.h>
 #include <stdarg.h>
 #include <iostream>
 
@@ -35,20 +33,20 @@ void allocipxmem()
 	send = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
 	if ( send == NULL ) 
 	{
-		cout << "Can't alloc lowmem!\n" << endl;
+		std::cout << "Can't alloc lowmem!\n" << std::endl;
 		ipxavail = 0;
 		return;
 	}
 	sendl = lsel;
 	if (sendl==0)
 	{
-			cout << "sendl check failed"<< endl;
+			std::cout << "sendl check failed"<< std::endl;
 			ipxavail = 0;
 	}
 	sendseg = lseg;
 	if (sendseg==0)
 	{
-			cout << "sendseg check failed"<< endl;
+			std::cout << "sendseg check failed"<< std::endl;
 			ipxavail = 0;
 	}
 	for ( a = 0; a < RECEIVERS; a ++  ) 
@@ -56,7 +54,7 @@ void allocipxmem()
 		rec[a] = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
 		if ( rec[a] == NULL ) 
 		{
-			cout << "Can't alloc lowmem!"<< endl;
+			std::cout << "Can't alloc lowmem!"<< std::endl;
 			ipxavail = 0;
 			return;
 		}
@@ -64,12 +62,12 @@ void allocipxmem()
 		recseg[a] = lseg;
 		if (recseg[a]==0)
 		{
-			cout << "recseg check failed ("<< a <<')'<< endl;
+			std::cout << "recseg check failed ("<< a <<')'<< std::endl;
 			ipxavail = 0;
 		}
 		if (recl[a]==0)
 		{
-			cout << "recl check failed ("<< a <<')'<< endl;
+			std::cout << "recl check failed ("<< a <<')'<< std::endl;
 			ipxavail = 0;
 		}
 
@@ -95,13 +93,13 @@ void init()
 	if ( initipx()  ) 
 	{
 		char str[256];
-		cout << "IPX protocol detected!\n";
+		std::cout << "IPX protocol detected!\n";
 		getlocaladdress();
 		printf( "IPX address: %s\n", decode_localaddress( str, localadd )  );
 		ipxavail = 1;
 		allocipxmem();
 	}
-	else cout << "IPX _NOT_ detected!\n";
+	else std::cout << "IPX _NOT_ detected!\n";
 }
 void flushipx() 
 {

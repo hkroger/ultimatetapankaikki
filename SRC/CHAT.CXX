@@ -1,9 +1,7 @@
 #define IPXDEBUG
 
-#include "int.h"    // My asm header file..
+#include "int/int.h"    // My asm header file..
 #include <stdio.h>
-#include <i86.h>
-#include <conio.h>
 #include <string.h>
 #include <iostream>
 
@@ -118,7 +116,7 @@ serverloop()
 				break;
 			case IPX_TEXTMESSAGE:
 				 while ((data=rec[a]->data[ofs++])!=0)
-				  putch(data);
+				  putchar(data);
 				 printf("\n");
 				 break;
 			case IPX_END:

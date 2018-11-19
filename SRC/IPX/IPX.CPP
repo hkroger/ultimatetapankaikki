@@ -9,7 +9,6 @@
 
 #define MAXNODES 1      // Maximum number of nodes
 
-#include <i86.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

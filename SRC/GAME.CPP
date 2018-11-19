@@ -1,17 +1,13 @@
 #include <stdarg.h> 
 #include <string.h> 
-#include <dos.h> 
-#include <stdio.h> 
-#include <conio.h> 
-#include <stdiobuf.h> 
-#include <stdlib.h> 
-#include <gfunc.h>
-#include <math.h> 
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include <time.h> 
 #include <iostream>
-#include <image.hpp> 
-#include "keyb.h"
 
+#include "keyb.h"
+#include "graphics.h"
 #include "defines.h"
 #include "error/error.h"
 #include "efp/efp.h"
@@ -102,7 +98,7 @@ void allocipxmem()
 	send = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
 	if ( send == NULL ) 
 	{
-		cout << "Can't alloc lowmem!\n" << endl;
+		std::cout << "Can't alloc lowmem!\n" << std::endl;
 		ipxavail = 0;
 		return;
 	}
@@ -113,7 +109,7 @@ void allocipxmem()
 		rec[a] = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
 		if ( rec[a] == NULL ) 
 		{
-			cout << "Can't alloc lowmem!\n"<< endl;
+			std::cout << "Can't alloc lowmem!\n"<< std::endl;
 			ipxavail = 0;
 			return;
 		}
@@ -146,97 +142,97 @@ void do_all()
 	int a;
 	char text[30];
 	// TODO VIDEO vesa_set_mode( 0x3 );
-	cout << "\n                ================== Starting TK =================\n\n";
+	std::cout << "\n                ================== Starting TK =================\n\n";
 	if ( initipx()  ) 
 	{
 		char str[256];
-		cout << "IPX protocol detected!\n";
+		std::cout << "IPX protocol detected!\n";
 		getlocaladdress();
 		printf( "IPX address: %s\n", decode_localaddress( str, localadd )  );
 		ipxavail = 1;
 		allocipxmem();
 	}
-	else cout << "IPX _NOT_ detected!\n";
+	else std::cout << "IPX _NOT_ detected!\n";
 	if ( MIDASstartup()  ) 
 	{
 		if ( MIDASinit()  )
 		{
-			cout << "MIDAS initialized\n";
-			if ( MIDASsetTimerCallbacks( target_frames*1000, FALSE, &prevr, NULL, NULL )  ) cout << "Timer synchronized\n";
+			std::cout << "MIDAS initialized\n";
+			if ( MIDASsetTimerCallbacks( target_frames*1000, FALSE, &prevr, NULL, NULL )  ) std::cout << "Timer synchronized\n";
 		}
 		else error( "Midas initialization failed\n" );
 		if (!MIDASopenChannels( 20 )) error( "Error opening sound channels\n" );
 		if (!MIDASallocAutoEffectChannels( 4 )) error( "Error allocating effect channels\n" );
-		cout << "Loading sounds";fflush(stdout);
-		samplep[MAGNUMWAV] = MIDASloadWaveSample( "wavs\\magnum.wav", FALSE );putch('.');
-		samplep[PISTOLWAV] = MIDASloadWaveSample( "wavs\\pistol.wav", FALSE );putch('.');
-		samplep[SHOTGUNWAV] = MIDASloadWaveSample( "wavs\\rifle.wav", FALSE );putch('.');
-		samplep[EXPLOWAV] = MIDASloadWaveSample( "wavs\\explo.wav", FALSE );putch('.');
-		samplep[DEATHWAV] = MIDASloadWaveSample( "wavs\\death.wav", FALSE );putch('.');
-		samplep[KLIKWAV] = MIDASloadWaveSample( "wavs\\klik.wav", FALSE );putch('.');
-		samplep[HITWAV] = MIDASloadWaveSample( "wavs\\hit.wav", FALSE );putch('.');
-		samplep[SINKOWAV] = MIDASloadWaveSample( "wavs\\sinko.wav", FALSE );putch('.');
-		samplep[WOOSHWAV] = MIDASloadWaveSample( "wavs\\woosh.wav", FALSE );putch('.');
-		samplep[FLAMEWAV] = MIDASloadWaveSample( "wavs\\flame.wav", FALSE );putch('.');
-		cout << "\nLoading musics";fflush(stdout);
-		biisi[0] = MIDASloadModule("music\\menu.s3m");putch('.');
-		biisi[1] = MIDASloadModule("music\\back.s3m");putch('.');
-		biisi[2] = MIDASloadModule("music\\mielip2.s3m");putch('.');
-		biisi[3] = MIDASloadModule("music\\mielip2.s3m");putch('.');
-		biisi[4] = MIDASloadModule("music\\back.s3m");putch('.');
-		biisi[5] = MIDASloadModule("music\\back.s3m");putch('.');
-//		biisi[2] = MIDASloadModule("music\\back.s3m");putch('.');
-//		biisi[3] = MIDASloadModule("music\\unic_3x.s3m");putch('.');
-//		biisi[4] = MIDASloadModule("music\\mielip2.s3m");putch('.');
-//		biisi[5] = MIDASloadModule("music\\unic_2x.s3m");putch('.');
-//		biisi[1] = MIDASloadModule("music\\unic_1x.s3m");putch('.');
+		std::cout << "Loading sounds";fflush(stdout);
+		samplep[MAGNUMWAV] = MIDASloadWaveSample( "wavs\\magnum.wav", FALSE );putchar('.');
+		samplep[PISTOLWAV] = MIDASloadWaveSample( "wavs\\pistol.wav", FALSE );putchar('.');
+		samplep[SHOTGUNWAV] = MIDASloadWaveSample( "wavs\\rifle.wav", FALSE );putchar('.');
+		samplep[EXPLOWAV] = MIDASloadWaveSample( "wavs\\explo.wav", FALSE );putchar('.');
+		samplep[DEATHWAV] = MIDASloadWaveSample( "wavs\\death.wav", FALSE );putchar('.');
+		samplep[KLIKWAV] = MIDASloadWaveSample( "wavs\\klik.wav", FALSE );putchar('.');
+		samplep[HITWAV] = MIDASloadWaveSample( "wavs\\hit.wav", FALSE );putchar('.');
+		samplep[SINKOWAV] = MIDASloadWaveSample( "wavs\\sinko.wav", FALSE );putchar('.');
+		samplep[WOOSHWAV] = MIDASloadWaveSample( "wavs\\woosh.wav", FALSE );putchar('.');
+		samplep[FLAMEWAV] = MIDASloadWaveSample( "wavs\\flame.wav", FALSE );putchar('.');
+		std::cout << "\nLoading musics";fflush(stdout);
+		biisi[0] = MIDASloadModule("music\\menu.s3m");putchar('.');
+		biisi[1] = MIDASloadModule("music\\back.s3m");putchar('.');
+		biisi[2] = MIDASloadModule("music\\mielip2.s3m");putchar('.');
+		biisi[3] = MIDASloadModule("music\\mielip2.s3m");putchar('.');
+		biisi[4] = MIDASloadModule("music\\back.s3m");putchar('.');
+		biisi[5] = MIDASloadModule("music\\back.s3m");putchar('.');
+//		biisi[2] = MIDASloadModule("music\\back.s3m");putchar('.');
+//		biisi[3] = MIDASloadModule("music\\unic_3x.s3m");putchar('.');
+//		biisi[4] = MIDASloadModule("music\\mielip2.s3m");putchar('.');
+//		biisi[5] = MIDASloadModule("music\\unic_2x.s3m");putchar('.');
+//		biisi[1] = MIDASloadModule("music\\unic_1x.s3m");putchar('.');
     	for (a=0;a<6;a++)
 		 if (biisi[a]==NULL) error("Musicmodule #%d NULL!\n",a);
-		cout << endl;
+		std::cout << std::endl;
 	}
 	else error( "Error in MIDAS startup !!!\n" );
 	set_keyb_rate();
 	k.init( 0 );
-	cout << "Keyboard handler initialized\n";
-	cout << "Loading fonts";
-	FONT_NUM = 0; loadfonts( "fnts\\bloody.fnt" );   putch('.');
-	FONT_NUM = 1; loadfonts( "fnts\\8x8b.fnt" );     putch('.');
-	FONT_NUM = 2; loadfonts( "fnts\\bloody2.fnt" );	 putch('.');
-	FONT_NUM = 3; loadfonts( "fnts\\snumbers.fnt" ); putch('.');
-	cout << "\nLoading bitmaps";
-	load_efp( "efps\\floor1.efp", floorspr, 0 );	 putch('.');
-	load_efp( "efps\\walls1.efp", wallspr, 0 );		 putch('.');
-	load_efp( "efps\\enemy0.efp", enemyspr0, 0 );	 putch('.');
-	load_efp( "efps\\enemy1.efp", enemyspr1, 0 );	 putch('.');
-	load_efp( "efps\\enemy2.efp", enemyspr2, 0 );	 putch('.');
-	load_efp( "efps\\enemy3.efp", enemyspr3, 0 );	 putch('.');
-	load_efp( "efps\\enemy4.efp", enemyspr4, 0 );	 putch('.');
-	load_efp( "efps\\enemy5.efp", enemyspr5, 0 );	 putch('.');
-	load_efp( "efps\\enemy6.efp", enemyspr6, 0 );	 putch('.');
-	load_efp( "efps\\enemy7.efp", enemyspr7, 0 );	 putch('.');
-	load_efp( "efps\\rambo2.efp", rambospr, 0 );	 putch('.');
-	load_efp( "efps\\bodyp.efp", bodypartspr, 0 );	 putch('.');
-	load_efp( "efps\\effects.efp", effectspr, 0 );	 putch('.');
-	load_efp( "efps\\ware.efp", warespr, 0 );		 putch('.');
-	load_efp( "efps\\target.efp", targetspr, 0 );	 putch('.');
-	load_efp( "efps\\c4.efp", c4spr, 0 );			 putch('.');
-	load_efp( "efps\\mine.efp", minespr, 0 );		 putch('.');
-	load_efp( "efps\\bomb.efp", grenadespr, 0 );	 putch('.');
-	load_efp( "efps\\shadows.efp", shadowspr, 0 );	 putch('.');
-	load_efp( "efps\\crates.efp", cratespr, 0 );	 putch('.');
+	std::cout << "Keyboard handler initialized\n";
+	std::cout << "Loading fonts";
+	FONT_NUM = 0; loadfonts( "fnts\\bloody.fnt" );   putchar('.');
+	FONT_NUM = 1; loadfonts( "fnts\\8x8b.fnt" );     putchar('.');
+	FONT_NUM = 2; loadfonts( "fnts\\bloody2.fnt" );	 putchar('.');
+	FONT_NUM = 3; loadfonts( "fnts\\snumbers.fnt" ); putchar('.');
+	std::cout << "\nLoading bitmaps";
+	load_efp( "efps\\floor1.efp", floorspr, 0 );	 putchar('.');
+	load_efp( "efps\\walls1.efp", wallspr, 0 );		 putchar('.');
+	load_efp( "efps\\enemy0.efp", enemyspr0, 0 );	 putchar('.');
+	load_efp( "efps\\enemy1.efp", enemyspr1, 0 );	 putchar('.');
+	load_efp( "efps\\enemy2.efp", enemyspr2, 0 );	 putchar('.');
+	load_efp( "efps\\enemy3.efp", enemyspr3, 0 );	 putchar('.');
+	load_efp( "efps\\enemy4.efp", enemyspr4, 0 );	 putchar('.');
+	load_efp( "efps\\enemy5.efp", enemyspr5, 0 );	 putchar('.');
+	load_efp( "efps\\enemy6.efp", enemyspr6, 0 );	 putchar('.');
+	load_efp( "efps\\enemy7.efp", enemyspr7, 0 );	 putchar('.');
+	load_efp( "efps\\rambo2.efp", rambospr, 0 );	 putchar('.');
+	load_efp( "efps\\bodyp.efp", bodypartspr, 0 );	 putchar('.');
+	load_efp( "efps\\effects.efp", effectspr, 0 );	 putchar('.');
+	load_efp( "efps\\ware.efp", warespr, 0 );		 putchar('.');
+	load_efp( "efps\\target.efp", targetspr, 0 );	 putchar('.');
+	load_efp( "efps\\c4.efp", c4spr, 0 );			 putchar('.');
+	load_efp( "efps\\mine.efp", minespr, 0 );		 putchar('.');
+	load_efp( "efps\\bomb.efp", grenadespr, 0 );	 putchar('.');
+	load_efp( "efps\\shadows.efp", shadowspr, 0 );	 putchar('.');
+	load_efp( "efps\\crates.efp", cratespr, 0 );	 putchar('.');
 	pre_count();
 	CalCuLaTE_Sine_Table_AND_Be_Happy();// for fade
-	cout << "\nSine and Cosine tables ready\n";
+	std::cout << "\nSine and Cosine tables ready\n";
 	for ( a = 0; a < LIGHTS; a ++  ) 
-	light[a].make( Light_sizes[a] );cout << "Lights mapped\n";
-	load_tables();cout << "Palette tables loaded \n";
+	light[a].make( Light_sizes[a] );std::cout << "Lights mapped\n";
+	load_tables();std::cout << "Palette tables loaded \n";
 	load_efp_pal( "efps\\walls1.efp", pal );
-	cout << "Calculating dark floor... ";
+	std::cout << "Calculating dark floor... ";
 	make_floors();
-	cout << "OK \n";
-	load_options();cout << "Options loaded\n";
+	std::cout << "OK \n";
+	load_options();std::cout << "Options loaded\n";
 	list_files( &dirs, dirlist, "levs\\*.*", _A_SUBDIR );
-	cout << dirs << " episodes found\n";
+	std::cout << dirs << " episodes found\n";
 	list_files( &files_in_episode[0], filelist[0], "levs\\*.lev", _A_NORMAL );
 	for ( a = 0; a < dirs &&a < 256; a ++  ) 
 	{
@@ -2486,29 +2482,29 @@ void menu()
 
 void credits() 
 {
-	cout << "\n";
-	cout << "              Thanks for playing --The Ultimate TK-- (Tapan Kaikki) !  \n";
-	cout << "\n";
-	cout << "	Credits: \n";
-	cout << "\n";
-	cout << "	Coding: Allu & Unski \n";
-	cout << "	Graphics: Allu \n";
-	cout << "	Music: Raipe, Allu & Unski \n";
-	cout << "	Sound effects: Allu (let's rip) \n";
-	cout << "	Episodes: Blanket & Allu \n";
-	cout << "	Thanks to - MIDAS sound system \n"; 
-	cout << "	          - Vertigo for svga routines\n";
-	cout << "\n";
-	cout << "	Also thanks to Janne Laitinen (game name), Niko Kotilainen & \n";
-	cout << "	all TK fans in the world ! \n";
-	cout << "\n";
-	cout << "	Contact the Error Free Productions by e-mail: \n";
-	cout << "\n";
-	cout << "	 ef@tuusniemi.fi \n";
-	cout << "\n";
-	cout << "	And visit the Error Free Productions homepage: \n";
-	cout << "\n";
-	cout << "	 http://www.tuusniemi.fi/~ef \n";
+	std::cout << "\n";
+	std::cout << "              Thanks for playing --The Ultimate TK-- (Tapan Kaikki) !  \n";
+	std::cout << "\n";
+	std::cout << "	Credits: \n";
+	std::cout << "\n";
+	std::cout << "	Coding: Allu & Unski \n";
+	std::cout << "	Graphics: Allu \n";
+	std::cout << "	Music: Raipe, Allu & Unski \n";
+	std::cout << "	Sound effects: Allu (let's rip) \n";
+	std::cout << "	Episodes: Blanket & Allu \n";
+	std::cout << "	Thanks to - MIDAS sound system \n";
+	std::cout << "	          - Vertigo for svga routines\n";
+	std::cout << "\n";
+	std::cout << "	Also thanks to Janne Laitinen (game name), Niko Kotilainen & \n";
+	std::cout << "	all TK fans in the world ! \n";
+	std::cout << "\n";
+	std::cout << "	Contact the Error Free Productions by e-mail: \n";
+	std::cout << "\n";
+	std::cout << "	 ef@tuusniemi.fi \n";
+	std::cout << "\n";
+	std::cout << "	And visit the Error Free Productions homepage: \n";
+	std::cout << "\n";
+	std::cout << "	 http://www.tuusniemi.fi/~ef \n";
 }
 
 void logo() 
@@ -2557,17 +2553,17 @@ main( int argc, char *argv[] )
 			case 'M':SHOW_ENEMIES = 1;
 					 break;
 			case 'H':case '?':
-					 cout << endl;
-					 cout << "Ultimate Tapan Kaikki " << Version << endl;
-					 cout << "Compiled at "<< __DATE__<< ' ' << __TIME__ << endl;
-					 cout << "parameters:" << endl;
-					 cout << "-?,-h this help"<< endl;
-					 cout << "-v    force mcga mode" << endl;
-					 cout << "-p    pause at startup" << endl;
-					 cout << "-m    show enemies on map" << endl;
-					 cout << "-l ## start at level ##" << endl;
-					 cout << "-f ## set gamespeed to ## fps (def. 40)" << endl;
-					 cout << endl;
+					 std::cout << std::endl;
+					 std::cout << "Ultimate Tapan Kaikki " << Version << std::endl;
+					 std::cout << "Compiled at "<< __DATE__<< ' ' << __TIME__ << std::endl;
+					 std::cout << "parameters:" << std::endl;
+					 std::cout << "-?,-h this help"<< std::endl;
+					 std::cout << "-v    force mcga mode" << std::endl;
+					 std::cout << "-p    pause at startup" << std::endl;
+					 std::cout << "-m    show enemies on map" << std::endl;
+					 std::cout << "-l ## start at level ##" << std::endl;
+					 std::cout << "-f ## set gamespeed to ## fps (def. 40)" << std::endl;
+					 std::cout << std::endl;
 					 exit( 1 );
 					 break;
 		}

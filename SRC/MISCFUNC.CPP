@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include "keyb.h"
 #include <string.h>
-#include <gfunc.h>
-#include <dos.h>
 #include "efp/efp.h"
 #include "draw.h"
 #include "globvar.h"

@@ -1,10 +1,9 @@
 #include <stdlib.h>
-#include <conio.h>
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
 
-#include "efp.h"
+#include "efp/efp.h"
 #include "rgbhsl.h"
 
 class Light_table{
@@ -35,7 +34,7 @@ return(closest);
 void do_trans_table(){
 int a,b,r1,g1,b1,r2,g2,b2,col1,col2;
 for (a=0,col1=0;a<256;a++,col1+=3){
- if (a%16==0) cout<<".";
+ if (a%16==0) std::cout<<".";
  r1=pal[col1];
  g1=pal[col1+1];
  b1=pal[col1+2];
@@ -76,7 +75,7 @@ void Light_table::make(int R,int G,int B){
 
  for (a=0;a<256;a++){
 
- if (a%(16*3)==0) cout<<".";
+ if (a%(16*3)==0) std::cout<<".";
 
  re=pal[a*3]+R;
  gr=pal[(a*3)+1]+G;

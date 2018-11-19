@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <gfunc.h>
 #include "defines.h"
 #include "types.h"
 #include "globvar.h"

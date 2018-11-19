@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
-#include <gfunc.h>
 #include "error/error.h"
 #include "defines.h"
 #include "globvar.h"
@@ -1249,7 +1248,7 @@ void Level::load( char name[13] )
 		fread( &version, 4, 1, dat );
 		if (version>5) {
                     // TODO VIDEO vesa_set_mode(0x3);
-                    cout<<"Invalid level version: Get newer version of TK !";
+                    std::cout<<"Invalid level version: Get newer version of TK !";
                     exit(1);
                 }
 		fread( &level_x_size, 4, 1, dat );
@@ -1308,7 +1307,7 @@ void Level::load( char name[13] )
 		}
 		fclose( dat );
 	}
-	else cout << "Level file missing ! \n";
+	else std::cout << "Level file missing ! \n";
 }
 
 void Keys::change() 
