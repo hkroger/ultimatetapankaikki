@@ -177,7 +177,7 @@ fclose(tab);
 
 int main(){
 
-load_efp_pal("efps\\walls1.efp",pal);
+load_efp_pal("efps/walls1.efp",pal);
 do_trans_table();
 do_shadow_table();
 normal_l.make(0,0,0);

@@ -164,28 +164,28 @@ void do_all()
 		if (!MIDASopenChannels( 20 )) error( "Error opening sound channels\n" );
 		if (!MIDASallocAutoEffectChannels( 4 )) error( "Error allocating effect channels\n" );
 		std::cout << "Loading sounds";fflush(stdout);
-		samplep[MAGNUMWAV] = MIDASloadWaveSample( "wavs\\magnum.wav", FALSE );putchar('.');
-		samplep[PISTOLWAV] = MIDASloadWaveSample( "wavs\\pistol.wav", FALSE );putchar('.');
-		samplep[SHOTGUNWAV] = MIDASloadWaveSample( "wavs\\rifle.wav", FALSE );putchar('.');
-		samplep[EXPLOWAV] = MIDASloadWaveSample( "wavs\\explo.wav", FALSE );putchar('.');
-		samplep[DEATHWAV] = MIDASloadWaveSample( "wavs\\death.wav", FALSE );putchar('.');
-		samplep[KLIKWAV] = MIDASloadWaveSample( "wavs\\klik.wav", FALSE );putchar('.');
-		samplep[HITWAV] = MIDASloadWaveSample( "wavs\\hit.wav", FALSE );putchar('.');
-		samplep[SINKOWAV] = MIDASloadWaveSample( "wavs\\sinko.wav", FALSE );putchar('.');
-		samplep[WOOSHWAV] = MIDASloadWaveSample( "wavs\\woosh.wav", FALSE );putchar('.');
-		samplep[FLAMEWAV] = MIDASloadWaveSample( "wavs\\flame.wav", FALSE );putchar('.');
+		samplep[MAGNUMWAV] = MIDASloadWaveSample( "wavs/magnum.wav", FALSE );putchar('.');
+		samplep[PISTOLWAV] = MIDASloadWaveSample( "wavs/pistol.wav", FALSE );putchar('.');
+		samplep[SHOTGUNWAV] = MIDASloadWaveSample( "wavs/rifle.wav", FALSE );putchar('.');
+		samplep[EXPLOWAV] = MIDASloadWaveSample( "wavs/explo.wav", FALSE );putchar('.');
+		samplep[DEATHWAV] = MIDASloadWaveSample( "wavs/death.wav", FALSE );putchar('.');
+		samplep[KLIKWAV] = MIDASloadWaveSample( "wavs/klik.wav", FALSE );putchar('.');
+		samplep[HITWAV] = MIDASloadWaveSample( "wavs/hit.wav", FALSE );putchar('.');
+		samplep[SINKOWAV] = MIDASloadWaveSample( "wavs/sinko.wav", FALSE );putchar('.');
+		samplep[WOOSHWAV] = MIDASloadWaveSample( "wavs/woosh.wav", FALSE );putchar('.');
+		samplep[FLAMEWAV] = MIDASloadWaveSample( "wavs/flame.wav", FALSE );putchar('.');
 		std::cout << "\nLoading musics";fflush(stdout);
-		biisi[0] = MIDASloadModule("music\\menu.s3m");putchar('.');
-		biisi[1] = MIDASloadModule("music\\back.s3m");putchar('.');
-		biisi[2] = MIDASloadModule("music\\mielip2.s3m");putchar('.');
-		biisi[3] = MIDASloadModule("music\\mielip2.s3m");putchar('.');
-		biisi[4] = MIDASloadModule("music\\back.s3m");putchar('.');
-		biisi[5] = MIDASloadModule("music\\back.s3m");putchar('.');
-//		biisi[2] = MIDASloadModule("music\\back.s3m");putchar('.');
-//		biisi[3] = MIDASloadModule("music\\unic_3x.s3m");putchar('.');
-//		biisi[4] = MIDASloadModule("music\\mielip2.s3m");putchar('.');
-//		biisi[5] = MIDASloadModule("music\\unic_2x.s3m");putchar('.');
-//		biisi[1] = MIDASloadModule("music\\unic_1x.s3m");putchar('.');
+		biisi[0] = MIDASloadModule("music/menu.s3m");putchar('.');
+		biisi[1] = MIDASloadModule("music/back.s3m");putchar('.');
+		biisi[2] = MIDASloadModule("music/mielip2.s3m");putchar('.');
+		biisi[3] = MIDASloadModule("music/mielip2.s3m");putchar('.');
+		biisi[4] = MIDASloadModule("music/back.s3m");putchar('.');
+		biisi[5] = MIDASloadModule("music/back.s3m");putchar('.');
+//		biisi[2] = MIDASloadModule("music/back.s3m");putchar('.');
+//		biisi[3] = MIDASloadModule("music/unic_3x.s3m");putchar('.');
+//		biisi[4] = MIDASloadModule("music/mielip2.s3m");putchar('.');
+//		biisi[5] = MIDASloadModule("music/unic_2x.s3m");putchar('.');
+//		biisi[1] = MIDASloadModule("music/unic_1x.s3m");putchar('.');
 		/* TODO SOUND
     	for (a=0;a<6;a++)
 		 if (biisi[a]==NULL) error("Musicmodule #%d NULL!\n",a);
@@ -196,50 +196,50 @@ void do_all()
 	k.init( 0 );
 	std::cout << "Keyboard handler initialized\n";
 	std::cout << "Loading fonts";
-	FONT_NUM = 0; loadfonts( "fnts\\bloody.fnt" );   putchar('.');
-	FONT_NUM = 1; loadfonts( "fnts\\8x8b.fnt" );     putchar('.');
-	FONT_NUM = 2; loadfonts( "fnts\\bloody2.fnt" );	 putchar('.');
-	FONT_NUM = 3; loadfonts( "fnts\\snumbers.fnt" ); putchar('.');
+	FONT_NUM = 0; loadfonts( "fnts/bloody.fnt" );   putchar('.');
+	FONT_NUM = 1; loadfonts( "fnts/8x8b.fnt" );     putchar('.');
+	FONT_NUM = 2; loadfonts( "fnts/bloody2.fnt" );	 putchar('.');
+	FONT_NUM = 3; loadfonts( "fnts/snumbers.fnt" ); putchar('.');
 	std::cout << "\nLoading bitmaps";
-	load_efp( "efps\\floor1.efp", floorspr, 0 );	 putchar('.');
-	load_efp( "efps\\walls1.efp", wallspr, 0 );		 putchar('.');
-	load_efp( "efps\\enemy0.efp", enemyspr0, 0 );	 putchar('.');
-	load_efp( "efps\\enemy1.efp", enemyspr1, 0 );	 putchar('.');
-	load_efp( "efps\\enemy2.efp", enemyspr2, 0 );	 putchar('.');
-	load_efp( "efps\\enemy3.efp", enemyspr3, 0 );	 putchar('.');
-	load_efp( "efps\\enemy4.efp", enemyspr4, 0 );	 putchar('.');
-	load_efp( "efps\\enemy5.efp", enemyspr5, 0 );	 putchar('.');
-	load_efp( "efps\\enemy6.efp", enemyspr6, 0 );	 putchar('.');
-	load_efp( "efps\\enemy7.efp", enemyspr7, 0 );	 putchar('.');
-	load_efp( "efps\\rambo2.efp", rambospr, 0 );	 putchar('.');
-	load_efp( "efps\\bodyp.efp", bodypartspr, 0 );	 putchar('.');
-	load_efp( "efps\\effects.efp", effectspr, 0 );	 putchar('.');
-	load_efp( "efps\\ware.efp", warespr, 0 );		 putchar('.');
-	load_efp( "efps\\target.efp", targetspr, 0 );	 putchar('.');
-	load_efp( "efps\\c4.efp", c4spr, 0 );			 putchar('.');
-	load_efp( "efps\\mine.efp", minespr, 0 );		 putchar('.');
-	load_efp( "efps\\bomb.efp", grenadespr, 0 );	 putchar('.');
-	load_efp( "efps\\shadows.efp", shadowspr, 0 );	 putchar('.');
-	load_efp( "efps\\crates.efp", cratespr, 0 );	 putchar('.');
+	load_efp( "efps/floor1.efp", floorspr, 0 );	 putchar('.');
+	load_efp( "efps/walls1.efp", wallspr, 0 );		 putchar('.');
+	load_efp( "efps/enemy0.efp", enemyspr0, 0 );	 putchar('.');
+	load_efp( "efps/enemy1.efp", enemyspr1, 0 );	 putchar('.');
+	load_efp( "efps/enemy2.efp", enemyspr2, 0 );	 putchar('.');
+	load_efp( "efps/enemy3.efp", enemyspr3, 0 );	 putchar('.');
+	load_efp( "efps/enemy4.efp", enemyspr4, 0 );	 putchar('.');
+	load_efp( "efps/enemy5.efp", enemyspr5, 0 );	 putchar('.');
+	load_efp( "efps/enemy6.efp", enemyspr6, 0 );	 putchar('.');
+	load_efp( "efps/enemy7.efp", enemyspr7, 0 );	 putchar('.');
+	load_efp( "efps/rambo2.efp", rambospr, 0 );	 putchar('.');
+	load_efp( "efps/bodyp.efp", bodypartspr, 0 );	 putchar('.');
+	load_efp( "efps/effects.efp", effectspr, 0 );	 putchar('.');
+	load_efp( "efps/ware.efp", warespr, 0 );		 putchar('.');
+	load_efp( "efps/target.efp", targetspr, 0 );	 putchar('.');
+	load_efp( "efps/c4.efp", c4spr, 0 );			 putchar('.');
+	load_efp( "efps/mine.efp", minespr, 0 );		 putchar('.');
+	load_efp( "efps/bomb.efp", grenadespr, 0 );	 putchar('.');
+	load_efp( "efps/shadows.efp", shadowspr, 0 );	 putchar('.');
+	load_efp( "efps/crates.efp", cratespr, 0 );	 putchar('.');
 	pre_count();
 	CalCuLaTE_Sine_Table_AND_Be_Happy();// for fade
 	std::cout << "\nSine and Cosine tables ready\n";
 	for ( a = 0; a < LIGHTS; a ++  ) 
 	light[a].make( Light_sizes[a] );std::cout << "Lights mapped\n";
 	load_tables();std::cout << "Palette tables loaded \n";
-	load_efp_pal( "efps\\walls1.efp", pal );
+	load_efp_pal( "efps/walls1.efp", pal );
 	std::cout << "Calculating dark floor... ";
 	make_floors();
 	std::cout << "OK \n";
 	load_options();std::cout << "Options loaded\n";
-	list_files( &dirs, dirlist, "levs\\*.*", _A_SUBDIR );
+	list_files( &dirs, dirlist, "levs/*.*", _A_SUBDIR );
 	std::cout << dirs << " episodes found\n";
-	list_files( &files_in_episode[0], filelist[0], "levs\\*.lev", _A_NORMAL );
+	list_files( &files_in_episode[0], filelist[0], "levs/*.lev", _A_NORMAL );
 	for ( a = 0; a < dirs &&a < 256; a ++  ) 
 	{
-		strcpy( text, "levs\\" );
+		strcpy( text, "levs/" );
 		strcat( text, dirlist[a].name );
-		strcat( text, "\\*.lev" );
+		strcat( text, "/*.lev" );
 		list_files( &files_in_episode[a + 1], filelist[a + 1], text, _A_NORMAL );
 	}
 	define_bullet_types();
@@ -987,8 +987,8 @@ void do_prices()
 void victory() 
 {
 	int a = 0, oclock;
-	load_efp( "efps\\sunset.efp", picture, 0 );
-	load_efp_pal( "efps\\sunset.efp", pal );
+	load_efp( "efps/sunset.efp", picture, 0 );
+	load_efp_pal( "efps/sunset.efp", pal );
 	setpal( pal, 0 );
 	memcpy( screen, picture, 64000 );
 	oclock = clock();
@@ -1966,7 +1966,7 @@ int join_game(struct nodeaddr n)
 {	char buf[256];
 
 	memcpy(&serveraddr,&n,sizeof(serveraddr));	
-	load_efp( "efps\\cool.efp", picture, 0 );
+	load_efp( "efps/cool.efp", picture, 0 );
 	draw_box1( 60, 10, 320 - 60, 190, 15 );
 	fadeout( virbuff, pal );
 	memcpy(virbuff,picture,64000);
@@ -2046,7 +2046,7 @@ int select_server()
 	struct nodeaddr nodez[10],tempnode;
 	struct nodeaddr bc;
 
-	load_efp( "efps\\cool.efp", picture, 0 );
+	load_efp( "efps/cool.efp", picture, 0 );
 	draw_box1( 60, 10, 320 - 60, 190, 15 );
 	fadeout( virbuff, pal );
 
@@ -2226,11 +2226,11 @@ void game()
     if ((GAME_MODE!=NETWORK)||
 		(NETWORK_MODE==SERVER))
 	{
-		strcpy( match_level, "levs\\" );
+		strcpy( match_level, "levs/" );
 		if ( DEATH_MATCH_EPISODE > 0 ) 
 		{
 			strcat( match_level, dirlist[DEATH_MATCH_EPISODE - 1].name );
-			strcat( match_level, "\\" );
+			strcat( match_level, "/" );
 		}
 		strcat( match_level, DEATH_MATCH_LEVEL );
 		LEVELS = files_in_episode[episode + 1];
@@ -2256,9 +2256,9 @@ void game()
 	    if ((GAME_MODE!=NETWORK)||
 			(NETWORK_MODE==SERVER))
 		{
-			strcpy( filename, "levs\\" );
+			strcpy( filename, "levs/" );
 			strcat( filename, dirlist[episode].name );
-			strcat( filename, "\\level" );
+			strcat( filename, "/level" );
 			sprintf( text, "%d", LEVEL + 1 );
 			strcat( filename, text );
 			strcat( filename, ".lev" );
@@ -2285,7 +2285,7 @@ void game()
 
 	    	peli_biisi();
 
-			load_efp_pal( "efps\\walls1.efp", pal );
+			load_efp_pal( "efps/walls1.efp", pal );
 
 			
 			if ( !(GAME_MODE==NETWORK && NETWORK_MODE==CLIENT))
@@ -2400,13 +2400,13 @@ void game()
 			next_level = 0;
 		}
 	}
-	load_efp_pal( "efps\\ware.efp", pal );
+	load_efp_pal( "efps/ware.efp", pal );
 }
 
 void menu_scr() 
 {
-	load_efp( "efps\\tk.efp", picture, 0 );
-	load_efp_pal( "efps\\ware.efp", pal );
+	load_efp( "efps/tk.efp", picture, 0 );
+	load_efp_pal( "efps/ware.efp", pal );
 	draw_box1( 55, 90 - ( ( Menu_texts*15 )  / 2 ), 320 - 55, 110 + ( ( Menu_texts*15 )  / 2 ), 10 );
 	k.state[28] = 0;
 	first = 1;
@@ -2516,8 +2516,8 @@ void credits()
 void logo() 
 {
 	int a = 0, oclock;
-	load_efp( "efps\\eflogo.efp", picture, 0 );
-	load_efp_pal( "efps\\eflogo.efp", pal );
+	load_efp( "efps/eflogo.efp", picture, 0 );
+	load_efp_pal( "efps/eflogo.efp", pal );
 	setpal( pal, 0 );
 	memcpy( screen, picture, 64000 );
 	oclock = clock();

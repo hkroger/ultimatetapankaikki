@@ -9,7 +9,7 @@ int wanna_quit()
 	int a, cnt = 0, selected = 0, quit = 0, oclock;
 	int done = 0;
 	int starty = 100 - ( ( 3*15 )  / 2 );
-	load_efp( "efps\\cool.efp", picture, 0 );
+	load_efp( "efps/cool.efp", picture, 0 );
 	draw_box1( 65, starty - 5 - 10, 320 - 65, starty + 5 + ( 3*15 ), 10 );
 	while( !done ) 
 	{

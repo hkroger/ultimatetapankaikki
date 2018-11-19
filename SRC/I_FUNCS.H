@@ -2,8 +2,8 @@ void level_info()
 {
 	char text[20];
 	int a, b;
-	load_efp( "efps\\cool.efp", picture, 0 );
-	load_efp_pal( "efps\\ware.efp", pal );
+	load_efp( "efps/cool.efp", picture, 0 );
+	load_efp_pal( "efps/ware.efp", pal );
 	draw_box1( 10, 10, 10 + 100, 10 + 20, 10 );
 	draw_box1( 10, 50, 310, 50 + 20, 10 );
 	draw_box1( 10, 90, 160, 190, 10 );
@@ -38,8 +38,8 @@ void statics()
 {
 	char text[20], text2[20];
 	int a, b, timebonus;
-	load_efp( "efps\\cool.efp", picture, 0 );
-	load_efp_pal( "efps\\ware.efp", pal );
+	load_efp( "efps/cool.efp", picture, 0 );
+	load_efp_pal( "efps/ware.efp", pal );
 	draw_box1( 10, 10, 310, 32, 10 );
 	draw_box1( 10, 40, 310, 190, 10 );
 	memcpy( virbuff, picture, 64000 );

@@ -15,7 +15,7 @@ void change_name( int num )
 {
 	int x;
 	fadeout( virbuff, pal );
-	load_efp( "efps\\cool.efp", picture, 0 );
+	load_efp( "efps/cool.efp", picture, 0 );
 	FONT_NUM = 0;
 	x = 160 - ( str_length( "enter your name" )  / 2 );
 	draw_box1( x - 10, 75, 320 - x + 10, 125, 5 );
