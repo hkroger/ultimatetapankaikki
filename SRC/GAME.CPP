@@ -191,7 +191,6 @@ void do_all()
 		std::cout << std::endl;
 	}
 	else error( "Error in MIDAS startup !!!\n" );
-	set_keyb_rate();
 	k.init( 0 );
 	std::cout << "Keyboard handler initialized\n";
 	std::cout << "Loading fonts";

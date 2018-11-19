@@ -528,14 +528,3 @@ void list_files( int *no, vile *filelist, char *wildcard, int type )
 	_dos_findclose( &fbuf );
 	*/
 }
-
-void set_keyb_rate() 
-{
-	union REGS inregs;
-	inregs.h.ah = 0x03;
-	inregs.h.al = 0x05;
-	inregs.h.bh = 0x00;// delay 
-	inregs.h.bl = 0x00;// rate
-	int386( 0x16, &inregs, &inregs );
-}
-

@@ -13,5 +13,4 @@ void define_bullet_types();
 void define_effects();
 void explo( int x, int y, int size, int index);
 void list_files( int *no, vile *filelist, char *wildcard, int type );
-void set_keyb_rate();
 #endif
