@@ -6,14 +6,12 @@
 #include <stdiobuf.h> 
 #include <stdlib.h> 
 #include <midasdll.h> 
-#include <vesa.h> 
 #include <gfunc.h> 
 #include <math.h> 
 #include <time.h> 
 #include <iostream>
 #include <image.hpp> 
 #include <keyb.hpp> 
-#include <vesa2.h> 
 
 #include "defines.h"
 #include "error/error.h"
@@ -35,8 +33,6 @@ unsigned short sendl, sendseg, recl[RECEIVERS], recseg[RECEIVERS];
 
 void sendipx( int dest, int type, ... ); // predefine
 /************************* NET STUFF **************************************/ 
-VBEINFO *vbeInfo;
-VBESURFACE *vbe;
 #include "miscfunc.h"
 #include "write.h"// tosi paskoja rutiineja !!!
 #include "classes.h"
@@ -142,22 +138,8 @@ void do_all()
 {
 	int a;
 	char text[30];
-	vesa_set_mode( 0x3 );
+	// TODO VIDEO vesa_set_mode( 0x3 );
 	cout << "\n                ================== Starting TK =================\n\n";
-	if( ( vbeInfo = vbeDetect()  ) == NULL ) 
-	printf( "VESA not supported\n" );
-	else 
-	{
-		printf( "VESA found..." );
-		printf( "\nVBE Version      : %d.%d\n"
-		"Oem              : %s\n"
-		"Total memory     : %gK\n", 
-		vbeInfo-> VbeVersion >> 8, 
-		vbeInfo-> VbeVersion&0xFF, 
-		vbeInfo-> OemStringPtr, 
-		( ( float ) vbeInfo-> TotalMemory*64000.0f )  / 1024.0f );
-		if ( vbeInfo-> VbeVersion >> 8 >= 2 ) VESA2 = 1;
-	}
 	if ( initipx()  ) 
 	{
 		char str[256];
@@ -2289,17 +2271,9 @@ void game()
 				if ( LEVEL > 0 ) 
 				 for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) aplayer[a]->shop();
 			}
-			
-			if ( !FORCE_0x13 ) 
-			if ( VESA2 ) 
-			{
-				vbe = vbeOpen( 320, 240, 8 );
-				if (vbe!=NULL){
-				 scr_y_size = 240;
-				 screen = vbe-> lfb;
-				} else FORCE_0x13=1;
-			}
-	    	
+
+            // TODO VIDEO open window 320x200
+
 	    	peli_biisi();
 
 			load_efp_pal( "efps\\walls1.efp", pal );
@@ -2393,14 +2367,6 @@ void game()
 		}
 		fadeout( virbuff, pal );
 		menu_biisi();
-		if ( !FORCE_0x13 ) 
-		if ( VESA2 ) 
-		{
-			scr_y_size = 200; 
-			vbeClose( vbe ); 
-			vesa_set_mode( 0x13 ); 
-			screen = ( char * ) 0xA0000;
-		}
 
 		if ( KILLING_MODE!= DEATHMATCH ) 
 		{
@@ -2583,8 +2549,6 @@ main( int argc, char *argv[] )
 					 break;
 			case 'M':SHOW_ENEMIES = 1;
 					 break;
-			case 'V':FORCE_0x13 = 1;
-					 break;
 			case 'H':case '?':
 					 cout << endl;
 					 cout << "Ultimate Tapan Kaikki " << Version << endl;
@@ -2605,11 +2569,11 @@ main( int argc, char *argv[] )
 	do_all();
 	k.clear_stack();
 	if ( pause ) k.getch();
-	vesa_set_mode( 0x13 );
+	// TODO VIDEO vesa_set_mode( 0x13 );
  // logo();
 	menu();
 	if ( ph ) MIDASstopModule( ph );
-	vesa_set_mode( 0x3 );
+	// TODO VIDEO vesa_set_mode( 0x3 );
 	free_all();
 //	credits();
 }

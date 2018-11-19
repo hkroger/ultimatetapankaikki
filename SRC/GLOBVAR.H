@@ -10,7 +10,7 @@ extern int saved_game_mode;
 extern int saved_killing_mode;
 extern int ipxavail;
 extern int BACK_TO_MENU;
-extern int VESA2, FORCE_0x13, scr_y_size, GAME_MODE, NETWORK_MODE;
+extern int scr_y_size, GAME_MODE, NETWORK_MODE;
 extern int KILLING_MODE, SHOW_ENEMIES, target_cost;// tähtäimen hinta
 extern volatile unsigned framecount;
 extern int effect_age_count;

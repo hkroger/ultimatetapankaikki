@@ -4,7 +4,6 @@
 #include <midasdll.h>
 #include <math.h>
 #include <stdlib.h>
-#include <vesa.h>
 #include <gfunc.h>
 #include "error/error.h"
 #include "defines.h"
@@ -1248,7 +1247,11 @@ void Level::load( char name[13] )
 	if ( dat != NULL ) 
 	{
 		fread( &version, 4, 1, dat );
-		if (version>5) {vesa_set_mode(0x3);cout<<"Invalid level version: Get newer version of TK !";exit(1);}
+		if (version>5) {
+                    // TODO VIDEO vesa_set_mode(0x3);
+                    cout<<"Invalid level version: Get newer version of TK !";
+                    exit(1);
+                }
 		fread( &level_x_size, 4, 1, dat );
 		fread( &level_y_size, 4, 1, dat );
 		level = ( struct BLOCK* ) malloc( level_y_size*level_x_size*sizeof( struct BLOCK )  );

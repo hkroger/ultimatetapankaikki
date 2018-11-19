@@ -5,7 +5,6 @@
 #include <time.h>
 #include <keyb.hpp>
 int BACK_TO_MENU = 0;
-int VESA2 = 0, FORCE_0x13 = 0;
 int scr_y_size = 200;
 int ipxavail = 0;
 int GAME_MODE = 0, NETWORK_MODE = CLIENT;
