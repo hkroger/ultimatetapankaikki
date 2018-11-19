@@ -150,7 +150,7 @@ int choose_episode()
 			}
 		}
 		FONT_NUM = 1;
-		itoa( files_in_episode[sel + 1], text, 10 );
+		sprintf( text, "%d", files_in_episode[sel + 1] );
 		strcat( text, " levels" );
 		writefonts( 70, 175, text, M_BLUE );
 		if ( first == 1 ) 
@@ -369,12 +369,12 @@ void sound_options()
 	{
 		memcpy( virbuff, picture, 64000 );
 		strcpy( text, "music volume " );
-		itoa( ( float ) MUSIC_VOLUME / 63*100, text2, 10 );
+		sprintf( text2, "%d", ( float ) MUSIC_VOLUME / 63*100 );
 		strcat( text2, "%" );
 		strcat( text, text2 );
 		strcpy(sound_opt_text[0],text );
 		strcpy( text, "effect volume " );
-		itoa( ( float ) EFFECT_VOLUME / 63*100, text2, 10 );
+		sprintf( text2, "%d", ( float ) EFFECT_VOLUME / 63*100 );
 		strcat( text2, "%" );
 		strcat( text, text2 );
 		strcpy(sound_opt_text[1],text );

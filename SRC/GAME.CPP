@@ -579,7 +579,7 @@ void screen_capture()
 	while ( free == 0 &&num < 99 ) 
 	{
 		strcpy( text1, "screen" );
-		itoa( num, text2, 10 );
+		sprintf( text2, "%d", num );
 		strcat( text1, text2 );
 		strcat( text1, ".pcx" );
 		if ( ( sci = fopen( text1, "rb" )  )  == NULL ) free = 1;else fclose( sci );
@@ -767,9 +767,9 @@ void kello()
 void frames_per_sec() 
 {
 	char text[5];
-	itoa( ( int ) F_PER_SEC, text, 10 );
+	sprintf( text, "%d", ( int ) F_PER_SEC );
 	writefonts( 151, 20, text, 9*16 );
-	itoa( OVER_POWER , text, 10 );
+	sprintf( text, "%d", OVER_POWER  );
 	writefonts( 151, 30, text, 7*16 );
 }
 
@@ -2268,7 +2268,7 @@ void game()
 			strcpy( filename, "levs\\" );
 			strcat( filename, dirlist[episode].name );
 			strcat( filename, "\\level" );
-			itoa( LEVEL + 1, text, 10 );
+			sprintf( text, "%d", LEVEL + 1 );
 			strcat( filename, text );
 			strcat( filename, ".lev" );
 		    if ( KILLING_MODE!= DEATHMATCH ) leveldata.load( filename );

@@ -31,10 +31,10 @@ void draw_ware_info( Player *P, int sel1, int sel2 )
 	{
 		writefonts( 20, 50, weapon[sel2 + 1].name, M_YELLOW );
 		writefonts( 20, 70, "Cost:", M_BLUE );
-		itoa( weapon[sel2 + 1].cost, text, 10 );
+		sprintf( text, "%d", weapon[sel2 + 1].cost );
 		writefonts( 20 + str_length( "Cost: " ), 70, text, M_YELLOW );
 		writefonts( 20, 80, "Sell price:", M_BLUE );
-		itoa( sell_price[sel2], text, 10 );
+		sprintf( text, "%d", sell_price[sel2] );
 		writefonts( 20 + str_length( "Sell_price: " ), 80, text, M_YELLOW );
 		writefonts( 20, 90, "Bullet type:", M_BLUE );
 		writefonts( 20 + str_length( "Bullet type: " ), 90, bullet_type[weapon[sel2 + 1].btype].name, M_YELLOW );
@@ -43,7 +43,7 @@ void draw_ware_info( Player *P, int sel1, int sel2 )
 	{
 		writefonts( 20, 50, bullet_type[sel2 + 1].name, M_YELLOW );
 		writefonts( 20, 70, "Cost:", M_BLUE );
-		itoa( bullet_type[sel2 + 1].cost, text, 10 );
+		sprintf( text, "%d", bullet_type[sel2 + 1].cost );
 		writefonts( 20 + str_length( "Cost: " ), 70, text, M_YELLOW );
 	}
 	if ( sel1 == 2 ) 
@@ -52,21 +52,21 @@ void draw_ware_info( Player *P, int sel1, int sel2 )
 		{
 			writefonts( 20, 50, "Shield", M_YELLOW );
 			writefonts( 20, 70, "Cost:", M_BLUE );
-			itoa( shield_data.cost + P-> shield*15, text, 10 );
+			sprintf( text, "%d", shield_data.cost + P-> shield*15 );
 			writefonts( 20 + str_length( "Cost: " ), 70, text, M_YELLOW );
 			writefonts( 20, 80, "Sell price:", M_BLUE );
 			a = P-> shield - 1;if ( a < 0 ) a = 0;
-			itoa( sell_price[DIFF_WEAPONS] + ( ( a*15 )  >> 1 ), text, 10 );
+			sprintf( text, "%d", sell_price[DIFF_WEAPONS] + ( ( a*15 )  >> 1 ) );
 			writefonts( 20 + str_length( "Sell_price: " ), 80, text, M_YELLOW );
 		}
 		if ( sel2 == 1 ) 
 		{
 			writefonts( 20, 50, "Target system", M_YELLOW );
 			writefonts( 20, 70, "Cost:", M_BLUE );
-			itoa( target_cost, text, 10 );
+			sprintf( text, "%d", target_cost );
 			writefonts( 20 + str_length( "Cost: " ), 70, text, M_YELLOW );
 			writefonts( 20, 80, "Sell price:", M_BLUE );
-			itoa( sell_price[DIFF_WEAPONS + 1], text, 10 );
+			sprintf( text, "%d", sell_price[DIFF_WEAPONS + 1] );
 			writefonts( 20 + str_length( "Sell_price: " ), 80, text, M_YELLOW );
 		}
 	}
@@ -98,7 +98,7 @@ void Player::shop()
 		FONT_NUM = 1;
 		writefonts( 10, 190, "Press FIRE to buy, CHANGE to sell, ESC to exit", M_BLUE );
 		writefonts( 15, 12, name, M_YELLOW );
-		itoa( cash, text, 10 );
+		sprintf( text, "%d", cash );
 		writefonts( 15, 20, "Cash:", M_RED );
 		writefonts( 40, 20, text, M_YELLOW );
 		draw_wares( sel1, sel2 );
@@ -115,13 +115,13 @@ void Player::shop()
 		{
 			x = bullets[a] / bullet_type[a + 1].mul;
 			if ( x < 1 ) x = 1;
-			itoa( x, text, 10 );
+			sprintf( text, "%d", x );
 			writefonts( 8 + a*18, 131 + 11 + 18, text, 0 );
 			writefonts( 9 + a*18, 130 + 11 + 18, text, M_YELLOW );
 		}
 		if ( shield > 0 ) 
 		{
-			itoa( shield, text, 10 );
+			sprintf( text, "%d", shield );
 			writefonts( 8, 131 + 11 + 18 + 18, text, 0 );
 			writefonts( 9, 130 + 11 + 18 + 18, text, M_YELLOW );
 		}

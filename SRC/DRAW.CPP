@@ -741,14 +741,14 @@ void draw_infos()
 	writefonts( 3, scr_y_size - 15, weapon[aplayer[0]->curr_weapon].name, 1 );
 	x = aplayer[0]->bullets[weapon[aplayer[0]->curr_weapon].btype - 1] / bullet_type[weapon[aplayer[0]->curr_weapon].btype].mul;
 	if ( x < 0 ) x = 1;
-	itoa( x, text, 10 );
+	sprintf( text, "%d", x );
 	if ( aplayer[0]->curr_weapon > 0 ) writefonts( 3, scr_y_size - 23, text, 7*16 );
 	if ( GAME_MODE == SPLIT_SCREEN ) 
 	{
 		writefonts( 3 + 160, scr_y_size - 15, weapon[aplayer[1]->curr_weapon].name, 1 );
 		x = aplayer[1]->bullets[weapon[aplayer[1]->curr_weapon].btype - 1] / bullet_type[weapon[aplayer[1]->curr_weapon].btype].mul;
 		if ( x < 0 ) x = 1;
-		itoa( x, text, 10 );
+		sprintf( text, "%d", x );
 		if ( aplayer[1]->curr_weapon > 0 ) writefonts( 3 + 160, scr_y_size - 23, text, 7*16 );
 	}
 }
@@ -956,9 +956,9 @@ void draw_kills()
 	int a,b=0;
 	if ( GAME_MODE == SPLIT_SCREEN ) 
 	{
-		itoa( aplayer[0]->player_kills, text, 10 );
+		sprintf( text, "%d", aplayer[0]->player_kills );
 		writefonts( 3, 3, text, 48 );
-		itoa( aplayer[1]->player_kills, text, 10 );
+		sprintf( text, "%d", aplayer[1]->player_kills );
 		writefonts( 317 - str_length( text ), 3, text, 144 );
 	}
 	else 
@@ -966,7 +966,7 @@ void draw_kills()
 	if (player[a].enabled)
 	{
 		strcpy( text2, player[a].name );
-		itoa( player[a].player_kills, text, 10 );
+		sprintf( text, "%d", player[a].player_kills );
 		strcat( text2, " " );
 		strcat( text2, text );
 		writefonts( 3 + ( b % 4 ) *80, 3 + ( b / 4 ) *10, text2, player[a].color );

@@ -10,7 +10,7 @@ void level_info()
 	memcpy( virbuff, picture, 64000 );
 	FONT_NUM = 0;
 	writefonts2( 16, 13, "level", 1 );
-	itoa( LEVEL + 1, text, 10 );
+	sprintf( text, "%d", LEVEL + 1 );
 	writefonts2( 71, 13, text, 1 );
 	writefonts2( 160 - ( str_length( general_level_info.comment )  / 2 ), 13 + 40, general_level_info.comment, 1 );
 	FONT_NUM = 1;
@@ -18,7 +18,7 @@ void level_info()
 	for ( a = 0, b = 111; a < DIFF_ENEMIES; a ++  ) 
 	if ( general_level_info.enemies[a] > 0 ) 
 	{
-		itoa( general_level_info.enemies[a], text, 10 );
+		sprintf( text, "%d", general_level_info.enemies[a] );
 		strcat( text, " " );
 		strcat( text, enemy_info[a].name );
 		if ( general_level_info.enemies[a] > 1 ) 
@@ -67,14 +67,14 @@ void statics()
 	if ( aplayer[0]->kills[a] > 0 ) 
 	{
 		aplayer[0]->total_kills += aplayer[0]->kills[a];
-		itoa( aplayer[0]->kills[a], text, 10 );
+		sprintf( text, "%d", aplayer[0]->kills[a] );
 		strcat( text, " " );
 		strcat( text, enemy_info[a].name );
 		if ( aplayer[0]->kills[a] > 1 ) 
 		strcat( text, "s" );
 		writefonts( 16, b, text, M_YELLOW );
 		strcpy( text, "+" );
-		itoa( enemy_info[a].reward*aplayer[0]->kills[a], text2, 10 );
+		sprintf( text2, "%d", enemy_info[a].reward*aplayer[0]->kills[a] );
 		aplayer[0]->cash += enemy_info[a].reward*aplayer[0]->kills[a];
 		strcat( text, text2 );
 		writefonts( 103, b, text, M_RED );
@@ -83,16 +83,16 @@ void statics()
 	aplayer[0]->cash += timebonus;
 	if ( aplayer[0]->cash < 0 ) aplayer[0]->cash = 0;
 	writefonts( 16, 130, "Total kills:", M_RED );
-	itoa( aplayer[0]->total_kills, text, 10 );
+	sprintf( text, "%d", aplayer[0]->total_kills );
 	writefonts( 76, 130, text, M_YELLOW );
 	writefonts( 16, 140, "Accuracy:", M_RED );
 	if ( aplayer[0]->shooted > 0 ) 
-	itoa( ( ( float ) aplayer[0]->hitten / aplayer[0]->shooted ) *100, text, 10 );
+	sprintf( text, "%d", ( ( float ) aplayer[0]->hitten / aplayer[0]->shooted ) *100 );
 	else strcpy( text, "0" );
 	strcat( text, "%" );
 	writefonts( 76, 140, text, M_YELLOW );
 	writefonts( 16, 150, "Cash:", M_RED );
-	itoa( aplayer[0]->cash, text, 10 );
+	sprintf( text, "%d", aplayer[0]->cash );
 	writefonts( 76, 150, text, M_YELLOW );
 	if ( GAME_MODE == SPLIT_SCREEN ) 
 	{
@@ -112,14 +112,14 @@ void statics()
 		if ( aplayer[1]->kills[a] > 0 ) 
 		{
 			aplayer[1]->total_kills += aplayer[1]->kills[a];
-			itoa( aplayer[1]->kills[a], text, 10 );
+			sprintf( text, "%d", aplayer[1]->kills[a] );
 			strcat( text, " " );
 			strcat( text, enemy_info[a].name );
 			if ( aplayer[1]->kills[a] > 1 ) 
 			strcat( text, "s" );
 			writefonts( 16 + 160, b, text, M_YELLOW );
 			strcpy( text, "+" );
-			itoa( enemy_info[a].reward*aplayer[1]->kills[a], text2, 10 );
+			sprintf( text2, "%d", enemy_info[a].reward*aplayer[1]->kills[a] );
 			aplayer[1]->cash += enemy_info[a].reward*aplayer[1]->kills[a];
 			strcat( text, text2 );
 			writefonts( 103 + 160, b, text, M_RED );
@@ -128,16 +128,16 @@ void statics()
 		aplayer[1]->cash += timebonus;
 		if ( aplayer[1]->cash < 0 ) aplayer[1]->cash = 0;
 		writefonts( 16 + 160, 130, "Total kills:", M_RED );
-		itoa( aplayer[1]->total_kills, text, 10 );
+		sprintf( text, "%d", aplayer[1]->total_kills );
 		writefonts( 76 + 160, 130, text, M_YELLOW );
 		writefonts( 16 + 160, 140, "Accuracy:", M_RED );
 		if ( aplayer[1]->shooted > 0 ) 
-		itoa( ( ( float ) aplayer[1]->hitten / aplayer[1]->shooted ) *100, text, 10 );
+		sprintf( text, "%d", ( ( float ) aplayer[1]->hitten / aplayer[1]->shooted ) *100 );
 		else strcpy( text, "0" );
 		strcat( text, "%" );
 		writefonts( 76 + 160, 140, text, M_YELLOW );
 		writefonts( 16 + 160, 150, "Cash:", M_RED );
-		itoa( aplayer[1]->cash, text, 10 );
+		sprintf( text, "%d", aplayer[1]->cash );
 		writefonts( 76 + 160, 150, text, M_YELLOW );
 	}
 	writefonts( 16, 170, "Time limit:", M_RED );
@@ -145,7 +145,7 @@ void statics()
 	writefonts( 16 + 80, 170, "Your time:", M_RED );
 	writefonts( 16 + 80 + 55, 170, c_2_c( complete_time ), M_BLUE );
 	writefonts( 16 + 80 + 80, 170, "Time bonus:", M_RED );
-	itoa( timebonus, text, 10 );
+	sprintf( text, "%d", timebonus );
 	writefonts( 16 + 80 + 55 + 80, 170, text, M_YELLOW );
 	fadein( virbuff, pal );
 	k.clear_stack();

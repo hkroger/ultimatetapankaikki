@@ -87,8 +87,8 @@ char *c_2_c( int aika )
 	char text[10], text2[10], *t;
 	min = aika / 60;
 	sec = aika % 60;
-	itoa( min, text, 10 );
-	itoa( sec, text2, 10 );
+	sprintf( text, "%d", min );
+	sprintf( text2, "%d", sec );
 	strcat( text, ":");
 	if ( sec < 10 ) strcat( text, "0");
 	strcat( text, text2 );
