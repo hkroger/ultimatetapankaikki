@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "KEYB.H"
 #include <string.h>
+#include <ctype.h>
+#include "KEYB.H"
 #include "EFP/EFP.H"
 #include "DRAW.H"
 #include "GLOBVAR.H"
@@ -527,4 +528,30 @@ void list_files( int *no, vile *filelist, char *wildcard, int type )
 	}
 	_dos_findclose( &fbuf );
 	*/
+}
+
+char *strlwr( char *str )
+{
+    char *p = str;
+
+    while ( *p )
+    {
+        *p = (char) tolower( (unsigned char) *p );
+        p++;
+    }
+
+    return str;
+}
+
+char *strupr( char *str )
+{
+	char *p = str;
+
+	while ( *p )
+	{
+		*p = (char) toupper( (unsigned char) *p );
+		p++;
+	}
+
+	return str;
 }
