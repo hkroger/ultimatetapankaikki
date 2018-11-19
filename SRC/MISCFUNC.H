@@ -13,6 +13,8 @@ void define_bullet_types();
 void define_effects();
 void explo( int x, int y, int size, int index);
 void list_files( int *no, vile *filelist, char *wildcard, int type );
+#define _A_SUBDIR 0
+#define _A_NORMAL 1
 char *strlwr( char *str );
 char *strupr( char *str );
 #endif
