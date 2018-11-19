@@ -1,12 +1,12 @@
 #ifndef __TK__GLOBVAR__
 #define __TK__GLOBVAR__
 #include <time.h>
-#include "keyb.h"
-#include "defines.h"
-#include "ipxdefs.h"
-#include "types.h"
-#include "classes.h"
-#include "sound.h"
+#include "KEYB.H"
+#include "DEFINES.H"
+#include "IPXDEFS.H"
+#include "TYPES.H"
+#include "CLASSES.H"
+#include "SOUND.H"
 
 extern int saved_game_mode;
 extern int saved_killing_mode;

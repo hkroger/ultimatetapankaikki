@@ -1,11 +1,11 @@
 #define IPXDEBUG
 
-#include "int/int.h"    // My asm header file..
+#include "INT/INT.H"    // My asm header file..
 #include <stdio.h>
 #include <string.h>
 #include <iostream>
 
-#include "ipx.c"    // More ipx code..
+#include "IPX.C"    // More ipx code..
 
 #define SERVER 1
 #define CLIENT 0

@@ -12,9 +12,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../error/error.h"
-#include "ipx.h"              // My ipx header file..
-#include "../int/int.h"
+#include "../ERROR/ERROR.H"
+#include "IPX.H"              // My ipx header file..
+#include "../INT/INT.H"
 
 struct nodeaddr nodes[MAXNODES+1];  // Last is broadcast and first is local...
 dword socketid=0;

@@ -1,10 +1,10 @@
-#include "defines.h"
-#include "ipxdefs.h"
-#include "types.h"
-#include "classes.h"
+#include "DEFINES.H"
+#include "IPXDEFS.H"
+#include "TYPES.H"
+#include "CLASSES.H"
 #include <time.h>
-#include "keyb.h"
-#include "sound.h"
+#include "KEYB.H"
+#include "SOUND.H"
 
 int BACK_TO_MENU = 0;
 int scr_y_size = 200;

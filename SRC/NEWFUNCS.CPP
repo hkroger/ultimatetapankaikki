@@ -1,7 +1,7 @@
-#include "defines.h"
-#include "globvar.h"
-#include "types.h"
-#include "classes.h"
+#include "DEFINES.H"
+#include "GLOBVAR.H"
+#include "TYPES.H"
+#include "CLASSES.H"
 
 extern void sendipx(int, int, ... );
 

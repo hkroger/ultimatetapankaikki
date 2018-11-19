@@ -1,7 +1,7 @@
 #ifndef __IPX__DEFS__
 #define __IPX__DEFS__
 
-#include "ipx/ipx.h"
+#include "IPX/IPX.H"
 
 #define IPX_END 0
 #define IPX_SERVERSEARCH 1

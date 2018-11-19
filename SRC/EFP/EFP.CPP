@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "efp.h"
-#include "../error/error.h"
+#include "EFP.H"
+#include "../ERROR/ERROR.H"
 
 void load_efp(char *name,char *kuva,int offs){
 

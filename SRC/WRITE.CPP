@@ -1,4 +1,4 @@
-#include "globvar.h"
+#include "GLOBVAR.H"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

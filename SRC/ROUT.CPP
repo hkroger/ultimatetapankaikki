@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "defines.h"
-#include "globvar.h"
+#include "DEFINES.H"
+#include "GLOBVAR.H"
 
 int get_dist( int x1, int y1, int x2, int y2 ) 
 {

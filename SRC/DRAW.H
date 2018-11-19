@@ -1,6 +1,6 @@
 #ifndef __TK___DRAW__
 #define __TK___DRAW__
-#include "classes.h"
+#include "CLASSES.H"
 void draw_block( int x, int y, int type, int num, int mode );
 void draw_dark_block( int x, int y, int num, int mode );
 void draw_rambo( int x, int y, int angle, int num, int mode, int col );

@@ -1,6 +1,6 @@
-#include "ipx/ipx.h"
-#include "ipxdefs.h"
-#include "classes.h"
+#include "IPX/IPX.H"
+#include "IPXDEFS.H"
+#include "CLASSES.H"
 
 word SOCKET = 0x869C;// DOOM Socket
 int IPXMSGLEN[] = 

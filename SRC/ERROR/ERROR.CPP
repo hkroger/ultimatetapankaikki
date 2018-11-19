@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include "keyb.h"
+#include "KEYB.H"
 
 void error(char *fmt,...)
 {	auto va_list ap;

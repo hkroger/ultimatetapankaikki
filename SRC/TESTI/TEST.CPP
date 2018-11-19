@@ -3,10 +3,10 @@
 #include <stdarg.h>
 #include <iostream>
 
-#include "int/int.h"
-#include "ipx/ipx.h"
-#include "ipxdefs.h"
-#include "error/error.h"
+#include "INT/INT.H"
+#include "IPX/IPX.H"
+#include "IPXDEFS.H"
+#include "ERROR/ERROR.H"
 
 #define MAX_PLAYERS 8
 

@@ -1,5 +1,5 @@
-#include "globvar.h"
-#include "graphics.h"
+#include "GLOBVAR.H"
+#include "GRAPHICS.H"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>

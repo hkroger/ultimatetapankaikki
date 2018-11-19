@@ -1,8 +1,8 @@
 #ifndef __TK__CLASSES__
 #define __TK__CLASSES__
-#include "defines.h"
-#include "types.h"
-#include "ipx/ipx.h"
+#include "DEFINES.H"
+#include "TYPES.H"
+#include "IPX/IPX.H"
 
 class Crate_info
 {

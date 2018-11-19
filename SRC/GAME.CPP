@@ -6,18 +6,18 @@
 #include <time.h> 
 #include <iostream>
 
-#include "keyb.h"
-#include "graphics.h"
-#include "defines.h"
-#include "error/error.h"
-#include "efp/efp.h"
-#include "globvar.h"
+#include "KEYB.H"
+#include "GRAPHICS.H"
+#include "DEFINES.H"
+#include "ERROR/ERROR.H"
+#include "EFP/EFP.H"
+#include "GLOBVAR.H"
 
 /*************************NET STUFF **************************************/ 
-#include "int/int.h"
-#include "ipx/ipx.h"
+#include "INT/INT.H"
+#include "IPX/IPX.H"
 
-#include "ipxdefs.h"
+#include "IPXDEFS.H"
 
 int ipxofs[MAX_PLAYERS];
 char ipxstream[MAX_PLAYERS][MAXDATASIZE];
@@ -28,17 +28,17 @@ unsigned short sendl, sendseg, recl[RECEIVERS], recseg[RECEIVERS];
 
 #define sendipx(...) ((void)0)
 /************************* NET STUFF **************************************/ 
-#include "miscfunc.h"
-#include "write.h"// tosi paskoja rutiineja !!!
-#include "classes.h"
-#include "rout.h"
-#include "fade.h"
-#include "draw.h"
-#include "funcs.h"
-#include "shop.h"
-#include "newfuncs.h"
-#include "options.h"
-#include "i_funcs.h" // paska funkkareita
+#include "MISCFUNC.H"
+#include "WRITE.H"// tosi paskoja rutiineja !!!
+#include "CLASSES.H"
+#include "ROUT.H"
+#include "FADE.H"
+#include "DRAW.H"
+#include "FUNCS.H"
+#include "SHOP.H"
+#include "NEWFUNCS.H"
+#include "OPTIONS.H"
+#include "I_FUNCS.H" // paska funkkareita
 
 void menu_biisi() 
 {

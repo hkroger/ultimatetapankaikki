@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "keyb.h"
+#include "KEYB.H"
 #include <string.h>
-#include "efp/efp.h"
-#include "draw.h"
-#include "globvar.h"
-#include "fade.h"
-#include "write.h"
-#include "newfuncs.h"
-#include "rout.h"
+#include "EFP/EFP.H"
+#include "DRAW.H"
+#include "GLOBVAR.H"
+#include "FADE.H"
+#include "WRITE.H"
+#include "NEWFUNCS.H"
+#include "ROUT.H"
 
 void change_name( int num ) 
 {

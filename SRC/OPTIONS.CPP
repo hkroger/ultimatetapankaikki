@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "efp/efp.h"
-#include "defines.h"
-#include "types.h"
-#include "globvar.h"
-#include "miscfunc.h"
-#include "fade.h"
-#include "draw.h"
-#include "write.h"
+#include "EFP/EFP.H"
+#include "DEFINES.H"
+#include "TYPES.H"
+#include "GLOBVAR.H"
+#include "MISCFUNC.H"
+#include "FADE.H"
+#include "DRAW.H"
+#include "WRITE.H"
 
 // TODO NETWORK
 #define setup_ipx(...) ((void)0)

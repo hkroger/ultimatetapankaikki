@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "defines.h"
-#include "types.h"
-#include "globvar.h"
-#include "classes.h"
-#include "write.h"
+#include "DEFINES.H"
+#include "TYPES.H"
+#include "GLOBVAR.H"
+#include "CLASSES.H"
+#include "WRITE.H"
 
  // 20 x 20
 void draw_block( int x, int y, int type, int num, int mode ) 
