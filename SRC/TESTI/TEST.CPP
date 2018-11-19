@@ -21,7 +21,7 @@ int ipxofs[MAX_PLAYERS] =
 char ipxstream[MAX_PLAYERS][MAXDATASIZE];
 struct nodeaddr serveraddr;
 char servername[10];
-struct packet far *send, far *rec[RECEIVERS];
+struct packet *send, *rec[RECEIVERS];
 unsigned short sendl, sendseg, recl[RECEIVERS], recseg[RECEIVERS];
 int ipxavail;
 int NETWORK_MODE=SERVER;
@@ -32,7 +32,7 @@ int PLAYERS=1;
 void allocipxmem() 
 {
 	int a;
-	send = ( struct packet far * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
+	send = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
 	if ( send == NULL ) 
 	{
 		cout << "Can't alloc lowmem!\n" << endl;
@@ -53,7 +53,7 @@ void allocipxmem()
 	}
 	for ( a = 0; a < RECEIVERS; a ++  ) 
 	{
-		rec[a] = ( struct packet far * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
+		rec[a] = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
 		if ( rec[a] == NULL ) 
 		{
 			cout << "Can't alloc lowmem!"<< endl;

@@ -34,7 +34,7 @@ static struct rminfo
 } RMI;
 
 word localaddl=0; // Selector to the localadd lowmem allocated.
-struct localaddr far *localadd=NULL;
+struct localaddr *localadd=NULL;
 
 union REGS regs;
 struct SREGS sregs;
@@ -114,7 +114,7 @@ void getlocaladdress(void)
 {
   if (localadd==NULL)
   	{
-	  localadd=(struct localaddr far *)MK_FP(getlowmem(sizeof(struct localaddr)/16+1),0);
+	  localadd=(struct localaddr *)MK_FP(getlowmem(sizeof(struct localaddr)/16+1),0);
 	  localaddl=lsel;
 	};
   clearrmi();
@@ -146,7 +146,7 @@ void cancelpacket(word packetseg)
   if (RMI.EAX&255) error("Cancelpacket: failed!\n");
 }
 
-void initreceivepacket(struct packet far *packetet,word lseg)
+void initreceivepacket(struct packet *packetet,word lseg)
 {
   _fmemset(packetet,0,sizeof(struct packet));
   packetet->ecb.inuse=0x1d;
@@ -163,7 +163,7 @@ void initreceivepacket(struct packet far *packetet,word lseg)
   packetet->ecb.fragsize=sizeof(struct packet)-sizeof(struct ecbtype);
 }                     
 						   
-void initsendpacket(struct packet far *packetet,word lseg)
+void initsendpacket(struct packet *packetet,word lseg)
 {
   _fmemset(packetet,0,sizeof(struct packet));
   
@@ -206,7 +206,7 @@ void initsendpacket(struct packet far *packetet,word lseg)
   packetet->ipx.src.socket=(word)swap(socketid);
 }
 
-void sendpacket(word ecbseg,struct nodeaddr destnode, struct packet far *packetet,word len)
+void sendpacket(word ecbseg,struct nodeaddr destnode, struct packet *packetet,word len)
 { // Sends a packet...
   // ecbseg is the senders segment...
   int q;
@@ -243,7 +243,7 @@ void char2hex(char *str,char ch)
 	str[1]=hex[ch&0xf];
 }
 
-char *decode_localaddress(char *str,struct localaddr far *la)
+char *decode_localaddress(char *str,struct localaddr *la)
 { int a;
 
   for (a=0;a<4;a++)
@@ -256,7 +256,7 @@ char *decode_localaddress(char *str,struct localaddr far *la)
   return(str);
 }
 
-char *decode_address(char *str,struct netaddress far *la)
+char *decode_address(char *str,struct netaddress *la)
 { int a;
   for (a=0;a<6;a++)
    char2hex(str+(a*2),la->node.node[a]);

@@ -66,7 +66,7 @@ struct packet
   char data[MAXDATASIZE];
 };
 
-extern struct localaddr far *localadd;
+extern struct localaddr *localadd;
 
 int opensocket(byte,word);
 void closesocket(word);
@@ -74,10 +74,10 @@ int initipx(void);
 void getlocaladdress(void);
 void listenforpacket(word packetseg);
 void cancelpacket(word packetseg);
-char *decode_localaddress(char *str,struct localaddr far *la);
-char *decode_address(char *str,struct netaddress far *la);
-void sendpacket(word ecbseg,struct nodeaddr destnode, struct packet far *packetet,word len);
-void initsendpacket(struct packet far *packetet,word lseg);
-void initreceivepacket(struct packet far *packetet,word lseg);
+char *decode_localaddress(char *str,struct localaddr *la);
+char *decode_address(char *str,struct netaddress *la);
+void sendpacket(word ecbseg,struct nodeaddr destnode, struct packet *packetet,word len);
+void initsendpacket(struct packet *packetet,word lseg);
+void initreceivepacket(struct packet *packetet,word lseg);
 struct nodeaddr BROADCAST();
 #endif

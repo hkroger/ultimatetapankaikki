@@ -21,18 +21,18 @@
 int mode;
 char str[255];
 
-struct packet far *send,far *rec[RECEIVERS];
+struct packet *send,*rec[RECEIVERS];
 unsigned short sendl,sendseg,recl[RECEIVERS],recseg[RECEIVERS];
 
 void init_memory()
 { int a;
-  send=(struct packet far *)MK_FP(getlowmem(sizeof(struct packet)/16+1),0);
+  send=(struct packet *)MK_FP(getlowmem(sizeof(struct packet)/16+1),0);
   sendl=lsel;
   sendseg=lseg;
   initsendpacket(send,sendseg);
 
   for (a=0;a<RECEIVERS;a++)
-  {		rec[a]=(struct packet far *)MK_FP(getlowmem(sizeof(struct packet)/16+1),0);
+  {		rec[a]=(struct packet *)MK_FP(getlowmem(sizeof(struct packet)/16+1),0);
 		recl[a]=lsel;
 		recseg[a]=lseg;
 		initreceivepacket(rec[a],recseg[a]);
@@ -47,7 +47,7 @@ char2hex(char *str,char ch)
 	str[1]=hex[ch&0xf];
 }
 
-char *decode_localaddress(char *str,struct localaddr far *la)
+char *decode_localaddress(char *str,struct localaddr *la)
 { int a;
 
   for (a=0;a<4;a++)
@@ -60,7 +60,7 @@ char *decode_localaddress(char *str,struct localaddr far *la)
   return(str);
 }
 
-char *decode_address(char *str,struct netaddress far *la)
+char *decode_address(char *str,struct netaddress *la)
 { int a;
   for (a=0;a<6;a++)
    char2hex(str+(a*2),la->node[a]);
