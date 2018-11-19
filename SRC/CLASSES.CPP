@@ -39,7 +39,8 @@ char suicidetexts[][MAX_MESSAGE_LENGTH-20]=
 
 
 
-extern void sendipx(int, int, ... );
+// TODO NETWORK
+#define sendipx(...) ((void)0)
 
 void Message_board::add_message(char msg[])
 {

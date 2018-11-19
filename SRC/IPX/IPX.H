@@ -68,6 +68,11 @@ struct packet
 
 extern struct localaddr *localadd;
 
+#define initipx(...) 0
+#define getlocaladdress(...)
+#define decode_localaddress(...) ((char *)0)
+
+#if 0
 int opensocket(byte,word);
 void closesocket(word);
 int initipx(void);
@@ -80,4 +85,6 @@ void sendpacket(word ecbseg,struct nodeaddr destnode, struct packet *packetet,wo
 void initsendpacket(struct packet *packetet,word lseg);
 void initreceivepacket(struct packet *packetet,word lseg);
 struct nodeaddr BROADCAST();
+#endif /* 0 */
+
 #endif

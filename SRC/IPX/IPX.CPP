@@ -1,3 +1,4 @@
+#if 0
 // IPX EgotoXAMPLE FOR WATCOM C/C++ (10.0a) UNDER DOS4GW PMODE DPMI.
 // Written by Daniel Jeppson d94dj@efd.lth.se 960511 03:28 AM (8
 
@@ -263,5 +264,4 @@ char *decode_address(char *str,struct netaddress *la)
   str[12]=0;
   return(str);
 }
-
-
+#endif

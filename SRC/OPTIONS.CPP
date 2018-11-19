@@ -13,10 +13,12 @@
 #include "draw.h"
 #include "write.h"
 
-extern void setup_ipx();
-extern void desetup_ipx();
+// TODO NETWORK
+#define setup_ipx(...) ((void)0)
+#define desetup_ipx(...) ((void)0)
+#define select_server(...) 0
+
 extern void game();
-extern int select_server();
 
 void save_options()
 {

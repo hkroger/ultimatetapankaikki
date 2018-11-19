@@ -30,7 +30,7 @@ char servername[10];
 struct packet *send, *rec[RECEIVERS];
 unsigned short sendl, sendseg, recl[RECEIVERS], recseg[RECEIVERS];
 
-void sendipx( int dest, int type, ... ); // predefine
+#define sendipx(...) ((void)0)
 /************************* NET STUFF **************************************/ 
 #include "miscfunc.h"
 #include "write.h"// tosi paskoja rutiineja !!!
@@ -93,6 +93,9 @@ void load_tables()
 	fclose( tab );
 }
 
+// TODO NETWORK
+#define allocipxmem(...) ((void)0)
+#if 0
 void allocipxmem() 
 {
 	int a;
@@ -118,7 +121,11 @@ void allocipxmem()
 		recseg[a] = lseg;
 	}
 }
+#endif
 
+// TODO NETWORK
+#define freeipxmem(...)
+#if 0
 void freeipxmem() 
 {
 	int a;
@@ -132,6 +139,7 @@ void freeipxmem()
 		}
 	}
 }
+#endif
 
 void do_all() 
 {
@@ -853,7 +861,6 @@ void chk_burn()
 		 for(b=1;b<MAX_PLAYERS;b++)
 	      if (player[b].enabled)
 		   sendipx(b,IPX_BURNING,player[a].tindex,player[a].burning);
-
 		}	   
 		
 		if ( Steam_count % 6 == 0 ) 
@@ -1004,6 +1011,11 @@ void victory()
 	}
 }
 
+// TODO NETWORK
+#define do_client_shit(...) ((void)0)
+#define do_server_shit(...) ((void)0)
+#define chk_for_loosers(...) ((void)0)
+#if 0
 void flushipx() 
 {
 	int a,b;
@@ -2173,6 +2185,7 @@ void chk_for_loosers()
 	    message_board.add_message(kakka);
 	   }	
 }
+#endif
 
 void game() 
 {
