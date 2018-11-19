@@ -1,3 +1,0 @@
-GAME.CPP(1049): Warning! W014: (col 1) no reference to symbol 'dest' 
-GAME.CPP(1049): Note! N392: (col 1) 'int dest' in 'void sendipx( int, int, ... )' defined in: GAME.CPP(1028) (col 18) 
-GAME.CPP(1085): Warning! W005: (col 45) pointer or reference truncated 
