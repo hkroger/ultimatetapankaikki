@@ -186,8 +186,10 @@ void do_all()
 //		biisi[4] = MIDASloadModule("music\\mielip2.s3m");putchar('.');
 //		biisi[5] = MIDASloadModule("music\\unic_2x.s3m");putchar('.');
 //		biisi[1] = MIDASloadModule("music\\unic_1x.s3m");putchar('.');
+		/* TODO SOUND
     	for (a=0;a<6;a++)
 		 if (biisi[a]==NULL) error("Musicmodule #%d NULL!\n",a);
+		*/
 		std::cout << std::endl;
 	}
 	else error( "Error in MIDAS startup !!!\n" );
