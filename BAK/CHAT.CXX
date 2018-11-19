@@ -40,7 +40,7 @@ void init_memory()
 
 }
 
-// Ei pist„ nollaa stringin loppuun!!!
+// Ei pistÃ¤ nollaa stringin loppuun!!!
 char2hex(char *str,char ch) 
 {	char hex[]="0123456789ABCDEF";
 	str[0]=hex[ch>>4];

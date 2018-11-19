@@ -11,7 +11,7 @@ int ipxavail = 0;
 int GAME_MODE = 0, NETWORK_MODE = CLIENT;
 int KILLING_MODE = 0;
 int SHOW_ENEMIES = 0;
-int target_cost = 500;// t„ht„imen hinta
+int target_cost = 500;// tÃ¤htÃ¤imen hinta
 volatile unsigned framecount = 0;
 int effect_age_count;
 int dust_blocks[DUST_BLOCKS] = 
@@ -97,7 +97,7 @@ int ACTIVE_PLAYERS;
 int ENEMIES, LEVEL, DEAD_ENEMIES;
 int ENEMIES_ON_GAME = 1;
 int FRAMES_ON;
-int target_frames = TARGET_FRAMES;// pelin p„ivitys nopeus
+int target_frames = TARGET_FRAMES;// pelin pÃ¤ivitys nopeus
 int delau = 10;
 char *k_text[DIFF_K] = 
 {
@@ -302,7 +302,7 @@ Bullet_type bullet_type[DIFF_BULLETS + 2];
 struct s shield_data = 
 {
 	"Shield", 
-	160,   // muuta t„t„ shop.h:ssa
+	160,   // muuta tÃ¤tÃ¤ shop.h:ssa
 	15
 };
 

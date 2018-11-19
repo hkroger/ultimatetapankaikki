@@ -26,7 +26,7 @@ int IPXMSGLEN[] =
 	0, // UPDCRATE
 	0, // UPDKILLS
 	0, //  NEWBULLET
-	0, // B””ning
+	0, // BÃ¶Ã¶ning
 	0, // messsssssaaaaaaaaaaage
 	0 // saund
 };

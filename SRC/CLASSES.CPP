@@ -289,7 +289,7 @@ void Player::chk_keys( int index )
 void Body_part::move() 
 {
 	int offs[2*4]; //**
-	int reuna = 4; //**chk pointit on n„in
+	int reuna = 4; //**chk pointit on nÃ¤in
 	int reuna2 = 4; //**
 	int rnx, rny; //**
 	float newx, newy;
@@ -433,7 +433,7 @@ void Player::footprint( int side )
 void Player::move( int angle, float spd, int index ) 
 {
 	int offs[2*4];   //  **
-	int reuna = 6;   // *  * chk pointit on n„in
+	int reuna = 6;   // *  * chk pointit on nÃ¤in
 	int reuna2 = 4;  // *  *
 	int rnx, rny;    //  **
 	int crate_taken = 0;
@@ -540,7 +540,7 @@ void Player::move( int angle, float spd, int index )
 		if ( rny + 15 < player[b].y + 30 ) chk = 1;
 		if ( !chk ) x = newx;
 	}
-	for ( a = 0; a < MAX_CRATES; a ++  ) // laatikoiden ker„ys
+	for ( a = 0; a < MAX_CRATES; a ++  ) // laatikoiden kerÃ¤ys
 	if ( crate[a].IN_USE ) 
 	if ( crate[a].text_count == 0 ) 
 	if ( crate[a].x + 7 > x ) 
@@ -712,7 +712,7 @@ void Enemy::try_see_players()
 		{
 			if ( angle < 270 &&angle > 90 ) 
 			{
-				// n„k”kentt„180 astetta
+				// nÃ¤kÃ¶kenttÃ¤180 astetta
 				if ( angle_pl[b] > min &&angle_pl[b] < max ) go_on = 1;
 			}
 			else if ( angle_pl[b] > min ||angle_pl[b] < max ) go_on = 1;
@@ -776,8 +776,8 @@ void Enemy::footprint( int side )
 void Enemy::move( int angle, int spd ) 
 {
 	int offs[2*4];
-	int reuna = 6; // p„„chk pointien et„isyys reunasta
-	int reuna2 = 4; // sivu chk pointien et„isyys p„„chk pointeista
+	int reuna = 6; // pÃ¤Ã¤chk pointien etÃ¤isyys reunasta
+	int reuna2 = 4; // sivu chk pointien etÃ¤isyys pÃ¤Ã¤chk pointeista
 	int rnx, rny, speedi, chk, a;
 	float newx, newy, ox = x, oy = y;
 	if ( WALK == ( int ) ( WALK_DELAY*0.25 ) ||WALK == ( int ) ( WALK_DELAY*0.75 )  ) footprint( 0 );
@@ -1056,12 +1056,12 @@ void Bullet::move()
 			{
 				hit = 1;
 				if ( P!= NULL ) 
-				enemy[b].tangle = enemy[b].angle_pl[index];// „ij„k„„ntyy kohti, kun sit„ampuu
+				enemy[b].tangle = enemy[b].angle_pl[index];// Ã¤ijÃ¤kÃ¤Ã¤ntyy kohti, kun sitÃ¤ampuu
 				vx = enemy[b].x + 14 + ( 4*sini[angle] );
 				vy = enemy[b].y + 14 + ( 4*cosi[angle] );
-				enemy[b].PUSH_ANGLE = angle;// „ij„lent„„
+				enemy[b].PUSH_ANGLE = angle;// Ã¤ijÃ¤lentÃ¤Ã¤
 				if ( type-> push_power > enemy[b].PUSH_POWER ) 
-				enemy[b].PUSH_POWER = ( float ) type-> push_power;// „ij„lent„„
+				enemy[b].PUSH_POWER = ( float ) type-> push_power;// Ã¤ijÃ¤lentÃ¤Ã¤
 				enemy[b].get_damage( type-> power, P );
 				if ( type-> type == INCENDIARY ) 
 				{
@@ -1083,9 +1083,9 @@ void Bullet::move()
 				vy = player[b].y + 14 + ( 4*cosi[angle] );
 				if ( (GAME_MODE!=NETWORK) || (aplayer[0]==&player[b]))
 			   {
-				player[b].PUSH_ANGLE = angle;// „ij„lent„„
+				player[b].PUSH_ANGLE = angle;// Ã¤ijÃ¤lentÃ¤Ã¤
 				if ( type-> push_power > player[b].PUSH_POWER ) 
-				player[b].PUSH_POWER = ( float ) type-> push_power;// „ij„lent„„
+				player[b].PUSH_POWER = ( float ) type-> push_power;// Ã¤ijÃ¤lentÃ¤Ã¤
 				player[b].get_damage( type-> power, P );
 				if ( type-> type == INCENDIARY ) 
 				{
@@ -1222,7 +1222,7 @@ void Enemy::chk_for_shoot()
 
 void Enemy::rotate() 
 {
-	 // Nerokas k„„ntymis funktio !!!
+	 // Nerokas kÃ¤Ã¤ntymis funktio !!!
 	int kaanty_jo = 0;
 	if ( angle!= tangle ) 
 	{
@@ -1235,7 +1235,7 @@ void Enemy::rotate()
 		if ( tangle > angle - 180 &&tangle < angle ) angle -= ROT_SPEED; else angle += ROT_SPEED;
 		angle%= 360;
 		if ( angle < 0 ) angle += 360;
- // 		v„h„n py”ristyst„, niin angle saavuttaa joskus tanglen ...
+ // 		vÃ¤hÃ¤n pyÃ¶ristystÃ¤, niin angle saavuttaa joskus tanglen ...
 		if ( abs( angle - tangle )  < ROT_SPEED ||abs( ( angle + 360 )  - tangle )  < ROT_SPEED ) angle = tangle;
 	}
 }

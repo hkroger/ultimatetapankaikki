@@ -113,7 +113,7 @@ void flushipx()
 		for (b=0;b<ipxofs[a];b++)
 		 send->data[b]=ipxstream[a][b];
 	    while (send->ecb.inuse);
-		//sendpacket( sendseg,TŽHŽN NODE!!! , send, ( word ) ipxofs[a] );
+		//sendpacket( sendseg,TÃ„HÃ„N NODE!!! , send, ( word ) ipxofs[a] );
  // 		RESET
 		ipxofs[a] = 0;
 	}

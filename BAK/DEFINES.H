@@ -17,11 +17,11 @@
 #define COOPERATIVE 0
 #define DEATHMATCH 1
 
-#define NORMAL 0	// panos tyyppej„
+#define NORMAL 0	// panos tyyppejÃ¤
 #define EXPLOSIVE 1
 #define INCENDIARY 2
 
-#define FLOOR 0		  // blockki tyyppej„
+#define FLOOR 0		  // blockki tyyppejÃ¤
 #define WALLS 1
 
 #define MAX_ENEMIES 100	// max amount of enemies in game
@@ -39,7 +39,7 @@
 #define ROT_SPEED 9	// computer players rotate speed
 
 #define M_BLUE 113		  // punainen
-#define M_RED 64	 // sinert„v„
+#define M_RED 64	 // sinertÃ¤vÃ¤
 #define M_YELLOW 144	   // keltainen
 
 #define TIME_ADD 1.1 // action time'll be multiplied with this
