@@ -550,6 +550,7 @@ void quiti()
 
 void screen_capture() 
 {
+    /* TODO
 	FILE *sci;
 	int free = 0, num = 0;
 	char text1[13], text2[13];
@@ -569,6 +570,7 @@ void screen_capture()
 	pic.save_pcx( text1 );
 	strcat(text1," saved");
 	message_board.add_message(text1);
+    */
 }
 
 void chkeys() 
