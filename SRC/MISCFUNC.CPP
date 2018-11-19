@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <keyb.hpp>
+#include "keyb.h"
 #include <string.h>
 #include <gfunc.h>
 #include <dos.h>
