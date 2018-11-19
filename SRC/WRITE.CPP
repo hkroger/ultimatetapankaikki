@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ERROR/ERROR.H>
 
 void pixeli( int x, int y, char col ) 
 {
@@ -13,6 +14,7 @@ void loadfonts( char *name )
 	FILE *fnt;
 	int a;
 	fnt = fopen( name, "rb" );
+	if (!fnt) error("\nFile '%s' not found\n",name);
 	f_x_size[FONT_NUM] = fgetc( fnt );
 	f_y_size[FONT_NUM] = fgetc( fnt );
 	thefonts[FONT_NUM] = ( char * ) malloc( f_y_size[FONT_NUM]*f_x_size[FONT_NUM]*256 );
