@@ -2,8 +2,8 @@
 #include "ipxdefs.h"
 #include "types.h"
 #include "classes.h"
-#include < time.h > 
-#include < keyb.hpp > 
+#include <time.h>
+#include <keyb.hpp>
 int BACK_TO_MENU = 0;
 int VESA2 = 0, FORCE_0x13 = 0;
 int scr_y_size = 200;

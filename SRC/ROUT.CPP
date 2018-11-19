@@ -1,9 +1,9 @@
-#include < math.h > 
-#include < conio.h > 
-#include < stdlib.h > 
-#include < stdio.h > 
-#include < i86.h > 
-#include < string.h > 
+#include <math.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <i86.h>
+#include <string.h>
 #include "defines.h"
 #include "globvar.h"
 

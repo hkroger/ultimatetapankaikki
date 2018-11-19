@@ -1,11 +1,11 @@
-#include < iostream.h > 
-#include < string.h > 
-#include < stdio.h > 
-#include < midasdll.h > 
-#include < math.h > 
-#include < stdlib.h > 
-#include < vesa.h > 
-#include < gfunc.h > 
+#include <iostream.h>
+#include <string.h>
+#include <stdio.h>
+#include <midasdll.h>
+#include <math.h>
+#include <stdlib.h>
+#include <vesa.h>
+#include <gfunc.h>
 #include "error/error.h"
 #include "defines.h"
 #include "globvar.h"

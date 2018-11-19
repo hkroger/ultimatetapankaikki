@@ -1,6 +1,6 @@
 #ifndef __TK__TYPES__
 #define __TK__TYPES__
-#include < midasdll.h > 
+#include <midasdll.h>
 struct special
 {
 	int num;

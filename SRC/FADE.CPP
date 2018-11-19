@@ -1,8 +1,8 @@
 #include "globvar.h"
-#include < gfunc.h > 
-#include < math.h > 
-#include < stdlib.h > 
-#include < string.h > 
+#include <gfunc.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
 #define max( a, b ) a > b?a:b
 int sine[256];
 void Draw_Phase( int phase, char *image, char *pal ) 

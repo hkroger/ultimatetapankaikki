@@ -1,9 +1,9 @@
-#include < stdlib.h > 
-#include < stdio.h > 
-#include < keyb.hpp > 
-#include < string.h > 
-#include < gfunc.h > 
-#include < dos.h > 
+#include <stdlib.h>
+#include <stdio.h>
+#include <keyb.hpp>
+#include <string.h>
+#include <gfunc.h>
+#include <dos.h>
 #include "efp/efp.h"
 #include "draw.h"
 #include "globvar.h"

@@ -1,7 +1,7 @@
 #include "globvar.h"
-#include < stdlib.h > 
-#include < stdio.h > 
-#include < string.h > 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 void pixeli( int x, int y, char col ) 
 {

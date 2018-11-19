@@ -1,9 +1,9 @@
-#include < stdlib.h > 
-#include < stdio.h > 
-#include < gfunc.h > 
-#include < string.h > 
-#include < dos.h > 
-#include < conio.h >
+#include <stdlib.h>
+#include <stdio.h>
+#include <gfunc.h>
+#include <string.h>
+#include <dos.h>
+#include <conio.h>
 #include "efp/efp.h"
 #include "defines.h"
 #include "types.h"

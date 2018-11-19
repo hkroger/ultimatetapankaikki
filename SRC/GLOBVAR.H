@@ -1,7 +1,7 @@
 #ifndef __TK__GLOBVAR__
 #define __TK__GLOBVAR__
-#include < time.h > 
-#include < keyb.hpp > 
+#include <time.h>
+#include <keyb.hpp>
 #include "defines.h"
 #include "ipxdefs.h"
 #include "types.h"

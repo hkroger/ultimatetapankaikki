@@ -1,4 +1,4 @@
-#include < math.h > 
+#include <math.h>
 #define max( a, b ) ( a > b?a:b ) 
 #define min( a, b ) ( a < b?a:b ) 
 void rgb2hsl( float r, float g, float b, float *H, float *S, float *L ) 
