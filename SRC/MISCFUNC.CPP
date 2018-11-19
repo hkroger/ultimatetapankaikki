@@ -509,6 +509,7 @@ void explo( int x, int y, int size, int index )
 
 void list_files( int *no, vile *filelist, char *wildcard, int type ) 
 {
+	/* TODO FILESYSTEM
 	struct find_t fbuf;
 	int er;
 	er = _dos_findfirst( wildcard, type, &fbuf );
@@ -525,6 +526,7 @@ void list_files( int *no, vile *filelist, char *wildcard, int type )
 		er = _dos_findnext( &fbuf );
 	}
 	_dos_findclose( &fbuf );
+	*/
 }
 
 void set_keyb_rate() 
