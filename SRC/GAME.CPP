@@ -2523,7 +2523,7 @@ void logo()
 		a += 10;
 		setpal( pal, a );
 	}
-	while ( !k.kbhit() &&abs( oclock - clock()  )  < 500 ) ;
+	while ( !k.kbhit() && abs( (int) (oclock - clock())  )  < 500 ) ;
 	while ( a > 0 ) 
 	if ( oclock!= clock()  ) 
 	{
