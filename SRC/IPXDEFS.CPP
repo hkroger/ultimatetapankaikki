@@ -1,4 +1,4 @@
-#include "ipx\ipx.h"
+#include "ipx/ipx.h"
 #include "ipxdefs.h"
 #include "classes.h"
 
