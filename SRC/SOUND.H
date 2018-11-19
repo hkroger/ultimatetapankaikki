@@ -17,7 +17,7 @@ typedef void *MIDASmodulePlayHandle;
 #define MIDASloadWaveSample(...) NULL
 #define MIDASloadModule(...) NULL
 #define MIDASplaySample(...)
-#define MIDASplayModule(...)
+#define MIDASplayModule(...) NULL
 #define MIDASstopModule(...)
 #define MIDASsetMusicVolume(...)
 
