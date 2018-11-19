@@ -9,7 +9,7 @@ endif()
 
 find_package(SDL2 REQUIRED)
 
-file(GLOB_RECURSE SOURCES SRC/*.H SRC/*.CPP SRC/*.CXX SRC/*.C)
+file(GLOB_RECURSE SOURCES SRC/*.H SRC/*.CPP SRC/*.C)
 
 add_executable(tk3 ${SOURCES})
 target_include_directories(tk3 SYSTEM PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SRC ${SDL2_INCLUDE_DIR})
