@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-#include <iostream.h>
+#include <iostream>
 #include <midasdll.h>
 
 #pragma library ("midas.lib")

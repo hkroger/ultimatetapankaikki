@@ -2,7 +2,7 @@
 #include <conio.h>
 #include <stdio.h>
 #include <string.h>
-#include <iostream.h>
+#include <iostream>
 
 #include "efp.h"
 #include "rgbhsl.h"

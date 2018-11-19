@@ -10,7 +10,7 @@
 #include <gfunc.h> 
 #include <math.h> 
 #include <time.h> 
-#include <iostream.h> 
+#include <iostream>
 #include <image.hpp> 
 #include <keyb.hpp> 
 #include <vesa2.h> 

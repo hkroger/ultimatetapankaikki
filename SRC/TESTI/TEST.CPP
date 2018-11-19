@@ -3,7 +3,7 @@
 #include <conio.h>
 #include <dos.h>
 #include <stdarg.h>
-#include <iostream.h>
+#include <iostream>
 
 #include "int/int.h"
 #include "ipx/ipx.h"

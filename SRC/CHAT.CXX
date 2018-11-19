@@ -5,7 +5,7 @@
 #include <i86.h>
 #include <conio.h>
 #include <string.h>
-#include <iostream.h>
+#include <iostream>
 
 #include "ipx.c"    // More ipx code..
 
