@@ -2567,7 +2567,7 @@ int main( int argc, char *argv[] )
 					 break;
 		}
 	}
-	randomize();
+	srand( (unsigned) time( NULL ) );
 	do_all();
 	k.clear_stack();
 	if ( pause ) k.getch();

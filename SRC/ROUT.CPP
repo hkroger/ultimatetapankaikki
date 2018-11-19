@@ -71,15 +71,7 @@ void pre_count()
 	}
 }
 
-void randomize() 
-{
-	union REGS regs;
-	regs.h.ah = 0x2c;
-	int386( 0x21, &regs, &regs );
-	srand( regs.h.dl + regs.h.dh*100 + regs.h.cl*6000 + regs.h.ch*36000 );
-}
-
-char *c_2_c( int aika ) 
+char *c_2_c( int aika )
 {
 	int min, sec;
 	char text[10], text2[10], *t;
