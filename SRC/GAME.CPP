@@ -2214,8 +2214,11 @@ void game()
 	{
 	 player[0].enabled=1;
 	 aplayer[0]=&(player[0]);
+
+	 /* TODO NETWORK
      for (a=0;a<6;a++)
       aplayer[0]->ipxnode.node[a]=localadd->node.node[a];
+	 */
 	}
 
     if ((GAME_MODE!=NETWORK)||

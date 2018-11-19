@@ -3,9 +3,9 @@
 #include "TYPES.H"
 #include "CLASSES.H"
 
-extern void sendipx(int, int, ... );
+#define sendipx(...) ((void)0)
 
-void new_body_part( int x, int y, int angle, int speed, int num ) 
+void new_body_part( int x, int y, int angle, int speed, int num )
 {
 	int a = 0;
 	if ( angle >= 360 ) angle -= 360;

@@ -140,6 +140,7 @@ struct special spec[SPEC_K] =
 };
 
 Effect_type effect_type[10];
+char screen[320*240];
 char virbuff[320*240];
 float sini[360], cosi[360];
 char *thefonts[10];

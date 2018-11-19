@@ -66,7 +66,9 @@ struct packet
   char data[MAXDATASIZE];
 };
 
+#if 0
 extern struct localaddr *localadd;
+#endif
 
 #define initipx(...) 0
 #define getlocaladdress(...)
