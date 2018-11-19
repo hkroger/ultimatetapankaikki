@@ -33,8 +33,8 @@ char *k_2_c( int key )
 {
 	char *t, text[15];
 	int a;
-	strset( text, 0 );
 	text[0] = ( char ) k.tt.Non[key];
+	text[1] = 0;
 	for ( a = 0; a < SPEC_K; a ++  ) 
 	if ( key == spec[a].num ) strcpy( text, spec[a].text );
 	t = strdup( text );
