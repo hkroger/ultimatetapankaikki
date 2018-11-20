@@ -2518,6 +2518,7 @@ void logo()
 	load_efp_pal( "EFPS/EFLOGO.EFP", pal );
 	setpal( pal, 0 );
 	memcpy( screen, picture, 64000 );
+	tk_port_event_tick();
 	oclock = clock();
 	while ( a < 255 ) 
 	if ( oclock!= clock()  ) 
@@ -2526,7 +2527,9 @@ void logo()
 		a += 10;
 		setpal( pal, a );
 	}
-	while ( !k.kbhit() && abs( (int) (oclock - clock())  )  < 500 ) ;
+	while ( !k.kbhit() && abs( (int) (oclock - clock()) )  < 500 ) {
+		tk_port_event_tick();
+	}
 	while ( a > 0 ) 
 	if ( oclock!= clock()  ) 
 	{
@@ -2534,6 +2537,7 @@ void logo()
 		a -= 10;
 		setpal( pal, a );
 	}
+	tk_port_event_tick();
 }
 
 int main( int argc, char *argv[] )
@@ -2579,7 +2583,7 @@ int main( int argc, char *argv[] )
 	do_all();
 	k.clear_stack();
 	if ( pause ) k.getch();
- // logo();
+	logo();
 	menu();
 	if ( ph ) MIDASstopModule( ph );
 	free_all();
