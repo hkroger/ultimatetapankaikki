@@ -2282,8 +2282,6 @@ void game()
 				 for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) aplayer[a]->shop();
 			}
 
-            // TODO VIDEO open window 320x200
-
 	    	peli_biisi();
 
 			load_efp_pal( "EFPS/WALLS1.EFP", pal );
@@ -2369,6 +2367,7 @@ void game()
 					if (NETWORK_MODE == CLIENT ) do_client_shit();
 					if (NETWORK_MODE == SERVER ) do_server_shit();
 				}
+				tk_port_event_tick();
 			}  // game loop end
 		
 			if ( DARK_MODE ) 
