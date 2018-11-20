@@ -92,6 +92,7 @@ int tk_port_init( void )
 	mach_timebase_info( &timer_timebase_info );
 	timer_zero = mach_absolute_time();
 #endif
+	return 0;
 }
 
 static void tk_port_screen_test()
@@ -117,14 +118,54 @@ void tk_port_exit( void )
 	SDL_Quit();
 }
 
-static uint8_t tk_port_remap_key( SDL_Keycode keycode )
+static uint8_t tk_port_remap_key( SDL_Keycode keycode, SDL_Scancode scancode )
 {
 	// TODO: add all special characters here
+	switch(scancode) {
+		case SDL_SCANCODE_LCTRL:
+			return 29;
+		case SDL_SCANCODE_RCTRL:
+			return 90;
+		case SDL_SCANCODE_LSHIFT:
+			return 42;
+		case SDL_SCANCODE_RSHIFT:
+			return 54;
+		case SDL_SCANCODE_CAPSLOCK:
+			return 58;
+		case SDL_SCANCODE_LALT:
+			return 56;
+		case SDL_SCANCODE_RALT:
+			return 92;
+		default:
+			break;
+	}
 	switch(keycode) {
+		case SDLK_ESCAPE:
+			return 1;
+		case SDLK_TAB:
+			return 15;
+		case SDLK_SPACE:
+			return 57;
+		case SDLK_PAGEDOWN:
+			return 100;
+		case SDLK_PAGEUP:
+			return 95;
+		case SDLK_HOME:
+			return 93;
+		case SDLK_END:
+			return 98;
+		case SDLK_INSERT:
+			return 101;
+		case SDLK_DELETE:
+			return 102;
 		case SDLK_UP:
 			return 94;
 		case SDLK_DOWN:
 			return 99;
+		case SDLK_LEFT:
+			return 96;
+		case SDLK_RIGHT:
+			return 97;
 		case SDLK_RETURN:
 		case SDLK_KP_ENTER:
 		case SDLK_RETURN2:
@@ -149,11 +190,13 @@ void tk_port_event_tick( void )
 			{
 				bool down = (e.key.type == SDL_KEYDOWN);
 
-				if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE )
+				// Shift+ESC hard-kills the game, for development.
+				if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE && e.key.keysym.mod & KMOD_LSHIFT)
 				{
 					tk_port_quit_flag = true;
+					exit(42);
 				}
-				uint8_t tk_key = tk_port_remap_key( e.key.keysym.sym );
+				uint8_t tk_key = tk_port_remap_key( e.key.keysym.sym, e.key.keysym.scancode );
 				k.state[tk_key] = down;
 				if ( down )
 				{

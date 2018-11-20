@@ -91,14 +91,17 @@ int choose_load_file( char *name, int episode )
 			fadein( virbuff, pal ); first = 0;
 		}
 		memcpy( screen, virbuff, 64000 );
-		while( !k.state[94]&&!k.state[99]&&!k.state[28] ) 
-		if ( clock() != oclock ) 
+		while( !k.state[94]&&!k.state[99]&&!k.state[28] )
 		{
-			oclock = clock();
-			draw_ball( 65, 46 + ( ( sel - pos ) *8 ), cnt );
-			draw_ball( 320 - 85, 46 + ( ( sel - pos ) *8 ), cnt );
-			cnt ++;
-			if ( cnt > 23 ) cnt = 0;
+			if ( clock() != oclock )
+			{
+				oclock = clock();
+				draw_ball( 65, 46 + ((sel - pos) * 8), cnt );
+				draw_ball( 320 - 85, 46 + ((sel - pos) * 8), cnt );
+				cnt++;
+				if ( cnt > 23 ) cnt = 0;
+			}
+			tk_port_event_tick();
 		}
 		if ( k.state[94] ) 
 		{
@@ -157,14 +160,17 @@ int choose_episode()
 			fadein( virbuff, pal ); first = 0;
 		}
 		memcpy( screen, virbuff, 64000 );
-		while( !k.state[94]&&!k.state[99]&&!k.state[28] ) 
-		if ( clock() != oclock ) 
+		while( !k.state[94]&&!k.state[99]&&!k.state[28] )
 		{
-			oclock = clock();
-			draw_ball( 65, 48 + ( ( sel - pos ) *16 ), cnt );
-			draw_ball( 320 - 85, 48 + ( ( sel - pos ) *16 ), cnt );
-			cnt ++;
-			if ( cnt > 23 ) cnt = 0;
+			if ( clock() != oclock )
+			{
+				oclock = clock();
+				draw_ball( 65, 48 + ((sel - pos) * 16), cnt );
+				draw_ball( 320 - 85, 48 + ((sel - pos) * 16), cnt );
+				cnt++;
+				if ( cnt > 23 ) cnt = 0;
+			}
+			tk_port_event_tick();
 		}
 		if ( k.state[94] ) 
 		{
@@ -236,6 +242,7 @@ void player_options()
 				cnt ++;
 				if ( cnt > 23 ) cnt = 0;
 			}
+			tk_port_event_tick();
 		};
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 		if ( k.state[94] ) 
@@ -320,6 +327,7 @@ void game_options()
 				cnt ++;
 				if ( cnt > 23 ) cnt = 0;
 			}
+			tk_port_event_tick();
 		};
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 		if ( k.state[94] ) 
@@ -368,12 +376,12 @@ void sound_options()
 	{
 		memcpy( virbuff, picture, 64000 );
 		strcpy( text, "music volume " );
-		sprintf( text2, "%d", ( float ) MUSIC_VOLUME / 63*100 );
+		sprintf( text2, "%.0f", ( float ) MUSIC_VOLUME / 63*100 );
 		strcat( text2, "%" );
 		strcat( text, text2 );
 		strcpy(sound_opt_text[0],text );
 		strcpy( text, "effect volume " );
-		sprintf( text2, "%d", ( float ) EFFECT_VOLUME / 63*100 );
+		sprintf( text2, "%.0f", ( float ) EFFECT_VOLUME / 63*100 );
 		strcat( text2, "%" );
 		strcat( text, text2 );
 		strcpy(sound_opt_text[1],text );
@@ -395,7 +403,8 @@ void sound_options()
 			fadein( virbuff, pal ); first = 0;
 		}
 		memcpy( screen, virbuff, 64000 );
-		while ( !k.state[1]&&!k.state[94]&&!k.state[99]&&!k.state[96]&&!k.state[97]&&!k.state[28] ) 
+		tk_port_event_tick();  // reset keystates before loop
+		while ( !k.state[1]&&!k.state[94]&&!k.state[99]&&!k.state[96]&&!k.state[97]&&!k.state[28] )
 		{
 			if ( clock() != oclock ) 
 			{
@@ -405,6 +414,7 @@ void sound_options()
 				cnt ++;
 				if ( cnt > 23 ) cnt = 0;
 			}
+			tk_port_event_tick();
 		}
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 		if ( k.state[94] ) 
@@ -489,6 +499,7 @@ int deathmatch_options()
 				cnt ++;
 				if ( cnt > 23 ) cnt = 0;
 			}
+			tk_port_event_tick();
 		};
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 		if ( k.state[94] ) 
@@ -583,6 +594,7 @@ void multiplayer_options()
 				cnt ++;
 				if ( cnt > 23 ) cnt = 0;
 			}
+			tk_port_event_tick();
 		};
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 		if ( k.state[94] ) 
@@ -717,7 +729,7 @@ void options()
 			fadein( virbuff, pal ); first = 0;
 		}
 		memcpy( screen, virbuff, 64000 );
-		while ( !k.state[1]&&!k.state[94]&&!k.state[99]&&!k.state[28] ) 
+		while (!(quit || k.state[1] || k.state[94] || k.state[99] || k.state[28]))
 		{
 			if ( clock() != oclock ) 
 			{
@@ -727,6 +739,7 @@ void options()
 				cnt ++;
 				if ( cnt > 23 ) cnt = 0;
 			}
+			tk_port_event_tick();
 		};
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 		if ( k.state[94] ) 

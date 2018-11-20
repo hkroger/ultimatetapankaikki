@@ -13,12 +13,12 @@ typedef void *MIDASmodulePlayHandle;
 #define MIDASsetTimerCallbacks(...) false
 #define MIDASopenChannels(...) true
 #define MIDASallocAutoEffectChannels(...) true
-#define MIDASclose(...)
+#define MIDASclose(...) NULL
 #define MIDASloadWaveSample(...) NULL
 #define MIDASloadModule(...) NULL
-#define MIDASplaySample(...)
+#define MIDASplaySample(...) NULL
 #define MIDASplayModule(...) NULL
-#define MIDASstopModule(...)
-#define MIDASsetMusicVolume(...)
+#define MIDASstopModule(...) NULL
+#define MIDASsetMusicVolume(...) NULL
 
 #endif

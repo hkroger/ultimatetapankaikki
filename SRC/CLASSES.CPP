@@ -1366,13 +1366,16 @@ void Keys::change()
 			fadein( virbuff, pal ); first = 0;
 		}
 		memcpy( screen, virbuff, 64000 );
-		while ( !k.state[1]&&!k.state[94]&&!k.state[99]&&!k.state[28] ) 
-		if ( clock() != oclock ) 
+		while ( !k.state[1]&&!k.state[94]&&!k.state[99]&&!k.state[28] )
 		{
-			oclock = clock();
-			draw_ball( 20, 45 + ( selected*8 ), cnt );
-			cnt ++;
-			if ( cnt > 23 ) cnt = 0;
+			if ( clock() != oclock )
+			{
+				oclock = clock();
+				draw_ball( 20, 45 + (selected * 8), cnt );
+				cnt++;
+				if ( cnt > 23 ) cnt = 0;
+			}
+			tk_port_event_tick();
 		}
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 		if ( k.state[94] ) 

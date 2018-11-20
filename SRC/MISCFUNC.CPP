@@ -37,16 +37,28 @@ void change_name( int num )
 	fadeout( virbuff, pal );
 }
 
-char *k_2_c( int key ) 
+/**
+ * Convert a TK keycode into a string representing it.
+ *
+ * The caller is responsible for freeing the returned buffer.
+ *
+ * TODO: Make sure the callers do that; they don't.
+ *
+ * @param key Keycode.
+ * @return String for the keycode.
+ */
+char *k_2_c( int key )
 {
-	char *t, text[15];
-	int a;
-	text[0] = ( char ) k.tt.Non[key];
-	text[1] = 0;
-	for ( a = 0; a < SPEC_K; a ++  ) 
-	if ( key == spec[a].num ) strcpy( text, spec[a].text );
-	t = strdup( text );
-	return( t );
+	for ( int a = 0; a < SPEC_K; a++ )
+	{
+		if ( key == spec[a].num )
+		{
+			return strdup(spec[a].text);
+		}
+	}
+	char text[15];
+	sprintf(text, "%c", key);
+	return strdup(text);
 }
 
 int get_key( int x, int y ) 
@@ -61,12 +73,16 @@ int get_key( int x, int y )
 			cnt ++;
 			if ( cnt > 23 ) cnt = 0;
 		}
-		for ( a = 0; a < 0x80 &&!pressed; a ++  ) 
-		if ( a!= 42 ) 
-		if ( k.state[a] ) 
+		for ( a = 0; a < 0x80 &&!pressed; a ++  )
 		{
-			key = a; pressed = 1;
+			if ( a != 42 )
+				if ( k.state[a] )
+				{
+					key = a;
+					pressed = 1;
+				}
 		}
+		tk_port_event_tick();
 	}
 	for ( a = 0; a < 0x80; a ++  ) 
 	k.state[a] = 0;
