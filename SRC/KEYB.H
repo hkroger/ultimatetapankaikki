@@ -1,16 +1,16 @@
 #ifndef __TK__KEYB__
 #define __TK__KEYB__
 
+#include "PORT.H"
+
 struct KeyboardHandler
 {
 	char state[256];
-	struct
-	{
-		int Non[256];
-	} tt;
 
 	void init( int )
-	{}
+	{
+		clear_stack();
+	}
 
 	void deinit()
 	{}
@@ -40,6 +40,10 @@ struct KeyboardHandler
 
 	int getch()
 	{
+		while (!kbhit())
+		{
+			tk_port_event_tick();
+		}
 		return _last_getch;
 	}
 
