@@ -3,8 +3,8 @@
 #include <string.h>
 #include <iostream>
 
-#include "../EFP/EFP.H"
-#include "../RGBHSL.H"
+#include "../../SRC/EFP/EFP.H"
+#include "../../SRC/RGBHSL.H"
 
 class Light_table{
  public:

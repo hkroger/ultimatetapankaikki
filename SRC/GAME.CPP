@@ -39,6 +39,7 @@ unsigned short sendl, sendseg, recl[RECEIVERS], recseg[RECEIVERS];
 #include "NEWFUNCS.H"
 #include "OPTIONS.H"
 #include "I_FUNCS.H" // paska funkkareita
+#include "MAKET_IN.H"
 
 void menu_biisi() 
 {
@@ -79,6 +80,7 @@ void make_floors()
 	}
 }
 
+/*
 void load_tables() 
 {
 	FILE *tab;
@@ -91,6 +93,7 @@ void load_tables()
 	fread( &explo_l, sizeof( explo_l ), 1, tab );
 	fclose( tab );
 }
+*/
 
 // TODO NETWORK
 #define allocipxmem(...) ((void)0)
@@ -228,7 +231,8 @@ void do_all()
 	std::cout << "\nSine and Cosine tables ready\n";
 	for ( a = 0; a < LIGHTS; a ++  ) 
 	light[a].make( Light_sizes[a] );std::cout << "Lights mapped\n";
-	load_tables();std::cout << "Palette tables loaded \n";
+	make_light_tables();
+	std::cout << "Palette tables calculated \n";
 	load_efp_pal( "EFPS/WALLS1.EFP", pal );
 	std::cout << "Calculating dark floor... ";
 	make_floors();
