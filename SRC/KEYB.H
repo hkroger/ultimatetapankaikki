@@ -3,10 +3,10 @@
 
 struct KeyboardHandler
 {
-	char state[100];
+	char state[256];
 	struct
 	{
-		int Non[100];
+		int Non[256];
 	} tt;
 
 	void init(int) {}

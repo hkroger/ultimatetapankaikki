@@ -1,4 +1,5 @@
 #define _PORT_IMPL
+
 #include <SDL.h>
 #include "PORT.H"
 #include "GLOBVAR.H"
@@ -13,7 +14,9 @@ bool tk_port_quit_flag = 0;
 struct timespec *timer_zero;
 #endif
 #ifdef TK_PORT_MAC
+
 #include <mach/mach_time.h>
+
 static mach_timebase_info_data_t timer_timebase_info;
 uint64_t timer_zero = 0;
 #endif
@@ -114,21 +117,45 @@ void tk_port_exit( void )
 	SDL_Quit();
 }
 
+static uint8_t tk_port_remap_key( SDL_Keycode keycode )
+{
+	// TODO: add all special characters here
+	switch(keycode) {
+		case SDLK_UP:
+			return 94;
+		case SDLK_DOWN:
+			return 99;
+		case SDLK_RETURN:
+		case SDLK_KP_ENTER:
+		case SDLK_RETURN2:
+			return 28;
+		default:
+			return keycode & 0xFF;
+	}
+}
+
 void tk_port_event_tick( void )
 {
 	SDL_Event e;
 	while (SDL_PollEvent( &e ))
 	{
-		if ( e.type == SDL_QUIT )
+		switch (e.type)
 		{
-			tk_port_quit_flag = true;
-		}
-		if ( e.type == SDL_KEYDOWN )
-		{
-			if ( e.key.keysym.scancode == SDL_SCANCODE_ESCAPE )
-			{
+			case SDL_QUIT:
 				tk_port_quit_flag = true;
+				break;
+			case SDL_KEYUP:
+			case SDL_KEYDOWN:
+			{
+				int down = (e.key.type == SDL_KEYDOWN);
+
+				if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE )
+				{
+					tk_port_quit_flag = true;
+				}
+				k.state[tk_port_remap_key( e.key.keysym.sym )] = down;
 			}
+				break;
 		}
 	}
 	tk_port_present_screen();
