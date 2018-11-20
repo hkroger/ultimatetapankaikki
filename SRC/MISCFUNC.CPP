@@ -10,6 +10,13 @@
 #include "WRITE.H"
 #include "NEWFUNCS.H"
 #include "ROUT.H"
+#include "MISCFUNC.H"
+
+#ifdef TK_PORT_POSIXISH
+#include <glob.h>
+#include <sys/stat.h>
+#include <libgen.h>
+#endif
 
 void change_name( int num ) 
 {
@@ -508,26 +515,36 @@ void explo( int x, int y, int size, int index )
 	MIDASplaySample( samplep[EXPLOWAV], MIDAS_CHANNEL_AUTO, 0, 14000 - ( size*1000 ), EFFECT_VOLUME, 0 );
 }
 
+/**
+ * Populate `filelist` (list allocated by the caller) with filenames (note: _not_ paths)
+ * matching the given `wildcard` pattern and `type`.
+ *
+ * @param no Populated with the number of files found.
+ * @param filelist Populated with the file info.
+ * @param wildcard Wildcard pattern
+ * @param type _A_SUBDIR or _A_NORMAL.
+ */
 void list_files( int *no, vile *filelist, const char *wildcard, int type ) 
 {
-	/* TODO FILESYSTEM
-	struct find_t fbuf;
-	int er;
-	er = _dos_findfirst( wildcard, type, &fbuf );
-	while ( er == 0 ) 
-	{
-		if ( ( fbuf.attrib&type ) == type ) 
-		{
-			if ( strcmp( fbuf.name, "." ) &&strcmp( fbuf.name, ".." )  ) 
-			{
-				strcpy( filelist[*no].name, fbuf.name );
-				( *no )  ++;
+	// TODO: Add Windows implementation? (FindFirstFile/FindNextFile)
+#ifdef TK_PORT_POSIXISH
+	glob_t globp;
+	glob(wildcard, 0, NULL, &globp);
+	for (int i = 0; i < globp.gl_pathc; i++) {
+		struct stat file_stat;
+		char *file_path = globp.gl_pathv[i];
+		if (stat(file_path, &file_stat) == 0) {
+			if (
+					(type == _A_SUBDIR && S_ISDIR(file_stat.st_mode)) ||
+					(type == _A_NORMAL && S_ISREG(file_stat.st_mode))
+					) {
+				strncpy(filelist[*no].name, basename(file_path), 12);
+				(*no)++;
 			}
 		}
-		er = _dos_findnext( &fbuf );
 	}
-	_dos_findclose( &fbuf );
-	*/
+	globfree(&globp);
+#endif
 }
 
 char *strlwr( char *str )

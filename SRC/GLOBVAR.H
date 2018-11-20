@@ -1,6 +1,7 @@
 #ifndef __TK__GLOBVAR__
 #define __TK__GLOBVAR__
 #include <time.h>
+#include "PORT.H"
 #include "KEYB.H"
 #include "DEFINES.H"
 #include "IPXDEFS.H"

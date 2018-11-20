@@ -232,15 +232,16 @@ void do_all()
 	make_floors();
 	std::cout << "OK \n";
 	load_options();std::cout << "Options loaded\n";
-	list_files( &dirs, dirlist, "LEVS/*.*", _A_SUBDIR );
+	list_files( &dirs, dirlist, "LEVS/*", _A_SUBDIR );
 	std::cout << dirs << " episodes found\n";
 	list_files( &files_in_episode[0], filelist[0], "LEVS/*.LEV", _A_NORMAL );
-	for ( a = 0; a < dirs &&a < 256; a ++  ) 
+	for ( a = 0; a < dirs && a < 256; a++ )
 	{
 		strcpy( text, "LEVS/" );
 		strcat( text, dirlist[a].name );
 		strcat( text, "/*.LEV" );
 		list_files( &files_in_episode[a + 1], filelist[a + 1], text, _A_NORMAL );
+		std::cout << "Episode " << dirlist[a].name << ": " << (files_in_episode[a + 1]) << " levels\n";
 	}
 	define_bullet_types();
 	define_effects();
@@ -249,8 +250,6 @@ void do_all()
 void free_all() 
 {
 	MIDASclose();
-	free( filelist );
-	free( dirlist );
 	freeipxmem();
 	k.deinit();
 }
