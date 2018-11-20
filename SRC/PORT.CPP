@@ -234,9 +234,10 @@ void tk_port_set_palette( char palette_entries[768], int brightness )
 		// The left-shifts below scale the assumedly 0..63 VGA palette
 		// (ref. http://joco.homeserver.hu/vgalessons/lesson6.html)
 		// up to the 0..255 expected by SDL.
-		palette->colors[i].r = clamp((*(palette_ptr++) - 256 + brightness) << 2, 0, 255 );
-		palette->colors[i].g = clamp((*(palette_ptr++) - 256 + brightness) << 2, 0, 255 );
-		palette->colors[i].b = clamp((*(palette_ptr++) - 256 + brightness) << 2, 0, 255 );
+		#define DARKEN(c) clamp(((int)(c) - 255 + brightness), 0, 255)
+		palette->colors[i].r = clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
+		palette->colors[i].g = clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
+		palette->colors[i].b = clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
 	}
 }
 
