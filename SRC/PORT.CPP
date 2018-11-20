@@ -147,13 +147,20 @@ void tk_port_event_tick( void )
 			case SDL_KEYUP:
 			case SDL_KEYDOWN:
 			{
-				int down = (e.key.type == SDL_KEYDOWN);
+				bool down = (e.key.type == SDL_KEYDOWN);
 
 				if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE )
 				{
 					tk_port_quit_flag = true;
 				}
-				k.state[tk_port_remap_key( e.key.keysym.sym )] = down;
+				uint8_t tk_key = tk_port_remap_key( e.key.keysym.sym );
+				k.state[tk_key] = down;
+				if ( down )
+				{
+					//printf("key down: %04x (tk = %d)\n", e.key.keysym.scancode, tk_key);
+					k._last_getch = tk_key;
+					k._kbhit_flag = true;
+				}
 			}
 				break;
 		}
