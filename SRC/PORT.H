@@ -7,4 +7,12 @@
 #else
 #endif
 
+int tk_port_init( void );
+
+void tk_port_exit( void );
+
+void tk_port_event_tick( void );
+
+void tk_port_present_screen( void );
+
 #endif

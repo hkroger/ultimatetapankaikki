@@ -47,7 +47,7 @@ extern int FRAMES_ON, target_frames, delau;
 extern const char *k_text[DIFF_K];
 extern struct special spec[SPEC_K];
 extern Effect_type effect_type[10];
-extern char screen[];
+extern char *screen;
 extern char virbuff[];
 extern float sini[], cosi[];
 extern char *thefonts[10];

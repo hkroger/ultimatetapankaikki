@@ -141,7 +141,6 @@ void do_all()
 {
 	int a;
 	char text[30];
-	// TODO VIDEO vesa_set_mode( 0x3 );
 	std::cout << "\n                ================== Starting TK =================\n\n";
 	if ( initipx()  ) 
 	{
@@ -2573,16 +2572,18 @@ int main( int argc, char *argv[] )
 					 break;
 		}
 	}
+	if(tk_port_init() != 0) {
+		return 1;
+	}
 	srand( (unsigned) time( NULL ) );
 	do_all();
 	k.clear_stack();
 	if ( pause ) k.getch();
-	// TODO VIDEO vesa_set_mode( 0x13 );
  // logo();
 	menu();
 	if ( ph ) MIDASstopModule( ph );
-	// TODO VIDEO vesa_set_mode( 0x3 );
 	free_all();
+	tk_port_exit();
 //	credits();
 }
 
