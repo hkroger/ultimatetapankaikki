@@ -16,14 +16,14 @@ struct BLOCK
 
 struct s
 {
-	char *name;
+	const char *name;
 	int cost;
 	int max;
 };
 
 struct WEapon
 {
-	char *name;
+	const char *name;
 	int cost;
 	int loading_time;
 	int smoke;

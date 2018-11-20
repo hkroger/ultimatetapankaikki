@@ -68,7 +68,7 @@ int choose_load_file( char *name, int episode )
 {
 	int a, b, sel = 0, pos = 0, cnt = 0, oclock = 0;
 	int files = files_in_episode[episode];
-	load_efp( "efps/cool.efp", picture, 0 );
+	load_efp( "EFPS/COOL.EFP", picture, 0 );
 	draw_box1( 60, 10, 320 - 60, 190, 15 );
 	first = 1;
 	while ( !k.state[1]&&!k.state[28] ) 
@@ -122,7 +122,7 @@ int choose_episode()
 {
 	int a, b, sel = 0, pos = 0, cnt = 0, oclock = 0;
 	char text[20];
-	load_efp( "efps/cool.efp", picture, 0 );
+	load_efp( "EFPS/COOL.EFP", picture, 0 );
 	draw_box1( 60, 10, 320 - 60, 190, 15 );
 	first = 1;
 	k.state[1] = 0;
@@ -183,18 +183,18 @@ int choose_episode()
 	return( sel );
 }
 
-void options_scr( int opt, char *filename ) 
+void options_scr( int opt, const char *filename ) 
 {
 	load_efp( filename, picture, 0 );
-	load_efp_pal( "efps/ware.efp", pal );
+	load_efp_pal( "EFPS/WARE.EFP", pal );
 	draw_box1( 45, 90 - ( ( opt*15 )  / 2 ), 320 - 45, 110 + ( ( opt*15 )  / 2 ), 13 );
 	first = 1;
 }
 
-void multip_options_scr( int opt, char *filename ) 
+void multip_options_scr( int opt, const char *filename ) 
 {
 	load_efp( filename, picture, 0 );
-	load_efp_pal( "efps/ware.efp", pal );
+	load_efp_pal( "EFPS/WARE.EFP", pal );
 	draw_box1( 10, 90 - ( ( opt*15 )  / 2 ), 320 - 10, 110 + ( ( opt*15 )  / 2 ), 13 );
 	first = 1;
 }
@@ -203,7 +203,7 @@ void player_options()
 {
 	int yoffs = ( 15*num_player_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
 	fadeout( virbuff, pal );
-	options_scr( num_player_options, "efps/cool.efp" );
+	options_scr( num_player_options, "EFPS/COOL.EFP" );
 	k.state[28] = 0;
 	while( !quit ) 
 	{
@@ -250,19 +250,19 @@ void player_options()
 		{
 			if ( selected == 0 ) 
 			{
-				keys1.change(); options_scr( num_player_options, "efps/cool.efp" );
+				keys1.change(); options_scr( num_player_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 1 ) 
 			{
-				keys2.change(); options_scr( num_player_options, "efps/cool.efp" );
+				keys2.change(); options_scr( num_player_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 2 ) 
 			{
-				change_name( 1 ); options_scr( num_player_options, "efps/cool.efp" );
+				change_name( 1 ); options_scr( num_player_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 3 ) 
 			{
-				change_name( 2 ); options_scr( num_player_options, "efps/cool.efp" );
+				change_name( 2 ); options_scr( num_player_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 4 ) 
 			{
@@ -281,7 +281,7 @@ void game_options()
 {
 	int yoffs = ( 15*num_game_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
 	fadeout( virbuff, pal );
-	options_scr( num_game_options, "efps/cool.efp" );
+	options_scr( num_game_options, "EFPS/COOL.EFP" );
 	k.state[28] = 0;
 	while( !quit ) 
 	{
@@ -362,7 +362,7 @@ void sound_options()
 	int yoffs = ( 15*num_sound_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
 	char text[30], text2[30];
 	fadeout( virbuff, pal );
-	options_scr( num_sound_options, "efps/subbari.efp" );
+	options_scr( num_sound_options, "EFPS/SUBBARI.EFP" );
 	k.state[28] = 0;
 	while( !quit ) 
 	{
@@ -450,7 +450,7 @@ int deathmatch_options()
 	int start=0;
 	int yoffs = ( 15*num_deathmatch_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
 	fadeout( virbuff, pal );
-	options_scr( num_deathmatch_options, "efps/cool.efp" );
+	options_scr( num_deathmatch_options, "EFPS/COOL.EFP" );
 	k.state[28] = 0;
 	while( !quit ) 
 	{
@@ -524,7 +524,7 @@ void multiplayer_options()
 	int dontfade = 0;
 	char text[50];
 	fadeout( virbuff, pal );
-	multip_options_scr( num_multip_options, "efps/cool.efp" );
+	multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
 	k.state[28] = 0;
 	GAME_MODE = saved_game_mode;
 	KILLING_MODE = saved_killing_mode;
@@ -609,14 +609,14 @@ void multiplayer_options()
 				desetup_ipx();
 				quit = 1;
 				dontfade = 1;
-				}  else multip_options_scr( num_multip_options, "efps/cool.efp" );
+				}  else multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
 			   if ( GAME_MODE == SPLIT_SCREEN )
 				if (deathmatch_options())
 				{
 				 game();
 				 quit = 1;
 				 dontfade = 1;
-				} else multip_options_scr( num_multip_options, "efps/cool.efp" );
+				} else multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
 			   } else
 			   {
 				if ( GAME_MODE == NETWORK) 
@@ -660,7 +660,7 @@ void multiplayer_options()
 			}
 			if ( selected == 3 ) if ( KILLING_MODE == DEATHMATCH ) 
 			{
-				choose_load_file( DEATH_MATCH_LEVEL, DEATH_MATCH_EPISODE ); multip_options_scr( num_multip_options, "efps/cool.efp" );
+				choose_load_file( DEATH_MATCH_LEVEL, DEATH_MATCH_EPISODE ); multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 4 ) 
 			{
@@ -694,7 +694,7 @@ void options()
 {
 	int yoffs = ( 15*num_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
 	fadeout( virbuff, pal );
-	options_scr( num_options, "efps/cool.efp" );
+	options_scr( num_options, "EFPS/COOL.EFP" );
 	k.state[28] = 0;
 	while( !quit ) 
 	{
@@ -741,15 +741,15 @@ void options()
 		{
 			if ( selected == 0 ) 
 			{
-				player_options(); options_scr( num_options, "efps/cool.efp" );
+				player_options(); options_scr( num_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 1 ) 
 			{
-				game_options(); options_scr( num_options, "efps/cool.efp" );
+				game_options(); options_scr( num_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 2 ) 
 			{
-				sound_options(); options_scr( num_options, "efps/cool.efp" );
+				sound_options(); options_scr( num_options, "EFPS/COOL.EFP" );
 			}
 			if ( selected == 3 ) 
 			{

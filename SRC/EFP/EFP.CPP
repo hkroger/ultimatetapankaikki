@@ -4,7 +4,7 @@
 #include "EFP.H"
 #include "../ERROR/ERROR.H"
 
-void load_efp(char *name,char *kuva,int offs){
+void load_efp(const char *name,char *kuva,int offs){
 
 char header[7];
 unsigned int p;
@@ -38,7 +38,7 @@ fclose(efp);
 }
 
 
-void load_efp_pal(char *name,char *paletti){
+void load_efp_pal(const char *name,char *paletti){
 short c;
 FILE *efp=fopen(name,"rb");
 fseek(efp,-768,SEEK_END);

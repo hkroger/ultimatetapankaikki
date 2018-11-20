@@ -67,7 +67,7 @@ char minespr[7*7];
 char name1[10], name2[10];
 char trans_table[256][256];
 char shadow_table[256][16];
-char *menu_text[Menu_texts] = 
+const char *menu_text[Menu_texts] = 
 {
 	"single pl game", 
 	"multiplayer game", 
@@ -100,7 +100,7 @@ int ENEMIES_ON_GAME = 1;
 int FRAMES_ON;
 int target_frames = TARGET_FRAMES;// pelin päivitys nopeus
 int delau = 10;
-char *k_text[DIFF_K] = 
+const char *k_text[DIFF_K] = 
 {
 	"walk forward", 
 	"walk backward", 

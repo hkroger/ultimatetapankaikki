@@ -3,8 +3,8 @@
 #include <string.h>
 #include <iostream>
 
-#include "EFP/EFP.H"
-#include "RGBHSL.H"
+#include "../EFP/EFP.H"
+#include "../RGBHSL.H"
 
 class Light_table{
  public:
@@ -165,7 +165,7 @@ void Light_table::make2(){ // explosive palette
 
 void write_tables(){
 FILE *tab;
-tab=fopen("palette.tab","wb");
+tab=fopen("PALETTE.TAB","wb");
 fwrite(&trans_table,sizeof(trans_table),1,tab);
 fwrite(&shadow_table,sizeof(shadow_table),1,tab);
 fwrite(&normal_l.data,sizeof(normal_l.data),1,tab);
@@ -177,7 +177,7 @@ fclose(tab);
 
 int main(){
 
-load_efp_pal("efps/walls1.efp",pal);
+load_efp_pal("EFPS/WALLS1.EFP",pal);
 do_trans_table();
 do_shadow_table();
 normal_l.make(0,0,0);

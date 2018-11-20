@@ -29,7 +29,7 @@ extern char enemyspr3[], enemyspr4[], enemyspr5[], enemyspr6[], enemyspr7[], min
 extern char name1[10], name2[10];
 extern char trans_table[256][256];
 extern char shadow_table[256][16];
-extern char *menu_text[Menu_texts];
+extern const char *menu_text[Menu_texts];
 extern int first, all_dead, quit, MAP_ON, next_level, complete_time;
 extern char DEATH_MATCH_LEVEL[13];
 extern int DEATH_MATCH_EPISODE;
@@ -43,7 +43,7 @@ extern int level_x_size, level_y_size;
 extern int pl_start_x[MAX_PLAYERS], pl_start_y[MAX_PLAYERS];
 extern int ACTIVE_PLAYERS, ENEMIES, LEVEL, DEAD_ENEMIES, ENEMIES_ON_GAME;
 extern int FRAMES_ON, target_frames, delau;
-extern char *k_text[DIFF_K];
+extern const char *k_text[DIFF_K];
 extern struct special spec[SPEC_K];
 extern Effect_type effect_type[10];
 extern char screen[];

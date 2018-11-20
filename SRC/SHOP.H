@@ -76,7 +76,7 @@ void Player::shop()
 {
 	int a, sx, sel1 = 0, sel2 = 0, quit = 0, x;
 	char text[20];
-	load_efp( "efps/shop.efp", picture, 0 );
+	load_efp( "EFPS/SHOP.EFP", picture, 0 );
 	for ( a = 0; a < 17; a ++  ) 
 	{
 		draw_box1( 9 + a*18, 130, 25 + a*18, 130 + 16, 8 );

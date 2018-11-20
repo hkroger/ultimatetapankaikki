@@ -15,7 +15,7 @@ void change_name( int num )
 {
 	int x;
 	fadeout( virbuff, pal );
-	load_efp( "efps/cool.efp", picture, 0 );
+	load_efp( "EFPS/COOL.EFP", picture, 0 );
 	FONT_NUM = 0;
 	x = 160 - ( str_length( "enter your name" )  / 2 );
 	draw_box1( x - 10, 75, 320 - x + 10, 125, 5 );
@@ -508,7 +508,7 @@ void explo( int x, int y, int size, int index )
 	MIDASplaySample( samplep[EXPLOWAV], MIDAS_CHANNEL_AUTO, 0, 14000 - ( size*1000 ), EFFECT_VOLUME, 0 );
 }
 
-void list_files( int *no, vile *filelist, char *wildcard, int type ) 
+void list_files( int *no, vile *filelist, const char *wildcard, int type ) 
 {
 	/* TODO FILESYSTEM
 	struct find_t fbuf;

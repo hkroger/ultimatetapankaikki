@@ -9,7 +9,7 @@ void pixeli( int x, int y, char col )
 	virbuff[( y * 320 )  + x] = col;
 }
 
-void loadfonts( char *name ) 
+void loadfonts( const char *name ) 
 {
 	FILE *fnt;
 	int a;
@@ -24,7 +24,7 @@ void loadfonts( char *name )
 	fclose( fnt );
 }
 
-void writefonts( int x, int y, char *str, int cq ) 
+void writefonts( int x, int y, const char *str, int cq ) 
 {
 	int a, c, d, xpos1, xpos2, col, textcnt, fsize = f_x_size[FONT_NUM]*f_y_size[FONT_NUM];
 	int x1, x2, px, py;
@@ -72,7 +72,7 @@ void writefonts( int x, int y, char *str, int cq )
 	}
 };
 
-void writefonts2( int x, int y, char *str, int cq ) 
+void writefonts2( int x, int y, const char *str, int cq ) 
 {
 	int a, c, d, xpos1, xpos2, col, textcnt, fsize = f_x_size[FONT_NUM]*f_y_size[FONT_NUM];
 	textcnt = 0;
@@ -111,7 +111,7 @@ void writefonts2( int x, int y, char *str, int cq )
 	}
 };
 
-int str_length( char *str ) 
+int str_length( const char *str ) 
 {
 	int length = 0;
 	int a, c, d, col, xpos1, xpos2;

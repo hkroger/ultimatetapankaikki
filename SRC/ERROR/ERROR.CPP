@@ -1,10 +1,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
-#include "KEYB.H"
+#include "../KEYB.H"
 
-void error(char *fmt,...)
-{	auto va_list ap;
+void error(const char *fmt,...)
+{
+    va_list ap;
 
 	// TODO VIDEO vesa_set_mode(0x3);
 
@@ -14,4 +15,3 @@ void error(char *fmt,...)
 
 	exit(1);
 }
-

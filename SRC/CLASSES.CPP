@@ -1315,7 +1315,7 @@ void Keys::change()
 	int a = 0, quit = 0, cnt = 0, oclock = 0, selected = 0, b = 0;
 	first = 1;
 	fadeout( virbuff, pal );
-	load_efp( "efps/cool.efp", picture, 0 );
+	load_efp( "EFPS/COOL.EFP", picture, 0 );
 	draw_box1( 10, 10, 310, 32, 10 );
 	draw_box1( 10, 40, 310, 190, 10 );
 	while( !quit ) 

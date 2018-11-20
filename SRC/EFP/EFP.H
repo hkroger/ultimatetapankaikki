@@ -4,8 +4,8 @@
 extern "C"
 {
 
-void load_efp(char *name,char *kuva,int offs);
-void load_efp_pal(char *name,char *paletti);
+void load_efp(const char *name,char *kuva,int offs);
+void load_efp_pal(const char *name,char *paletti);
 
 }
 #endif
