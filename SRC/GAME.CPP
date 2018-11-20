@@ -2440,15 +2440,20 @@ void menu()
 			fadein( virbuff, pal ); first = 0;
 		}
 		memcpy( screen, virbuff, 64000 );
-		while ( !k.state[94]&&!k.state[99]&&!k.state[28] ) 
+		tk_port_event_tick();
+		while (!(quit || k.state[94] || k.state[99] || k.state[28]))
 		{
-			if ( clock() != oclock ) 
+			if ( clock() != oclock )
 			{
 				oclock = clock();
 				draw_ball( 55, 100 - starty + ( selected*15 )  - 2, cnt );
 				draw_ball( 320 - 75, 100 - starty + ( selected*15 )  - 2, cnt );
 				cnt ++;
 				if ( cnt > 23 ) cnt = 0;
+				tk_port_event_tick();
+			}
+			if (tk_port_quit_flag) {
+				quit = 1;
 			}
 		};
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
