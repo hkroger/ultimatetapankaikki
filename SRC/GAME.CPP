@@ -52,7 +52,10 @@ void peli_biisi()
 	static int biisi_count=0;
 
 	if ( ph ) MIDASstopModule( ph );
-	if (biisi[biisi_count+1]==NULL) error("peli_biisi():biisi[biisi_count+1]==NULL!!!\nbiisi_count: %d\n",biisi_count);
+	if (biisi[biisi_count+1]==NULL) {
+		warn("peli_biisi():biisi[biisi_count+1]==NULL!!!\nbiisi_count: %d\n", biisi_count);
+		return;
+	}
 	ph = MIDASplayModule( biisi[biisi_count+1], TRUE );
 	MIDASsetMusicVolume( ph, MUSIC_VOLUME );
 	biisi_count++;
