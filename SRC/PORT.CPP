@@ -142,6 +142,27 @@ void tk_port_present_screen( void )
 	SDL_DestroyTexture( surface_texture );
 }
 
+static int clamp( int val, int min, int max )
+{
+	if ( val < min ) return min;
+	if ( val > max ) return max;
+	return val;
+}
+
+void tk_port_set_palette( char palette_entries[768], int brightness )
+{
+	char *palette_ptr = palette_entries;
+	for ( int i = 0; i < 256; i++ )
+	{
+		// The left-shifts below scale the assumedly 0..63 VGA palette
+		// (ref. http://joco.homeserver.hu/vgalessons/lesson6.html)
+		// up to the 0..255 expected by SDL.
+		palette->colors[i].r = clamp((*(palette_ptr++) - 256 + brightness) << 2, 0, 255 );
+		palette->colors[i].g = clamp((*(palette_ptr++) - 256 + brightness) << 2, 0, 255 );
+		palette->colors[i].b = clamp((*(palette_ptr++) - 256 + brightness) << 2, 0, 255 );
+	}
+}
+
 void tk_port_sleep( int msec )
 {
 	tk_port_event_tick();

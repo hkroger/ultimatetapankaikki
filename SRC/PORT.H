@@ -26,6 +26,8 @@ void tk_port_event_tick( void );
 
 void tk_port_present_screen( void );
 
+void tk_port_set_palette( char palette_entries[768], int brightness );
+
 void tk_port_sleep(int msec);
 
 int tk_port_vintage_clock();
