@@ -1,6 +1,7 @@
 *.cbp
 /*.CFG
 /tk3
+cmake-modules/
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
