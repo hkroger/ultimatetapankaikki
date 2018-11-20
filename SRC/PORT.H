@@ -40,6 +40,8 @@ extern bool tk_port_quit_flag;
 #ifndef _PORT_IMPL
 // Override `clock` everywhere with our vintage clock
 #define clock tk_port_vintage_clock
+#undef CLOCKS_PER_SEC
+#define CLOCKS_PER_SEC VINTAGE_CLOCKS_PER_SEC
 #endif
 
 #endif
