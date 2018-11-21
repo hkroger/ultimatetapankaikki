@@ -63,10 +63,11 @@ void writefonts( int x, int y, const char *str, int cq )
 			px = ( c - xpos1 )  + x + ( textcnt );
 			py = d + y;
 			col = thefonts[FONT_NUM][str[a]*fsize + ( d*f_x_size[FONT_NUM] )  + c];
-			if ( px >= 0 ) if ( px < 320 ) if ( py >= 0 ) if ( py < scr_y_size ) 
-			if ( col!= 0 ) 
-			if ( cq!= 0 &&col!= 1 ) pixeli( px, py, ( char ) ( cq + d )  );
-			else pixeli( px, py, 0 );
+			if ( px >= 0 &&  px < 320 &&  py >= 0 && py < scr_y_size && col != 0 )
+			{
+				if ( cq != 0 && col != 1 ) pixeli( px, py, (char) (cq + d));
+				else pixeli( px, py, 0 );
+			}
 		}
 		textcnt += xpos2 - xpos1 + 1;
 	}
@@ -102,11 +103,20 @@ void writefonts2( int x, int y, const char *str, int cq )
 		{
 			xpos1 = 0;xpos2 = f_x_size[FONT_NUM] / 2;
 		}
-		for( d = 0; d < f_y_size[FONT_NUM]; d ++  ) 
-		for( c = xpos1; c < xpos2; c ++  ) 
-		if ( thefonts[FONT_NUM][str[a]*fsize + ( d*f_x_size[FONT_NUM] )  + c]!= 0 ) 
-		if ( cq!= 0 ) pixeli( ( c - xpos1 )  + x + ( textcnt ), d + y, thefonts[FONT_NUM][str[a]*fsize + ( d*f_x_size[FONT_NUM] )  + c] );
-		else pixeli( ( c - xpos1 )  + x + ( textcnt ), d + y, 0 );
+		for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
+			for ( c = xpos1; c < xpos2; c++ )
+				if ( thefonts[FONT_NUM][str[a] * fsize + (d * f_x_size[FONT_NUM]) + c] != 0 )
+				{
+					if ( cq != 0 )
+					{
+						pixeli((c - xpos1) + x + (textcnt), d + y,
+						       thefonts[FONT_NUM][str[a] * fsize + (d * f_x_size[FONT_NUM]) + c] );
+					}
+					else
+					{
+						pixeli((c - xpos1) + x + (textcnt), d + y, 0 );
+					}
+				}
 		textcnt += xpos2 - xpos1 + 1;
 	}
 };

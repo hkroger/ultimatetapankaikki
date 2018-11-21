@@ -608,46 +608,53 @@ void multiplayer_options()
 		if ( k.state[28] ) 
 		{
 			k.state[28] = 0;
-			if ( selected == 0 ) 
+			if ( selected == 0 )
 			{
-			   if (KILLING_MODE == DEATHMATCH)
-			   {
-				if ( GAME_MODE == NETWORK )
-				if (deathmatch_options())
-				{ 
-				NETWORK_MODE = SERVER;
-				setup_ipx();
-				game();
-				desetup_ipx();
-				quit = 1;
-				dontfade = 1;
-				}  else multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
-			   if ( GAME_MODE == SPLIT_SCREEN )
-				if (deathmatch_options())
+				if ( KILLING_MODE == DEATHMATCH )
 				{
-				 game();
-				 quit = 1;
-				 dontfade = 1;
-				} else multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
-			   } else
-			   {
-				if ( GAME_MODE == NETWORK) 
-				{ 
-				NETWORK_MODE = SERVER;
-				setup_ipx();
-				game();
-				desetup_ipx();
-				quit = 1;
-				dontfade = 1;
-				}  
-				if ( GAME_MODE == SPLIT_SCREEN )
-				{
-				 save_options();
-				 game();
-				 quit = 1;
-				 dontfade = 1;
+					if ( GAME_MODE == NETWORK )
+					{
+						if ( deathmatch_options())
+						{
+							NETWORK_MODE = SERVER;
+							setup_ipx();
+							game();
+							desetup_ipx();
+							quit = 1;
+							dontfade = 1;
+						}
+						else multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
+					}
+					if ( GAME_MODE == SPLIT_SCREEN )
+					{
+						if ( deathmatch_options())
+						{
+							game();
+							quit = 1;
+							dontfade = 1;
+						}
+						else multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
+					}
 				}
-			   }
+				else
+				{
+					if ( GAME_MODE == NETWORK )
+					{
+						NETWORK_MODE = SERVER;
+						setup_ipx();
+						game();
+						desetup_ipx();
+						quit = 1;
+						dontfade = 1;
+					}
+					if ( GAME_MODE == SPLIT_SCREEN )
+					{
+						save_options();
+						game();
+						quit = 1;
+						dontfade = 1;
+					}
+				}
 			}
 			if ( selected == 1 ) 
 			{

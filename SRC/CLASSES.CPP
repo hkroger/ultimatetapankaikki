@@ -386,22 +386,23 @@ void Enemy::animate()
 	if ( energy < 10 ) ANIM += 4;
 }
 
-void Effect::roll() 
+void Effect::roll()
 {
-	if ( IN_USE ) 
+	if ( IN_USE )
 	{
-		if ( count < type-> tcount*type-> delay ) 
-		if ( type-> random == 0 ) count ++;
-		else 
-		count += rand()  % 3;
-		if ( count >= type-> tcount*type-> delay ) IN_USE = 0;
-		if ( speed > 0 ) 
+		if ( count < type->tcount * type->delay )
 		{
-			x += speed*sini[angle];
-			y += speed*cosi[angle];
-			if ( level[( int ) ( y / 20 ) *level_x_size + ( int ) ( x / 20 ) ].type!= FLOOR ) IN_USE = 0;
+			if ( type->random == 0 ) count++;
+			else count += rand() % 3;
 		}
-		if ( IN_USE == 0 ) if ( type-> index == BLOOD ) new_effect( 0, BLOOD2, x, y, 0, 0 );
+		if ( count >= type->tcount * type->delay ) IN_USE = 0;
+		if ( speed > 0 )
+		{
+			x += speed * sini[angle];
+			y += speed * cosi[angle];
+			if ( level[(int) (y / 20) * level_x_size + (int) (x / 20)].type != FLOOR ) IN_USE = 0;
+		}
+		if ( IN_USE == 0 && type->index == BLOOD ) new_effect( 0, BLOOD2, x, y, 0, 0 );
 	}
 }
 
@@ -1132,9 +1133,11 @@ void Bullet::move()
 		if ( type-> type == EXPLOSIVE ) explo( rx - ( 5*sini[angle] ), ry - ( 5*cosi[angle] ), type-> explos, index );
 		IN_USE = 0;
 	}
-	if ( type-> effect!= 0 ) 
-	if ( type-> effect == EXPLO ) new_effect( &explo_l, type-> effect, rx, ry, angle + 180, 1 );
-	else new_effect( 0, type-> effect, rx, ry, 0, 0 );
+	if ( type->effect != 0 )
+	{
+		if ( type->effect == EXPLO ) new_effect( &explo_l, type->effect, rx, ry, angle + 180, 1 );
+		else new_effect( 0, type->effect, rx, ry, 0, 0 );
+	}
 }
 
 void Player::shoot() 
@@ -1224,17 +1227,21 @@ void Enemy::rotate()
 	int kaanty_jo = 0;
 	if ( angle!= tangle ) 
 	{
-		if ( angle < 180 ) 
+		if ( angle < 180 )
 		{
-			if ( tangle < angle + 180 &&tangle > angle ) angle += ROT_SPEED; else angle -= ROT_SPEED;
+			if ( tangle < angle + 180 && tangle > angle ) angle += ROT_SPEED;
+			else angle -= ROT_SPEED;
 			kaanty_jo = 1;
 		}
-		if ( angle >= 180 &&kaanty_jo == 0 ) 
-		if ( tangle > angle - 180 &&tangle < angle ) angle -= ROT_SPEED; else angle += ROT_SPEED;
-		angle%= 360;
+		if ( angle >= 180 && kaanty_jo == 0 )
+		{
+			if ( tangle > angle - 180 && tangle < angle ) angle -= ROT_SPEED;
+			else angle += ROT_SPEED;
+		}
+		angle %= 360;
 		if ( angle < 0 ) angle += 360;
- // 		vähän pyöristystä, niin angle saavuttaa joskus tanglen ...
-		if ( abs( angle - tangle )  < ROT_SPEED ||abs( ( angle + 360 )  - tangle )  < ROT_SPEED ) angle = tangle;
+		// 		vähän pyöristystä, niin angle saavuttaa joskus tanglen ...
+		if ( abs( angle - tangle ) < ROT_SPEED || abs((angle + 360) - tangle ) < ROT_SPEED ) angle = tangle;
 	}
 }
 

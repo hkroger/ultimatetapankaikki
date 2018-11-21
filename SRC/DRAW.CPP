@@ -146,12 +146,23 @@ void draw_rambo( int x, int y, int angle, int num, int mode, int col )
 	}
 	offs1 = ( y + sy ) *320 + x;
 	offs2 = ( ( sy + 1 + ( num*29 )  ) *1160 )  + ( angle*29 )  + 1;
-	for ( a = sy, c = 0, d = 0; a < ey; a ++ , c += 320, d += 1160 ) 
-	for ( b = sx; b < ex; b ++  ) 
+	for ( a = sy, c = 0, d = 0; a < ey; a++, c += 320, d += 1160 )
 	{
-		colo = rambospr[offs2 + d + b];
-		if ( colo ) 
-		if ( colo >= 80 &&colo <= 80 + 15 ) virbuff[offs1 + c + b] = ( char ) ( col + ( colo - 80 )  );else virbuff[offs1 + c + b] = ( char ) colo;
+		for ( b = sx; b < ex; b++ )
+		{
+			colo = rambospr[offs2 + d + b];
+			if ( colo )
+			{
+				if ( colo >= 80 && colo <= 80 + 15 )
+				{
+					virbuff[offs1 + c + b] = (char) (col + (colo - 80));
+				}
+				else
+				{
+					virbuff[offs1 + c + b] = (char) colo;
+				}
+			}
+		}
 	}
 }
 
