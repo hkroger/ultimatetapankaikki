@@ -778,7 +778,7 @@ void Enemy::move( int angle, int spd )
 	int reuna = 6; // päächk pointien etäisyys reunasta
 	int reuna2 = 4; // sivu chk pointien etäisyys päächk pointeista
 	int rnx, rny, speedi, chk, a;
-	float newx, newy, ox = x, oy = y;
+	float newx, newy;
 	if ( WALK == ( int ) ( WALK_DELAY*0.25 ) ||WALK == ( int ) ( WALK_DELAY*0.75 )  ) footprint( 0 );
 	if ( WALK == ( int ) ( WALK_DELAY*0.5 ) ||WALK == WALK_DELAY - 1 ) footprint( 1 );
 	if ( energy < 10 ) 

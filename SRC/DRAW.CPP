@@ -553,7 +553,7 @@ void draw_live_enemies()
 
 void draw_players( int pos ) 
 {
-	int a, draw1 = 0, draw2 = 0;
+	int a, draw1 = 0;
 	if ( GAME_MODE!= SPLIT_SCREEN ) 
 	for ( a = 0; a < MAX_PLAYERS; a ++  ) 
 	if (player[a].enabled)

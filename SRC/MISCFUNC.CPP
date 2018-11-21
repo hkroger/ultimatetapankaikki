@@ -516,7 +516,7 @@ void define_effects()
 
 void explo( int x, int y, int size, int index ) 
 {
-	int a, rays, pan = 0;
+	int a, rays;
 	rays = size*5;
 	for ( a = 0; a < rays; a ++  ) 
 	new_bullet( EXPLO_RAY, x, y, a*( float ) ( 360 / rays ), size,index);

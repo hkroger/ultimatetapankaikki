@@ -151,12 +151,14 @@ void do_all()
 	std::cout << "\n                ================== Starting TK =================\n\n";
 	if ( initipx()  ) 
 	{
+		/*
 		char str[256];
 		std::cout << "IPX protocol detected!\n";
 		getlocaladdress();
 		printf( "IPX address: %s\n", decode_localaddress( str, localadd )  );
 		ipxavail = 1;
 		allocipxmem();
+		*/
 	}
 	else std::cout << "IPX _NOT_ detected!\n";
 	if ( MIDASstartup()  ) 
