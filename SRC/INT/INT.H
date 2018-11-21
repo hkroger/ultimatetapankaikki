@@ -8,6 +8,7 @@
 
 #ifndef __INT_H_
 #define __INT_H_
+#ifdef TK_PORT_DOS
 
 #ifdef  __cplusplus
 extern "C" {
@@ -33,5 +34,5 @@ extern unsigned short lsel;
 
 #pragma aux getlowmem "_*" parm [EBX] caller;
 #pragma aux freelowmem "_*" parm [EDX] caller;
-
+#endif  // TK_PORT_DOS
 #endif
