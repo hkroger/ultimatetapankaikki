@@ -249,7 +249,7 @@ class Light
 {
 	public:
 	char *data;
-	void make( int size );
+	void make( unsigned int size );
 };
 
 class Level

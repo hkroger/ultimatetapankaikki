@@ -682,8 +682,7 @@ void draw_effects( int pos )
 
 void draw_spots() 
 {
-	int a;
-	for ( a = 0; a < Spot_amount; a ++  ) 
+	for ( unsigned int a = 0; a < Spot_amount; a ++  )
 	{
 		if ( GAME_MODE != SPLIT_SCREEN )
 		{

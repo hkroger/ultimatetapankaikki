@@ -773,7 +773,7 @@ void kello()
 void frames_per_sec() 
 {
 	char text[5];
-	sprintf( text, "%d", ( int ) F_PER_SEC );
+	sprintf( text, "%d", F_PER_SEC );
 	writefonts( 151, 20, text, 9*16 );
 	sprintf( text, "%d", OVER_POWER  );
 	writefonts( 151, 30, text, 7*16 );

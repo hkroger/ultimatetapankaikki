@@ -76,18 +76,18 @@ void Message_board::clear()
   message[a][0]=0;
 }
 
-void Light::make( int size ) 
+void Light::make( unsigned int size )
 {
-	int a, b, pow, offs, dist, hsize;
+	int pow, offs, hsize;
 	hsize = size / 2;
 	data = ( char * ) malloc( size*size );
 	memset( data, 0, size*size );
-	for ( a = 0; a < size; a ++  ) 
-	for ( b = 0; b < size; b ++  ) 
+	for ( unsigned int a = 0; a < size; a ++  )
+	for ( unsigned int b = 0; b < size; b ++  )
 	{
-		dist = sqrt( ( a - hsize ) *( a - hsize ) + ( b - hsize ) *( b - hsize ) );
+		float dist = (float)sqrt( ( a - hsize ) * ( a - hsize ) + ( b - hsize ) *( b - hsize ) );
 		offs = ( a*size )  + b;
-		pow = 16 - ( dist*( float ) ( 16 / ( float ) ( size / 2 )  ) );
+		pow = (int)(16 - ( dist * ( 16.0f / ( size / 2 )  ) ));
 		if ( pow > 15 ) pow = 15;
 		if ( pow < 0 ) pow = 0;
 		data[offs] = ( char ) pow;
@@ -208,14 +208,14 @@ void Player::chk_keys( int index )
 	if ( k.state[K_LEFT] ) if ( !k.state[K_STRAFE] ) rotate( 9 );
 	if ( ( k.state[K_STRAFE]&&k.state[K_LEFT] ) ||k.state[K_LSTRAFE] ) 
 	{
-		move( int( rangle2 + 90 )  % 360, speed*0.9, index );
+		move( ( rangle2 + 90 )  % 360, speed*0.9, index );
 		walk_chk = 1;
 		speedi = speed*0.8;
 	}
 	if ( k.state[K_RIGHT] ) if ( !k.state[K_STRAFE] ) rotate(  - 9 );
 	if ( ( k.state[K_STRAFE]&&k.state[K_RIGHT] ) ||k.state[K_RSTRAFE] ) 
 	{
-		move( int( rangle2 + 270 )  % 360, speed*0.9, index );
+		move( ( rangle2 + 270 )  % 360, speed*0.9, index );
 		walk_chk = 1;
 		speedi = speed*0.8;
 	}
@@ -225,7 +225,7 @@ void Player::chk_keys( int index )
 	}
 	if ( k.state[K_DOWN] ) 
 	{
-		move( ( int ) ( rangle2 + 180 )  % 360, 0.75*speedi, index );walk_chk = 1;
+		move( ( rangle2 + 180 )  % 360, 0.75*speedi, index );walk_chk = 1;
 	}
 	if ( walk_chk ) if ( WALK == 0 ) WALK = 1;
 	if ( !walk_chk ) WALK = 0;
@@ -1030,7 +1030,7 @@ void Bullet::move()
 		rx = x;
 		ry = y;
 		if ( type-> speed > 0 ) 
-		if ( level[( int ) ( ry / 20 ) *level_x_size + ( int ) ( rx / 20 ) ].type!= FLOOR ) 
+		if ( level[ ( ry / 20 ) *level_x_size + ( rx / 20 ) ].type!= FLOOR )
 		{
 			kosh = 1;
 		}
@@ -1179,7 +1179,7 @@ void Enemy::shoot()
 	if ( GAME_MODE!= SPLIT_SCREEN ) 
 	{
 		// stereo effect
-		pan = ( float ) (  - ( player[0].x - x )  )  / 2;
+		pan = (int)(( - ( player[0].x - x )  )  / 2);
 		if ( pan <  - 63 ) pan =  - 63;
 		if ( pan > 63 ) pan = 63;
 	}
@@ -1239,7 +1239,7 @@ void Enemy::rotate()
 
 void Level::load( char name[13] ) 
 {
-	int a, bullets, weapons;
+	unsigned int a, bullets, weapons;
 	FILE *dat;
 	dat = fopen( name, "rb" );
 	if ( dat != NULL ) 

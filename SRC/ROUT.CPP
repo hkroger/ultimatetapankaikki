@@ -29,16 +29,18 @@ int get_pan( int x1, int x2)
 }
 
 int get_volume( int x1, int y1, int x2 , int y2)
-{ 
- float dist;
- int shit;
-  dist=get_dist(x1,y1,x2,y2);
-  if (dist<500){
-  dist/=200;
-  if (dist<1) dist=1;
-  shit=(int)(EFFECT_VOLUME/(float)dist);  
-  } else shit=0;
-  return(shit);
+{
+	float dist;
+	int shit;
+	dist = get_dist( x1, y1, x2, y2 );
+	if ( dist < 500 )
+	{
+		dist /= 200;
+		if ( dist < 1 ) dist = 1;
+		shit = (int) (EFFECT_VOLUME / dist);
+	}
+	else shit = 0;
+	return (shit);
 }
 
 int get_angle( int x, int y, int x2, int y2 ) 

@@ -39,7 +39,7 @@ extern int episode;
 extern int EFFECT_VOLUME, MUSIC_VOLUME;
 extern clock_t st, et;
 extern int F_PER_SEC, OVER_POWER, START_LEVEL, LEVELS;
-extern int Spot_amount, Steam_amount, Spot_count, Steam_count;
+extern unsigned int Spot_amount, Steam_amount, Spot_count, Steam_count;
 extern int level_x_size, level_y_size;
 extern int pl_start_x[MAX_PLAYERS], pl_start_y[MAX_PLAYERS];
 extern int ACTIVE_PLAYERS, ENEMIES, LEVEL, DEAD_ENEMIES, ENEMIES_ON_GAME;
