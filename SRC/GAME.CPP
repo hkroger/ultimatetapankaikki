@@ -23,7 +23,8 @@ int ipxofs[MAX_PLAYERS];
 char ipxstream[MAX_PLAYERS][MAXDATASIZE];
 struct nodeaddr serveraddr;
 char servername[10];
-struct packet *send, *rec[RECEIVERS];
+// send defined here overrides send() and bad things happen
+//struct packet *send, *rec[RECEIVERS];
 unsigned short sendl, sendseg, recl[RECEIVERS], recseg[RECEIVERS];
 
 #define sendipx(...) ((void)0)

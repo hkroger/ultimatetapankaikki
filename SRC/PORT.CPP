@@ -11,14 +11,14 @@ static SDL_Palette *palette;
 bool tk_port_quit_flag = 0;
 
 #ifdef TK_PORT_POSIX
-struct timespec *timer_zero;
+static struct timespec timer_zero;
 #endif
 #ifdef TK_PORT_MAC
 
 #include <mach/mach_time.h>
 
 static mach_timebase_info_data_t timer_timebase_info;
-uint64_t timer_zero = 0;
+static uint64_t timer_zero = 0;
 #endif
 
 
@@ -247,6 +247,12 @@ void tk_port_sleep( int msec )
 	SDL_Delay( msec );
 }
 
+/**
+ * A clock that returns wallclock values in "vintage time", which are arbitrary ticks.
+ * @return integer describing the current time.
+ */
+#define TK_PORT_NSEC_PER_SEC 1000000000L
+
 static uint64_t tk_port_nanoclock()
 {
 #if defined(TK_PORT_MAC)
@@ -261,12 +267,6 @@ static uint64_t tk_port_nanoclock()
 #error No nanoclock
 #endif
 }
-
-/**
- * A clock that returns wallclock values in "vintage time", which are arbitrary ticks.
- * @return integer describing the current time.
- */
-#define TK_PORT_NSEC_PER_SEC 1000000000L
 
 int tk_port_vintage_clock()
 {
