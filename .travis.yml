@@ -13,9 +13,11 @@ addons:
   apt:
     packages:
       - libsdl2-dev
+      - libsdl2-mixer-dev
   homebrew:
     packages:
       - sdl2
+      - sdl2_mixer
 
 script:
   - mkdir build
