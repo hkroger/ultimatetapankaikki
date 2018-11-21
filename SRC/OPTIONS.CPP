@@ -514,8 +514,8 @@ int deathmatch_options()
 		{
 			k.state[28] = 0;
 			if ( selected == 0 ) { quit = 1;start = 1;}
-			if ( selected == 1 ) if ( DEATH_MATCH_SPEED == 2 ) DEATH_MATCH_SPEED = 3;else DEATH_MATCH_SPEED = 2;
-			if ( selected == 2 ) if ( ENEMIES_ON_GAME ) ENEMIES_ON_GAME = 0;else ENEMIES_ON_GAME = 1;
+			if ( selected == 1 ) DEATH_MATCH_SPEED = DEATH_MATCH_SPEED == 2 ? 3 : 2;
+			if ( selected == 2 ) ENEMIES_ON_GAME = ENEMIES_ON_GAME ? 0 : 1;
 			if ( selected == 3 ) quit = 1;
 			
 		}
