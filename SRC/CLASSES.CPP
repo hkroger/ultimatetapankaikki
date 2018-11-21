@@ -44,7 +44,7 @@ char suicidetexts[][MAX_MESSAGE_LENGTH-20]=
 void Message_board::add_message(char msg[])
 {
  int a;
- msg[MAX_MESSAGE_LENGTH-1]=NULL;
+ msg[MAX_MESSAGE_LENGTH-1] = 0;
 
  if (messages<MAX_MESSAGES) strcpy(message[messages++], msg);
 	else 
@@ -1155,7 +1155,7 @@ void Player::shoot()
 	if ( curr_weapon > 0 ) 
 	if ( shoot_cnt % bullet_type[weapon[curr_weapon].btype].mul == 0 ) 
 	{
-	if ( weapon[curr_weapon].sound != NULL )
+	if ( weapon[curr_weapon].sound )
 	{ 
 		MIDASplaySample( samplep[weapon[curr_weapon].sound], MIDAS_CHANNEL_AUTO, 0, sample_rates[curr_weapon], EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
 	  if (GAME_MODE==NETWORK)
