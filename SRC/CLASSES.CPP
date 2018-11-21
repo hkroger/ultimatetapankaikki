@@ -928,14 +928,14 @@ void Player::get_damage( float damage, Player *P )
 	if ( energy <= 0 ) 
 	{
 
-	  if (KILLING_MODE==DEATHMATCH)
-	  {
-	    if (P->tindex!=tindex)		
-		 sprintf(buf,killtexts[rand()%ktexts],P->name,name);
-		else 
-		 sprintf(buf,suicidetexts[rand()%stexts],P->name,name);
-		message_board.add_message(buf);
-	  }
+		if ( KILLING_MODE == DEATHMATCH )
+		{
+			if ( P->tindex != tindex )
+				sprintf( buf, killtexts[rand() % ktexts], P->name, name );
+			else
+				sprintf( buf, suicidetexts[rand() % stexts], P->name, name );
+			message_board.add_message( buf );
+		}
 
 		for (a=0;a<MAX_PLAYERS;a++)
 		 if (a!=tindex)

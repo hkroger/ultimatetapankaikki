@@ -685,15 +685,20 @@ void draw_spots()
 	int a;
 	for ( a = 0; a < Spot_amount; a ++  ) 
 	{
-		if ( GAME_MODE!= SPLIT_SCREEN ) 
-		if ( chk4draw( spot_light[a].x - 30, spot_light[a].y - 30, aplayer[0]->scr_x, aplayer[0]->scr_y, 60, 0 )  ) 
-		draw_light( &normal_l, spot_light[a].x - aplayer[0]->scr_x, spot_light[a].y - aplayer[0]->scr_y, spot_light[a].size, 2.5*sini[Spot_count] + 2, 0 );
-		if ( GAME_MODE == SPLIT_SCREEN ) 
+		if ( GAME_MODE != SPLIT_SCREEN )
 		{
-			if ( chk4draw( spot_light[a].x - 30, spot_light[a].y - 30, aplayer[0]->scr_x, aplayer[0]->scr_y, 60, 1 )  ) 
-			draw_light( &normal_l, spot_light[a].x - aplayer[0]->scr_x, spot_light[a].y - aplayer[0]->scr_y, spot_light[a].size, 2.5*sini[Spot_count] + 2, 1 );
-			if ( chk4draw( spot_light[a].x - 30, spot_light[a].y - 30, aplayer[1]->scr_x, aplayer[1]->scr_y, 60, 1 )  ) 
-			draw_light( &normal_l, spot_light[a].x - aplayer[1]->scr_x + 160, spot_light[a].y - aplayer[1]->scr_y, spot_light[a].size, 2.5*sini[Spot_count] + 2, 2 );
+			if ( chk4draw( spot_light[a].x - 30, spot_light[a].y - 30, aplayer[0]->scr_x, aplayer[0]->scr_y, 60, 0 ))
+				draw_light( &normal_l, spot_light[a].x - aplayer[0]->scr_x, spot_light[a].y - aplayer[0]->scr_y,
+				            spot_light[a].size, 2.5 * sini[Spot_count] + 2, 0 );
+		}
+		else
+		{
+			if ( chk4draw( spot_light[a].x - 30, spot_light[a].y - 30, aplayer[0]->scr_x, aplayer[0]->scr_y, 60, 1 ))
+				draw_light( &normal_l, spot_light[a].x - aplayer[0]->scr_x, spot_light[a].y - aplayer[0]->scr_y,
+				            spot_light[a].size, 2.5 * sini[Spot_count] + 2, 1 );
+			if ( chk4draw( spot_light[a].x - 30, spot_light[a].y - 30, aplayer[1]->scr_x, aplayer[1]->scr_y, 60, 1 ))
+				draw_light( &normal_l, spot_light[a].x - aplayer[1]->scr_x + 160, spot_light[a].y - aplayer[1]->scr_y,
+				            spot_light[a].size, 2.5 * sini[Spot_count] + 2, 2 );
 		}
 	}
 }

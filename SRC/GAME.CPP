@@ -270,9 +270,9 @@ int check_place( int x, int y, int size )
 	if ( level[( ( y + size )  / 20 ) *level_x_size + ( x / 20 ) ].type!= FLOOR ) ret = 1;
 	if ( level[( y / 20 ) *level_x_size + ( ( x + size )  / 20 ) ].type!= FLOOR ) ret = 1;
 	if ( level[( ( y + size )  / 20 ) *level_x_size + ( ( x + size )  / 20 ) ].type!= FLOOR ) ret = 1;
-	for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) 
-	if ( get_dist( x, y, aplayer[a]->x, aplayer[a]->y )  < 50 ) ret = 1;
-	return( ret );
+	for ( a = 0; a < ACTIVE_PLAYERS; a ++ )
+		if ( get_dist( x, y, aplayer[a]->x, aplayer[a]->y ) < 50 ) ret = 1;
+	return (ret);
 }
 
 void place_enemies() 
@@ -282,18 +282,18 @@ void place_enemies()
 	for ( a = 0; a < ENEMIES; a ++  ) 
 	{
 		done = 0;
-		while ( done == 0 ) 
+		while ( done == 0 )
 		{
 			nx = ( rand()  % ( level_x_size - 2 )  )  + 1;
 			ny = ( rand()  % ( level_y_size - 2 )  )  + 1;
-			if ( level[ny*level_x_size + nx].type == FLOOR ) 
+			if ( level[ny*level_x_size + nx].type == FLOOR )
 			{
 				done = 1;
-				if ( a > 0 ) 
-				for ( b = 0; b < a; b ++  ) 
-				if ( nx == enemy[b].x &&ny == enemy[b].y ) done = 0;
-				for ( c = 0; c < ACTIVE_PLAYERS &&done == 1; c ++  ) 
-				if ( get_dist( nx, ny, pl_start_x[c], pl_start_y[c] )  < 8 ) done = 0;
+				if ( a > 0 )
+					for ( b = 0; b < a; b++ )
+						if ( nx == enemy[b].x && ny == enemy[b].y ) done = 0;
+				for ( c = 0; c < ACTIVE_PLAYERS && done == 1; c++ )
+					if ( get_dist( nx, ny, pl_start_x[c], pl_start_y[c] ) < 8 ) done = 0;
 			}
 		}
 		enemy[a].x = nx;
@@ -307,10 +307,10 @@ void place_enemies()
 	}
 }
 
-void place_normal_game_crates() 
+void place_normal_game_crates()
 {
 	int a, b, x = 0, y = 0, crat = 0, bullets, weapons;
-	if ( leveldata.version == 1 ) 
+	if ( leveldata.version == 1 )
 	{
 		weapons = DIFF_WEAPONS - 2;
 		bullets = DIFF_BULLETS - 2;
@@ -325,140 +325,161 @@ void place_normal_game_crates()
 		weapons = DIFF_WEAPONS;
 		bullets = DIFF_BULLETS;
 	}
-	for ( a = 0; a < weapons; a ++  ) 
-	for ( b = 0; b < normal_game_level_info.weapon_crates[a]; b ++ , crat ++  ) 
-	if ( crat < MAX_CRATES ) 
-	{
-		x = 0; y = 0;
-		crate[crat].type = 0;
-		crate[crat].weapon = a;
-		while ( check_place( x, y, 14 )  ) if ( check_place( x, y, 14 )  ) 
+	for ( a = 0; a < weapons; a++ )
+		for ( b = 0; b < normal_game_level_info.weapon_crates[a]; b++, crat++ )
+			if ( crat < MAX_CRATES )
+			{
+				x = 0;
+				y = 0;
+				crate[crat].type = 0;
+				crate[crat].weapon = a;
+				while (check_place( x, y, 14 ))
+					if ( check_place( x, y, 14 ))
+					{
+						x = rand() % (level_x_size * 20);
+						y = rand() % (level_y_size * 20);
+					}
+				crate[crat].x = x;
+				crate[crat].y = y;
+				crate[crat].IN_USE = 1;
+			}
+	for ( a = 0; a < bullets; a++ )
+		for ( b = 0; b < normal_game_level_info.bullet_crates[a]; b++, crat++ )
+			if ( crat < MAX_CRATES )
+			{
+				x = 0;
+				y = 0;
+				crate[crat].type = 1;
+				crate[crat].bullet = a;
+				while (check_place( x, y, 14 ))
+					if ( check_place( x, y, 14 ))
+					{
+						x = rand() % (level_x_size * 20);
+						y = rand() % (level_y_size * 20);
+					}
+				crate[crat].x = x;
+				crate[crat].y = y;
+				crate[crat].IN_USE = 1;
+			}
+	for ( b = 0; b < normal_game_level_info.energy_crates; b++, crat++ )
+		if ( crat < MAX_CRATES )
 		{
-			x = rand()  % ( level_x_size*20 ); y = rand()  % ( level_y_size*20 );
+			x = 0;
+			y = 0;
+			crate[crat].type = 2;
+			crate[crat].energy = 1;
+			while (check_place( x, y, 14 ))
+				if ( check_place( x, y, 14 ))
+				{
+					x = rand() % (level_x_size * 20);
+					y = rand() % (level_y_size * 20);
+				}
+			crate[crat].x = x;
+			crate[crat].y = y;
+			crate[crat].IN_USE = 1;
 		}
-		crate[crat].x = x;
-		crate[crat].y = y;
-		crate[crat].IN_USE = 1;
-	}
-	for ( a = 0; a < bullets; a ++  ) 
-	for ( b = 0; b < normal_game_level_info.bullet_crates[a]; b ++ , crat ++  ) 
-	if ( crat < MAX_CRATES ) 
-	{
-		x = 0; y = 0;
-		crate[crat].type = 1;
-		crate[crat].bullet = a;
-		while ( check_place( x, y, 14 )  ) if ( check_place( x, y, 14 )  ) 
+	if ( leveldata.version >= 5 )
+		for ( a = 0; a < normal_crate_amount && crat < MAX_CRATES; a++, crat++ )
 		{
-			x = rand()  % ( level_x_size*20 ); y = rand()  % ( level_y_size*20 );
+			crate[crat].x = normal_crate_info[a].x;
+			crate[crat].y = normal_crate_info[a].y;
+			crate[crat].type = normal_crate_info[a].type1;
+			if ( crate[crat].type == 0 )
+				crate[crat].weapon = normal_crate_info[a].type2;
+			if ( crate[crat].type == 1 )
+				crate[crat].bullet = normal_crate_info[a].type2;
+			if ( crate[crat].type == 2 )
+				crate[crat].energy = 1;
+			crate[crat].IN_USE = 1;
 		}
-		crate[crat].x = x;
-		crate[crat].y = y;
-		crate[crat].IN_USE = 1;
-	}
-	for ( b = 0; b < normal_game_level_info.energy_crates; b ++ , crat ++  ) 
-	if ( crat < MAX_CRATES ) 
-	{
-		x = 0; y = 0;
-		crate[crat].type = 2;
-		crate[crat].energy = 1;
-		while ( check_place( x, y, 14 )  ) if ( check_place( x, y, 14 )  ) 
-		{
-			x = rand()  % ( level_x_size*20 ); y = rand()  % ( level_y_size*20 );
-		}
-		crate[crat].x = x;
-		crate[crat].y = y;
-		crate[crat].IN_USE = 1;
-	}
-   if (leveldata.version>=5)
-   for (a=0;a<normal_crate_amount && crat<MAX_CRATES;a++,crat++)
-   {
-	crate[crat].x=normal_crate_info[a].x;
-	crate[crat].y=normal_crate_info[a].y;
-	crate[crat].type = normal_crate_info[a].type1;
-	if (crate[crat].type == 0)
-	 crate[crat].weapon = normal_crate_info[a].type2;
-	if (crate[crat].type == 1)
-	 crate[crat].bullet = normal_crate_info[a].type2;
-	if (crate[crat].type == 2)
-	 crate[crat].energy = 1;
-	crate[crat].IN_USE = 1;
-   }
 }
 
-void place_death_match_crates() 
+void place_death_match_crates()
 {
 	int a, b, x = 0, y = 0, crat = 0, weapons, bullets;
-	if ( leveldata.version == 1 ) 
+	if ( leveldata.version == 1 )
 	{
-		weapons = DIFF_WEAPONS - 2; bullets = DIFF_BULLETS - 2;
+		weapons = DIFF_WEAPONS - 2;
+		bullets = DIFF_BULLETS - 2;
 	}
-	if ( leveldata.version == 2 ) 
+	else if ( leveldata.version == 2 )
 	{
-		weapons = DIFF_WEAPONS - 1; bullets = DIFF_BULLETS - 1;
+		weapons = DIFF_WEAPONS - 1;
+		bullets = DIFF_BULLETS - 1;
 	}
-	if ( leveldata.version == 3 || leveldata.version >= 4) 
+	else // Used to be: if ( leveldata.version == 3 || leveldata.version >= 4)
 	{
-		weapons = DIFF_WEAPONS; bullets = DIFF_BULLETS;
+		weapons = DIFF_WEAPONS;
+		bullets = DIFF_BULLETS;
 	}
-	for ( a = 0; a < weapons; a ++  ) 
-	for ( b = 0; b < death_match_level_info.weapon_crates[a]; b ++ , crat ++  ) 
-	if ( crat < MAX_CRATES ) 
-	{
-		x = 0; y = 0;
-		crate[crat].type = 0;
-		crate[crat].weapon = a;
-		while ( check_place( x, y, 14 )  ) if ( check_place( x, y, 14 )  ) 
+	for ( a = 0; a < weapons; a++ )
+		for ( b = 0; b < death_match_level_info.weapon_crates[a]; b++, crat++ )
+			if ( crat < MAX_CRATES )
+			{
+				x = 0;
+				y = 0;
+				crate[crat].type = 0;
+				crate[crat].weapon = a;
+				while (check_place( x, y, 14 ))
+					if ( check_place( x, y, 14 ))
+					{
+						x = rand() % (level_x_size * 20);
+						y = rand() % (level_y_size * 20);
+					}
+				crate[crat].x = x;
+				crate[crat].y = y;
+				crate[crat].IN_USE = 1;
+			}
+	for ( a = 0; a < bullets; a++ )
+		for ( b = 0; b < death_match_level_info.bullet_crates[a]; b++, crat++ )
+			if ( crat < MAX_CRATES )
+			{
+				x = 0;
+				y = 0;
+				crate[crat].type = 1;
+				crate[crat].bullet = a;
+				while (check_place( x, y, 14 ))
+					if ( check_place( x, y, 14 ))
+					{
+						x = rand() % (level_x_size * 20);
+						y = rand() % (level_y_size * 20);
+					}
+				crate[crat].x = x;
+				crate[crat].y = y;
+				crate[crat].IN_USE = 1;
+			}
+	for ( b = 0; b < death_match_level_info.energy_crates; b++, crat++ )
+		if ( crat < MAX_CRATES )
 		{
-			x = rand()  % ( level_x_size*20 ); y = rand()  % ( level_y_size*20 );
+			x = 0;
+			y = 0;
+			crate[crat].type = 2;
+			crate[crat].energy = 1;
+			while (check_place( x, y, 14 ))
+				if ( check_place( x, y, 14 ))
+				{
+					x = rand() % (level_x_size * 20);
+					y = rand() % (level_y_size * 20);
+				}
+			crate[crat].x = x;
+			crate[crat].y = y;
+			crate[crat].IN_USE = 1;
 		}
-		crate[crat].x = x;
-		crate[crat].y = y;
-		crate[crat].IN_USE = 1;
-	}
-	for ( a = 0; a < bullets; a ++  ) 
-	for ( b = 0; b < death_match_level_info.bullet_crates[a]; b ++ , crat ++  ) 
-	if ( crat < MAX_CRATES ) 
-	{
-		x = 0; y = 0;
-		crate[crat].type = 1;
-		crate[crat].bullet = a;
-		while ( check_place( x, y, 14 )  ) if ( check_place( x, y, 14 )  ) 
-		{
-			x = rand()  % ( level_x_size*20 ); y = rand()  % ( level_y_size*20 );
-		}
-		crate[crat].x = x;
-		crate[crat].y = y;
-		crate[crat].IN_USE = 1;
-	}
-	for ( b = 0; b < death_match_level_info.energy_crates; b ++ , crat ++  ) 
-	if ( crat < MAX_CRATES ) 
-	{
-		x = 0; y = 0;
-		crate[crat].type = 2;
-		crate[crat].energy = 1;
-		while ( check_place( x, y, 14 )  ) if ( check_place( x, y, 14 )  ) 
-		{
-			x = rand()  % ( level_x_size*20 ); y = rand()  % ( level_y_size*20 );
-		}
-		crate[crat].x = x;
-		crate[crat].y = y;
-		crate[crat].IN_USE = 1;
-	}
 
-   if (leveldata.version>=5)
-   for (a=0;a<deathmatch_crate_amount && crat<MAX_CRATES;a++,crat++)
-   {
-	crate[crat].x=deathmatch_crate_info[a].x;
-	crate[crat].y=deathmatch_crate_info[a].y;
-	crate[crat].type = deathmatch_crate_info[a].type1;
-	if (crate[crat].type == 0)
-	 crate[crat].weapon = deathmatch_crate_info[a].type2;
-	if (crate[crat].type == 1)
-	 crate[crat].bullet = deathmatch_crate_info[a].type2;
-	if (crate[crat].type == 2)
-	 crate[crat].energy = 1;
-	crate[crat].IN_USE = 1;
-   }
+	if ( leveldata.version >= 5 )
+		for ( a = 0; a < deathmatch_crate_amount && crat < MAX_CRATES; a++, crat++ )
+		{
+			crate[crat].x = deathmatch_crate_info[a].x;
+			crate[crat].y = deathmatch_crate_info[a].y;
+			crate[crat].type = deathmatch_crate_info[a].type1;
+			if ( crate[crat].type == 0 )
+				crate[crat].weapon = deathmatch_crate_info[a].type2;
+			if ( crate[crat].type == 1 )
+				crate[crat].bullet = deathmatch_crate_info[a].type2;
+			if ( crate[crat].type == 2 )
+				crate[crat].energy = 1;
+			crate[crat].IN_USE = 1;
+		}
 }
 
 void alusta_enemies() 
@@ -466,10 +487,10 @@ void alusta_enemies()
 	int a, b, c, d;
 	ENEMIES = 0;
 	c = 0;
-	for ( b = 0; b < DIFF_ENEMIES; b ++  ) 
+	for ( b = 0; b < DIFF_ENEMIES; b++ )
 	{
 		ENEMIES += general_level_info.enemies[b];
-		for ( a = 0; a < general_level_info.enemies[b]&&c < MAX_ENEMIES; a ++  ) 
+		for ( a = 0; a < general_level_info.enemies[b] && c < MAX_ENEMIES; a++ )
 		{
 			enemy[c].PUSH_POWER = 0;
 			enemy[c].burning = 0;
@@ -478,16 +499,16 @@ void alusta_enemies()
 			enemy[c].load_cnt = 0;
 			enemy[c].WALK = 0;
 			enemy[c].FIRE = 0;
-			for ( d = 0; d < MAX_PLAYERS; d ++  ) 
-			enemy[c].SEE_PL[d] = 0;
+			for ( d = 0; d < MAX_PLAYERS; d++ )
+				enemy[c].SEE_PL[d] = 0;
 			enemy[c].DEAD = 0;
 			enemy[c].walk_cnt = 0;
 			enemy[c].type = b;
 			enemy[c].energy = enemy_info[enemy[c].type].energy;
-			c ++;
+			c++;
 		}
 	}
-	if ( ENEMIES > MAX_ENEMIES) ENEMIES = MAX_ENEMIES;
+	if ( ENEMIES > MAX_ENEMIES ) ENEMIES = MAX_ENEMIES;
 }
 
 void null_effects() 
@@ -550,13 +571,13 @@ void quiti()
 {	const char *quitstr="REALLY WANNA QUIT ? (y)";
 	int a, x = 160 - ( str_length( quitstr )  / 2 );
 	clock_t time;
-	for ( a = 0; a < 12; a ++  ) 
-	memset( virbuff + ( a + ( scr_y_size / 2 )  - 6 ) *320 + x - 2, 0, 320 - ( x*2 )  + 4 );
-	writefonts( x, ( scr_y_size / 2 )  - 4, quitstr, 1 );
+	for ( a = 0; a < 12; a++ )
+		memset( virbuff + (a + (scr_y_size / 2) - 6) * 320 + x - 2, 0, 320 - (x * 2) + 4 );
+	writefonts( x, (scr_y_size / 2) - 4, quitstr, 1 );
 	memcpy( screen, virbuff, 64000 );
 	k.clear_stack();
 	time = clock();
-	if ( k.getch()  == 'y') quit=1;
+	if ( k.getch() == 'y' ) quit = 1;
 
 	st += clock()  - time;
 }
@@ -589,156 +610,147 @@ void screen_capture()
 void chkeys() 
 {
 	int a;
-	
+
 	if ( k.state[1] ) quiti();
-	for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) 
-	if ( !aplayer[a]->DEAD ) 
-	aplayer[a]->chk_keys( a );
-	if ( k.state[57] ) 
+
+	for ( a = 0; a < ACTIVE_PLAYERS; a++ )
+		if ( !aplayer[a]->DEAD )
+			aplayer[a]->chk_keys( a );
+
+	if ( k.state[57] )
 	{
-		if ( !MAP_ON ) MAP_ON = 1;else MAP_ON = 0;k.state[57] = 0;
+		MAP_ON = !MAP_ON ? 1 : 0;
+		k.state[57] = 0;
 	}
-	if ( k.state[33] ) 
+	if ( k.state[33] )
 	{
-		if ( FRAMES_ON == 0 ) FRAMES_ON = 1;else FRAMES_ON = 0;k.state[33] = 0;
+		FRAMES_ON = FRAMES_ON == 0 ? 1 : 0;
+		k.state[33] = 0;
 	}
-	if ( k.state[88] ) 
+	if ( k.state[88] )
 	{
-		screen_capture(); k.state[88] = 0;
+		screen_capture();
+		k.state[88] = 0;
 	}
 }
 
 void chk_wake_ups() 
 {
-	int a;
-	for ( a = 0; a < MAX_CRATES; a ++  ) 
+	for ( int a = 0; a < MAX_CRATES; a ++  )
 		if ( crate[a].IN_USE == 0 ) 
 			crate[a].chk_wake_up(a);
 }
 
 void move_crate_texts() 
 {
-	int a;
-	for ( a = 0; a < MAX_CRATES; a ++  ) 
-	if ( crate[a].IN_USE ) 
-	crate[a].move_text();
+	for ( int a = 0; a < MAX_CRATES; a++ )
+		if ( crate[a].IN_USE )
+			crate[a].move_text();
 }
 
 void move_body_parts() 
 {
-	int a;
-	for ( a = 0; a < MAX_BODY_PARTS; a ++  ) 
-	if ( body_part[a].IN_USE ) 
-	if ( body_part[a].speed > 0 ) 
-	{
-		body_part[a].move();
-		body_part[a].speed -= 0.2;
-	}
+	for ( int a = 0; a < MAX_BODY_PARTS; a++ )
+		if ( body_part[a].IN_USE )
+			if ( body_part[a].speed > 0 )
+			{
+				body_part[a].move();
+				body_part[a].speed -= 0.2;
+			}
 }
 
-void roll_enemies() 
+void roll_enemies()
 {
-	int a;
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	{
-		if ( enemy[a].tangle == enemy[a].angle ) 
-		if ( enemy[a].walk_cnt == 0 ) 
+	for ( int a = 0; a < ENEMIES; a++ )
+		if ( !enemy[a].DEAD )
 		{
-			if ( enemy[a].see_somebody == 0 ) 
-			if ( rand() % 50 == 1 ) 
-			enemy[a].tangle = rand() % 360;
+			if ( enemy[a].tangle == enemy[a].angle && enemy[a].walk_cnt == 0 && enemy[a].see_somebody == 0 )
+				if ( rand() % 50 == 1 )
+					enemy[a].tangle = rand() % 360;
+			enemy[a].rotate();
 		}
-		enemy[a].rotate();
-	}
 }
 
 void move_enemies() 
 {
-	int a, b, see;
-	for ( a = 0; a < ENEMIES; a ++  ) 
+	for ( int a = 0; a < ENEMIES; a++ )
 	{
-		if ( !enemy[a].DEAD ) 
+		if ( !enemy[a].DEAD )
 		{
-			see = 0;
-			for ( b = 0; b < MAX_PLAYERS &&see == 0; b ++  ) 
-			if ( player[b].enabled)
-			if ( enemy[a].SEE_PL[b] ) see = 1;
-			if ( see == 0 ) 
-			if ( enemy[a].walk_cnt == 0 ) 
-			if ( rand()  % 100 == 1 ) enemy[a].walk_cnt = ( rand()  % 40 )  + 20;
-			if ( enemy[a].walk_cnt > 0 ) 
+			int see = 0;
+			for ( int b = 0; b < MAX_PLAYERS && see == 0; b++ )
+				if ( player[b].enabled && enemy[a].SEE_PL[b] )
+					see = 1;
+			if ( see == 0 )
+				if ( enemy[a].walk_cnt == 0 )
+					if ( rand() % 100 == 1 ) enemy[a].walk_cnt = (rand() % 40) + 20;
+			if ( enemy[a].walk_cnt > 0 )
 			{
-				enemy[a].move( enemy[a].rangle*9, 0 ); enemy[a].walk_cnt --;if ( enemy[a].WALK == 0 ) enemy[a].WALK = 1;
+				enemy[a].move( enemy[a].rangle * 9, 0 );
+				enemy[a].walk_cnt--;
+				if ( enemy[a].WALK == 0 ) enemy[a].WALK = 1;
 			}
 			else enemy[a].WALK = 0;
 		}
-		if ( enemy[a].PUSH_POWER > 0 ) 
+		if ( enemy[a].PUSH_POWER > 0 )
 		{
-			if ( ( int ) enemy[a].PUSH_POWER > 0 ) 
-			enemy[a].move( enemy[a].PUSH_ANGLE, ( int ) enemy[a].PUSH_POWER );
+			if ((int) enemy[a].PUSH_POWER > 0 )
+				enemy[a].move( enemy[a].PUSH_ANGLE, (int) enemy[a].PUSH_POWER );
 			enemy[a].PUSH_POWER -= 0.2;
 		}
 	}
 }
 
-void push_players() 
+void push_players()
 {
-	int a;
-	for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) 
-	if ( aplayer[a]->PUSH_POWER > 0 ) 
-	{
-		if ( ( int ) aplayer[a]->PUSH_POWER > 0 ) 
-		aplayer[a]->move( aplayer[a]->PUSH_ANGLE, ( int ) aplayer[a]->PUSH_POWER, a );
-		aplayer[a]->PUSH_POWER -= 0.2;
-	}
+	for ( int a = 0; a < ACTIVE_PLAYERS; a++ )
+		if ( aplayer[a]->PUSH_POWER > 0 )
+		{
+			if ((int) aplayer[a]->PUSH_POWER > 0 )
+				aplayer[a]->move( aplayer[a]->PUSH_ANGLE, (int) aplayer[a]->PUSH_POWER, a );
+			aplayer[a]->PUSH_POWER -= 0.2;
+		}
 }
 
-void roll_effects() 
+void roll_effects()
 {
-	int a;
-	for ( a = 0; a < MAX_EFFECTS; a ++  ) 
-	effect[a].roll();
+	for ( int a = 0; a < MAX_EFFECTS; a++ )
+		effect[a].roll();
 }
 
-void move_bullets() 
+void move_bullets()
 {
-	int a;
-	for ( a = 0; a < MAX_BULLETS; a ++  ) 
-	if ( bullet[a].IN_USE == 1 ) 
-	bullet[a].move();
+	for ( int a = 0; a < MAX_BULLETS; a++ )
+		if ( bullet[a].IN_USE == 1 )
+			bullet[a].move();
 }
 
-void get_angles() 
+void get_angles()
 {
-	int a;
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	enemy[a].get_angles();
+	for ( int a = 0; a < ENEMIES; a++ )
+		if ( !enemy[a].DEAD )
+			enemy[a].get_angles();
 }
 
-void try_see_players() 
+void try_see_players()
 {
-	int a;
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	enemy[a].try_see_players();
+	for ( int a = 0; a < ENEMIES; a++ )
+		if ( !enemy[a].DEAD )
+			enemy[a].try_see_players();
 }
 
-void enemies_load() 
+void enemies_load()
 {
-	int a;
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	enemy[a].load();
+	for ( int a = 0; a < ENEMIES; a++ )
+		if ( !enemy[a].DEAD )
+			enemy[a].load();
 }
 
-void chk_for_shoot() 
+void chk_for_shoot()
 {
-	int a;
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	enemy[a].chk_for_shoot();
+	for ( int a = 0; a < ENEMIES; a++ )
+		if ( !enemy[a].DEAD )
+			enemy[a].chk_for_shoot();
 }
 
 void complete() 
@@ -752,9 +764,9 @@ void complete()
 void kello() 
 {
 	char col = 1;
-	if ( !next_level ) 
-	complete_time = ( clock()  - st )  / CLOCKS_PER_SEC;
-	if ( complete_time > general_level_info.time_limit*TIME_ADD ) col = 3*16;
+	if ( ! next_level )
+		complete_time = (clock() - st) / CLOCKS_PER_SEC;
+	if ( complete_time > general_level_info.time_limit * TIME_ADD ) col = 3 * 16;
 	writefonts( 151, 10, c_2_c( complete_time ), col );
 }
 
@@ -801,90 +813,90 @@ void seeing()
 void fire_lights() 
 {
 	int a, xoffs, yoffs;
-	if ( GAME_MODE!= SPLIT_SCREEN ) 
-	for ( a = 0; a < MAX_PLAYERS; a ++  ) 
-	 if (player[a].enabled)
-	{
-		if ( weapon[player[a].curr_weapon].gun == 1 ) 
-		if ( player[a].FIRE ) 
-		{
-			xoffs = ( sini[player[a].rangle2]*10 )  + ( sini[( int ) ( ( player[a].rangle2 )  + 270 )  % 360]*6 );
-			yoffs = ( cosi[player[a].rangle2]*10 )  + ( cosi[( int ) ( ( player[a].rangle2 )  + 270 )  % 360]*6 );
-			draw_light( &normal_l, player[a].x + 14 + xoffs - aplayer[0]->scr_x, player[a].y + 13 + yoffs - aplayer[0]->scr_y, 3, 2 - player[a].FIRE, 0 );
-		}
-	}
-	if ( GAME_MODE == SPLIT_SCREEN ) 
-	{
-		for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) 
-		{
-			if ( weapon[player[a].curr_weapon].gun == 1 ) 
-			if ( player[a].FIRE ) 
+	if ( GAME_MODE != SPLIT_SCREEN )
+		for ( a = 0; a < MAX_PLAYERS; a ++ )
+			if ( player[a].enabled && weapon[player[a].curr_weapon].gun == 1 && player[a].FIRE )
 			{
-				xoffs = ( sini[player[a].rangle2]*10 )  + ( sini[( int ) ( ( player[a].rangle2 )  + 270 )  % 360]*6 );
-				yoffs = ( cosi[player[a].rangle2]*10 )  + ( cosi[( int ) ( ( player[a].rangle2 )  + 270 )  % 360]*6 );
-				draw_light( &normal_l, player[a].x + 14 + xoffs - aplayer[0]->scr_x, player[a].y + 13 + yoffs - aplayer[0]->scr_y, 3, 2 - player[a].FIRE, 1 );
-				draw_light( &normal_l, ( player[a].x + 14 + xoffs - aplayer[1]->scr_x )  + 160, player[a].y + 13 + yoffs - aplayer[1]->scr_y, 3, 2 - player[a].FIRE, 2 );
+				xoffs = (sini[player[a].rangle2] * 10) + (sini[(int) ((player[a].rangle2) + 270) % 360] * 6);
+				yoffs = (cosi[player[a].rangle2] * 10) + (cosi[(int) ((player[a].rangle2) + 270) % 360] * 6);
+				draw_light( &normal_l, player[a].x + 14 + xoffs - aplayer[0]->scr_x,
+				            player[a].y + 13 + yoffs - aplayer[0]->scr_y, 3, 2 - player[a].FIRE, 0 );
+			}
+	if ( GAME_MODE == SPLIT_SCREEN )
+	{
+		for ( a = 0; a < ACTIVE_PLAYERS; a ++ )
+		{
+			if ( weapon[player[a].curr_weapon].gun == 1 && player[a].FIRE )
+			{
+				xoffs = (sini[player[a].rangle2] * 10) + (sini[(int) ((player[a].rangle2) + 270) % 360] * 6);
+				yoffs = (cosi[player[a].rangle2] * 10) + (cosi[(int) ((player[a].rangle2) + 270) % 360] * 6);
+				draw_light( &normal_l, player[a].x + 14 + xoffs - aplayer[0]->scr_x,
+				            player[a].y + 13 + yoffs - aplayer[0]->scr_y, 3, 2 - player[a].FIRE, 1 );
+				draw_light( &normal_l, (player[a].x + 14 + xoffs - aplayer[1]->scr_x) + 160,
+				            player[a].y + 13 + yoffs - aplayer[1]->scr_y, 3, 2 - player[a].FIRE, 2 );
 			}
 		}
 	}
-	if ( GAME_MODE!= SPLIT_SCREEN ) 
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	if ( enemy[a].FIRE ) 
-	{
-		xoffs = ( sini[( int ) ( enemy[a].rangle*9 ) ]*10 )  + ( sini[( int ) ( ( enemy[a].rangle*9 )  + 270 )  % 360]*3 );
-		yoffs = ( cosi[( int ) ( enemy[a].rangle*9 ) ]*10 )  + ( cosi[( int ) ( ( enemy[a].rangle*9 )  + 270 )  % 360]*3 );
-		draw_light( &normal_l, enemy[a].x + 14 + xoffs - aplayer[0]->scr_x, enemy[a].y + 13 + yoffs - aplayer[0]->scr_y, 3, 2 - enemy[a].FIRE, 0 );
-	}
-	if ( GAME_MODE == SPLIT_SCREEN ) 
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	if ( enemy[a].FIRE ) 
-	{
-		xoffs = ( sini[( int ) ( enemy[a].rangle*9 ) ]*10 )  + ( sini[( int ) ( ( enemy[a].rangle*9 )  + 270 )  % 360]*3 );
-		yoffs = ( cosi[( int ) ( enemy[a].rangle*9 ) ]*10 )  + ( cosi[( int ) ( ( enemy[a].rangle*9 )  + 270 )  % 360]*3 );
-		draw_light( &normal_l, enemy[a].x + 14 + xoffs - player[0].scr_x, enemy[a].y + 13 + yoffs - player[0].scr_y, 3, 2 - enemy[a].FIRE, 1 );
-		draw_light( &normal_l, ( enemy[a].x + 14 + xoffs - player[1].scr_x )  + 160, enemy[a].y + 13 + yoffs - player[1].scr_y, 3, 2 - enemy[a].FIRE, 2 );
-	}
+	if ( GAME_MODE != SPLIT_SCREEN )
+		for ( a = 0; a < ENEMIES; a ++ )
+			if ( ! enemy[a].DEAD && enemy[a].FIRE )
+			{
+				xoffs = (sini[(int) (enemy[a].rangle * 9)] * 10) +
+				        (sini[(int) ((enemy[a].rangle * 9) + 270) % 360] * 3);
+				yoffs = (cosi[(int) (enemy[a].rangle * 9)] * 10) +
+				        (cosi[(int) ((enemy[a].rangle * 9) + 270) % 360] * 3);
+				draw_light( &normal_l, enemy[a].x + 14 + xoffs - aplayer[0]->scr_x,
+				            enemy[a].y + 13 + yoffs - aplayer[0]->scr_y, 3, 2 - enemy[a].FIRE, 0 );
+			}
+	if ( GAME_MODE == SPLIT_SCREEN )
+		for ( a = 0; a < ENEMIES; a ++ )
+			if ( ! enemy[a].DEAD && enemy[a].FIRE )
+			{
+				xoffs = (sini[(int) (enemy[a].rangle * 9)] * 10) +
+				        (sini[(int) ((enemy[a].rangle * 9) + 270) % 360] * 3);
+				yoffs = (cosi[(int) (enemy[a].rangle * 9)] * 10) +
+				        (cosi[(int) ((enemy[a].rangle * 9) + 270) % 360] * 3);
+				draw_light( &normal_l, enemy[a].x + 14 + xoffs - player[0].scr_x,
+				            enemy[a].y + 13 + yoffs - player[0].scr_y, 3, 2 - enemy[a].FIRE, 1 );
+				draw_light( &normal_l, (enemy[a].x + 14 + xoffs - player[1].scr_x) + 160,
+				            enemy[a].y + 13 + yoffs - player[1].scr_y, 3, 2 - enemy[a].FIRE, 2 );
+			}
 }
 
 void chk_burn() 
 {
 	int a,b;
 
-	for ( a = 0; a < MAX_PLAYERS; a ++  ) 
-	if ( player[a].enabled ) 
-	if ( !player[a].DEAD ) 
-	if ( player[a].burning ) 
-	{
-	  if (a==aplayer[0]->tindex || (GAME_MODE==SPLIT_SCREEN && a==aplayer[1]->tindex)) 	
+	for ( a = 0; a < MAX_PLAYERS; a ++ )
+		if ( player[a].enabled && ! player[a].DEAD && player[a].burning )
 		{
-		player[a].burning --;
-		player[a].get_damage( 0.4, player[a].Frying_player );
+			if ( a == aplayer[0]->tindex || (GAME_MODE == SPLIT_SCREEN && a == aplayer[1]->tindex))
+			{
+				player[a].burning --;
+				player[a].get_damage( 0.4, player[a].Frying_player );
+			}
+
+			if ( aplayer[0]->tindex == a && GAME_MODE == NETWORK )
+			{
+				if ( NETWORK_MODE == CLIENT )
+					sendipx( 0, IPX_BURNING, player[a].tindex, player[a].burning );
+				else
+					for ( b = 1; b < MAX_PLAYERS; b ++ )
+						if ( player[b].enabled )
+							sendipx( b, IPX_BURNING, player[a].tindex, player[a].burning );
+			}
+
+			if ( Steam_count % 6 == 0 )
+				new_effect( NULL, STEAM, player[a].x + 14, player[a].y + 14, 135, 1 );
 		}
-		
-		if (aplayer[0]->tindex==a && GAME_MODE==NETWORK)
-		{ 
-		if (NETWORK_MODE==CLIENT) 
-			sendipx(0,IPX_BURNING,player[a].tindex,player[a].burning);
-		else 
-		 for(b=1;b<MAX_PLAYERS;b++)
-	      if (player[b].enabled)
-		   sendipx(b,IPX_BURNING,player[a].tindex,player[a].burning);
-		}	   
-		
-		if ( Steam_count % 6 == 0 ) 
-		new_effect( 0, STEAM, player[a].x + 14, player[a].y + 14, 135, 1 );
-	}
-	for ( a = 0; a < ENEMIES; a ++  ) 
-	if ( !enemy[a].DEAD ) 
-	if ( enemy[a].burning ) 
-	{
-		enemy[a].burning --;
-		enemy[a].get_damage( 0.4, enemy[a].Frying_player );
-		if ( Steam_count % 6 == 0 ) 
-		new_effect( 0, STEAM, enemy[a].x + 14, enemy[a].y + 14, 135, 1 );
-	}
+	for ( a = 0; a < ENEMIES; a ++ )
+		if ( ! enemy[a].DEAD && enemy[a].burning )
+		{
+			enemy[a].burning --;
+			enemy[a].get_damage( 0.4, enemy[a].Frying_player );
+			if ( Steam_count % 6 == 0 )
+				new_effect( NULL, STEAM, enemy[a].x + 14, enemy[a].y + 14, 135, 1 );
+		}
 }
 
 #define s_r_a 8
@@ -914,7 +926,7 @@ void do_steam()
 			if ( steam[a].speed < s_r_a ) b = steam_rates[steam[a].speed];
 			else b = 1;
 			if ( Steam_count % b == 0 ) 
-			new_effect( 0, STEAM, steam[a].x, steam[a].y, steam[a].angle, steam[a].speed );
+			new_effect( NULL, STEAM, steam[a].x, steam[a].y, steam[a].angle, steam[a].speed );
 		}
 	}
 }
@@ -1003,22 +1015,22 @@ void victory()
 	setpal( pal, 0 );
 	memcpy( screen, picture, 64000 );
 	oclock = clock();
-	while ( a < 255 ) 
-	if ( oclock!= clock()  ) 
-	{
-		oclock = clock();
-		a += 10;
-		setpal( pal, a );
-	}
+	while (a < 255)
+		if ( oclock != clock())
+		{
+			oclock = clock();
+			a += 10;
+			setpal( pal, a );
+		}
 	k.state[1] = 0;
-	while (!k.state[1]) tk_port_event_tick();
-	while ( a > 0 ) 
-	if ( oclock!= clock() ) 
-	{
-		oclock = clock();
-		a -= 10;
-		setpal( pal, a );
-	}
+	while (! k.state[1]) tk_port_event_tick();
+	while (a > 0)
+		if ( oclock != clock())
+		{
+			oclock = clock();
+			a -= 10;
+			setpal( pal, a );
+		}
 }
 
 // TODO NETWORK
@@ -2250,14 +2262,17 @@ void game()
 	}
 
 	fadeout( virbuff, pal );
-    set_keys(); 
-	if ( GAME_MODE==NETWORK && NETWORK_MODE==CLIENT)
-	 {
-	 	alusta_client(); 
-     	sendipx(0,IPX_ALIVE);
-	    sendipx(0,IPX_SENDCRATES,(char)aplayer[0]->tindex);
-	 }
-	 else alusta_players1();
+	set_keys();
+	if ( GAME_MODE == NETWORK && NETWORK_MODE == CLIENT )
+	{
+		alusta_client();
+		sendipx( 0, IPX_ALIVE );
+		sendipx( 0, IPX_SENDCRATES, (char) aplayer[0]->tindex );
+	}
+	else
+	{
+		alusta_players1();
+	}
 	quit = 0;
 	all_dead = 0;
 	BACK_TO_MENU = 0;
@@ -2273,10 +2288,14 @@ void game()
 			sprintf( text, "%d", LEVEL + 1 );
 			strcat( filename, text );
 			strcat( filename, ".LEV" );
-		    if ( KILLING_MODE!= DEATHMATCH ) leveldata.load( filename );
-			 else (leveldata.load( match_level));
-			if ( KILLING_MODE!= DEATHMATCH ) 
-			level_info();
+			if ( KILLING_MODE != DEATHMATCH ) {
+				leveldata.load( filename );
+			}
+			else {
+				leveldata.load( match_level );
+			}
+			if ( KILLING_MODE != DEATHMATCH )
+				level_info();
 	    }
 		if ( !BACK_TO_MENU ) 
 		{
@@ -2296,31 +2315,37 @@ void game()
 
 			load_efp_pal( "EFPS/WALLS1.EFP", pal );
 
-			
-			if ( !(GAME_MODE==NETWORK && NETWORK_MODE==CLIENT))
-			 alusta_players2();
-	 		DEAD_ENEMIES = 0;
+
+			if ( ! (GAME_MODE == NETWORK && NETWORK_MODE == CLIENT))
+				alusta_players2();
+			DEAD_ENEMIES = 0;
 
 
-		    if ((GAME_MODE!=NETWORK)||
-				(NETWORK_MODE==SERVER))
+			if ((GAME_MODE != NETWORK) || (NETWORK_MODE == SERVER))
 			{
-				if ( ENEMIES_ON_GAME == 0 && KILLING_MODE == DEATHMATCH ) ENEMIES = 0;
-				else {
-				    alusta_enemies();
+				if ( ENEMIES_ON_GAME == 0 && KILLING_MODE == DEATHMATCH )
+				{
+					ENEMIES = 0;
+				}
+				else
+				{
+					alusta_enemies();
 					place_enemies();
-					 }
-			} else ENEMIES=0;
+				}
+			}
+			else
+			{
+				ENEMIES = 0;
+			}
 	 		
 			null_body_parts();
 			null_effects();
 			null_bullets();
 			null_crates();
-		    if ((GAME_MODE!=NETWORK)||
-				(NETWORK_MODE==SERVER))
+			if ((GAME_MODE != NETWORK) || (NETWORK_MODE == SERVER))
 			{
 				if ( KILLING_MODE == COOPERATIVE ) place_normal_game_crates();
-											  else place_death_match_crates();
+				else place_death_match_crates();
 			}
 			FONT_NUM = 1;
 			frame_count = 0;
@@ -2426,7 +2451,7 @@ void menu()
 {
 	int a, cnt = 0, selected = 0, quit = 0, oclock;
 	int starty = ( Menu_texts*15 )  / 2;
-	ph = 0;
+	ph = NULL;
 	menu_scr();
 	menu_biisi();
 	while( !quit ) 
@@ -2538,23 +2563,24 @@ void logo()
 	memcpy( screen, picture, 64000 );
 	tk_port_event_tick();
 	oclock = clock();
-	while ( a < 255 ) 
-	if ( oclock!= clock()  ) 
+	while (a < 255)
+		if ( oclock != clock())
+		{
+			oclock = clock();
+			a += 10;
+			setpal( pal, a );
+		}
+	while (! k.kbhit() && abs((int) (oclock - clock())) < 500)
 	{
-		oclock = clock();
-		a += 10;
-		setpal( pal, a );
-	}
-	while ( !k.kbhit() && abs( (int) (oclock - clock()) )  < 500 ) {
 		tk_port_event_tick();
 	}
-	while ( a > 0 ) 
-	if ( oclock!= clock()  ) 
-	{
-		oclock = clock();
-		a -= 10;
-		setpal( pal, a );
-	}
+	while (a > 0)
+		if ( oclock != clock())
+		{
+			oclock = clock();
+			a -= 10;
+			setpal( pal, a );
+		}
 	tk_port_event_tick();
 }
 
