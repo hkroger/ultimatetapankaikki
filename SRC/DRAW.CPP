@@ -9,7 +9,7 @@
 #include "WRITE.H"
 
  // 20 x 20
-void draw_block( int x, int y, int type, int num, int mode ) 
+void draw_block( int x, int y, int type, int num, int mode )
 {
 	int a, offs;
 	char *texture, *gofs;
@@ -37,7 +37,8 @@ void draw_block( int x, int y, int type, int num, int mode )
 	offs = ( ( num&15 ) *20 )  + ( num / 16*320*20 )  + sy*320;
 	gofs = virbuff + (( y + sy ) *320 + x + sx);
 	if ( type == FLOOR ) texture = floorspr + offs + sx;
-	if ( type == WALLS ) texture = wallspr + offs + sx;
+	else if ( type == WALLS ) texture = wallspr + offs + sx;
+	else return;
 	for ( a = sy; a < ey; a ++  ) 
 	{
 		memcpy( gofs, texture, ex - sx );
@@ -234,13 +235,15 @@ void draw_trans_sprite( int x, int y, int xs, int ys, char *spr, int xsize, int 
 	offs2 = ( sy*xsize )  + offs;
 	src = spr + offs2 + sx;
 	dest = virbuff + offs1 + sx;
-	for ( a = sy; a < ey; a ++ , dest += 320 - ( ex - sx ), src += xsize - ( ex - sx )  ) 
-	for ( b = sx; b < ex; b ++  ) 
+	for ( a = sy; a < ey; a++, dest += 320 - (ex - sx), src += xsize - (ex - sx))
 	{
-		colo = *( src ++  );
-		if ( colo!= 0 ) 
-		( *dest )  = trans_table[(uint8_t)colo][(uint8_t)( *dest ) ];
-		dest ++;
+		for ( b = sx; b < ex; b++ )
+		{
+			colo = *(src++);
+			if ( colo != 0 )
+				(*dest) = trans_table[(uint8_t) colo][(uint8_t) (*dest)];
+			dest++;
+		}
 	}
 }
 
@@ -315,14 +318,14 @@ void draw_ball( int x, int y, int num )
 	int a, b, offs1, offs2;
 	offs1 = ( ( num % 16 ) *20 )  + ( 59*320 )  + ( ( num / 16 ) *( 320*20 )  );
 	offs2 = ( y*320 )  + x;
-	for ( a = 0; a < 20; a ++  ) 
-	memcpy( virbuff + offs2 + ( a*320 ), picture + offs2 + ( a*320 ), 20 );
-	for ( a = 0; a < 20; a ++ , offs1 += 300, offs2 += 300 ) 
-	for ( b = 0; b < 20; b ++ , offs1 ++ , offs2 ++  ) 
-	if ( warespr[offs1]!= 0 ) virbuff[offs2] = warespr[offs1];
-	offs2 = ( y*320 )  + x;
-	for ( a = 0; a < 20; a ++  ) 
-	memcpy( screen + offs2 + ( a*320 ), virbuff + offs2 + ( a*320 ), 20 );
+	for ( a = 0; a < 20; a++ )
+		memcpy( virbuff + offs2 + (a * 320), picture + offs2 + (a * 320), 20 );
+	for ( a = 0; a < 20; a++, offs1 += 300, offs2 += 300 )
+		for ( b = 0; b < 20; b++, offs1++, offs2++ )
+			if ( warespr[offs1] != 0 ) virbuff[offs2] = warespr[offs1];
+	offs2 = (y * 320) + x;
+	for ( a = 0; a < 20; a++ )
+		memcpy( screen + offs2 + (a * 320), virbuff + offs2 + (a * 320), 20 );
 }
 
 void draw_ware( int x, int y, int row, int colu ) 
@@ -330,10 +333,10 @@ void draw_ware( int x, int y, int row, int colu )
 	int a, b, offs1, offs2;
 	offs1 = row*320*17 + colu*17;
 	offs2 = ( y*320 )  + x;
-	for ( a = 0; a < 16; a ++ , offs1 += 304, offs2 += 304 ) 
-	for ( b = 0; b < 16; b ++ , offs1 ++ , offs2 ++  ) 
-	if ( warespr[offs1]!= 0 ) virbuff[offs2] = warespr[offs1];
-	else virbuff[offs2] = picture[offs2];
+	for ( a = 0; a < 16; a++, offs1 += 304, offs2 += 304 )
+		for ( b = 0; b < 16; b++, offs1++, offs2++ )
+			if ( warespr[offs1] != 0 ) virbuff[offs2] = warespr[offs1];
+			else virbuff[offs2] = picture[offs2];
 }
 
 void draw_black() 
@@ -515,17 +518,19 @@ void draw_walls()
 
 int chk4draw( int x, int y, int sx, int sy, int size, int mode ) 
 {
-	if ( mode == 0 ) 
-	if ( x > sx - size &&
-	x < sx + 320 &&
-	y > sy - size &&
-	y < sy + scr_y_size ) return( 1 );
-	if ( mode > 0 ) 
-	if ( x > sx - size &&
-	x < sx + 160 &&
-	y > sy - size &&
-	y < sy + scr_y_size ) return( 1 );
-	return( 0 );
+	if ( mode == 0 &&
+	     x > sx - size &&
+	     x < sx + 320 &&
+	     y > sy - size &&
+	     y < sy + scr_y_size )
+		return (1);
+	if ( mode > 0 &&
+	     x > sx - size &&
+	     x < sx + 160 &&
+	     y > sy - size &&
+	     y < sy + scr_y_size )
+		return (1);
+	return (0);
 }
 
 void draw_live_enemies() 
@@ -788,7 +793,7 @@ void draw_energies()
 
 void map() 
 {
-	int a, b, offs, cx, cy, type;
+	int a, b, offs, cx = 0, cy = 0, type;
 	if ( GAME_MODE!= SPLIT_SCREEN ) 
 	{
 		cx = 320 - ( level_x_size );

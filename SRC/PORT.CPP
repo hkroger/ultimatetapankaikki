@@ -8,7 +8,7 @@ static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Surface *surface;
 static SDL_Palette *palette;
-bool tk_port_quit_flag = 0;
+bool tk_port_quit_flag = false;
 
 #ifdef TK_PORT_POSIX
 static struct timespec timer_zero;
@@ -33,7 +33,7 @@ static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
 	return target_frames;
 }
 
-int tk_port_init( void )
+int tk_port_init(  )
 {
 	if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 )
 	{
@@ -113,7 +113,7 @@ static void tk_port_screen_test()
 	}
 }
 
-void tk_port_exit( void )
+void tk_port_exit(  )
 {
 	SDL_Quit();
 }

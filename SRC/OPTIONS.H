@@ -10,7 +10,7 @@ void multip_options_scr( int opt, char *filename );
 void player_options();
 void game_options();
 void sound_options();
-void deathmatch_options();
+int deathmatch_options();
 void multiplayer_options();
 void options();
 #endif

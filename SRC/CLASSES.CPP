@@ -1,8 +1,8 @@
 #include <iostream>
-#include <string.h>
-#include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
 #include "ERROR/ERROR.H"
 #include "DEFINES.H"
 #include "GLOBVAR.H"
@@ -140,14 +140,14 @@ void Player::random_place()
 		if ( level[( int ) ( ( ( y + size )  / 20 ) *level_x_size + ( x / 20 )  ) ].type!= FLOOR ) ret = 1;
 		if ( level[( int ) ( ( y / 20 ) *level_x_size + ( ( x + size )  / 20 )  ) ].type!= FLOOR ) ret = 1;
 		if ( level[( int ) ( ( ( y + size )  / 20 ) *level_x_size + ( ( x + size )  / 20 )  ) ].type!= FLOOR ) ret = 1;
-		if ( ENEMIES_ON_GAME ) 
-		for ( a = 0; a < ENEMIES &&ret == 0; a ++  ) 
-		if ( !enemy[a].DEAD ) 
-		if ( get_dist( x, y, enemy[a].x, enemy[a].y )  < 30 ) ret = 1;
-		for ( a = 0; a < MAX_PLAYERS &&ret == 0; a ++  ) 
-		if ( player[a].enabled)
-		if ( &player[a]!= this ) 
-		if ( get_dist( x, y, player[a].x, player[a].y )  < 30 ) ret = 1;
+		if ( ENEMIES_ON_GAME )
+			for ( a = 0; a < ENEMIES && ret == 0; a++ )
+				if ( !enemy[a].DEAD )
+					if ( get_dist( x, y, enemy[a].x, enemy[a].y ) < 30 ) ret = 1;
+		for ( a = 0; a < MAX_PLAYERS && ret == 0; a++ )
+			if ( player[a].enabled )
+				if ( &player[a] != this )
+					if ( get_dist( x, y, player[a].x, player[a].y ) < 30 ) ret = 1;
 	}
 }
 
@@ -295,8 +295,8 @@ void Body_part::move()
 	newy = y + ( ( int ) speed*cosi[angle] );
 	rnx = newx;
 	rny = newy;
-	if ( num < 12 ) 
-	if ( rand()  % 3!= 0 ) new_effect( 0, BLOOD2, int( x )  + 10, int( y )  + 10, 0, 0 );
+	if ( num < 12 )
+		if ( rand() % 3 != 0 ) new_effect( 0, BLOOD2, int( x ) + 10, int( y ) + 10, 0, 0 );
 	offs[0] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 10 - reuna2 )  / 20 );
 	offs[1] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 10 + reuna2 )  / 20 );
 	offs[2] = ( ( rny + 20 - reuna )  / 20 ) *level_x_size + ( ( rnx + 10 - reuna2 )  / 20 );
@@ -305,22 +305,14 @@ void Body_part::move()
 	offs[5] = ( ( rny + 10 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + reuna )  / 20 );
 	offs[6] = ( ( rny + 10 - reuna2 )  / 20 ) *level_x_size + ( ( rnx + 20 - reuna )  / 20 );
 	offs[7] = ( ( rny + 10 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + 20 - reuna )  / 20 );
-	if ( newy < y ) 
-	if ( level[offs[0]].type == FLOOR ) 
-	if ( level[offs[1]].type == FLOOR ) 
-	y = newy;
-	if ( newy > y ) 
-	if ( level[offs[2]].type == FLOOR ) 
-	if ( level[offs[3]].type == FLOOR ) 
-	y = newy;
-	if ( newx < x ) 
-	if ( level[offs[4]].type == FLOOR ) 
-	if ( level[offs[5]].type == FLOOR ) 
-	x = newx;
-	if ( newx > x ) 
-	if ( level[offs[6]].type == FLOOR ) 
-	if ( level[offs[7]].type == FLOOR ) 
-	x = newx;
+	if ( newy < y && level[offs[0]].type == FLOOR && level[offs[1]].type == FLOOR )
+		y = newy;
+	if ( newy > y && level[offs[2]].type == FLOOR && level[offs[3]].type == FLOOR )
+		y = newy;
+	if ( newx < x && level[offs[4]].type == FLOOR && level[offs[5]].type == FLOOR )
+		x = newx;
+	if ( newx > x && level[offs[6]].type == FLOOR && level[offs[7]].type == FLOOR )
+		x = newx;
 }
 
 void Player::animate() 

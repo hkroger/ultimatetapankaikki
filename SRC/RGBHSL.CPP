@@ -1,8 +1,8 @@
-#include <math.h>
+#include <cmath>
 #include "RGBHSL.H"
 
-#define max( a, b ) ( a > b?a:b )
-#define min( a, b ) ( a < b?a:b )
+#define max( a, b ) ( (a) > (b)?(a):(b) )
+#define min( a, b ) ( (a) < (b)?(a):(b) )
 
 static float HuetoRGB( float m1, float m2, float h );
 

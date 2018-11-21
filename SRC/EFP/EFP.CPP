@@ -1,7 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cstdint>
 #include "EFP.H"
 #include "../ERROR/ERROR.H"
 
@@ -28,7 +28,7 @@ void load_efp( const char *name, char *kuva, int offs )
 	fread( file_data, sizeof( uint8_t ), file_len - offs, efp );
 	uint8_t *data_p = file_data;
 
-	if ( strncmp((const char *) data_p, "EF pic", 6 ))
+	if ( strncmp((const char *) data_p, "EF pic", 6 ) != 0)
 	{
 		error( "File is not an EF pic!\n" );
 	}

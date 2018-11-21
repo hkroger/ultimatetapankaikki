@@ -2,7 +2,7 @@
 #include "IPXDEFS.H"
 #include "TYPES.H"
 #include "CLASSES.H"
-#include <time.h>
+#include <ctime>
 #include "KEYB.H"
 #include "SOUND.H"
 

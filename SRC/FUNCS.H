@@ -30,6 +30,7 @@ int wanna_quit()
 			}
 		}
 		memcpy( screen, virbuff, 64000 );
+		oclock = clock();
 		while ( !k.state[94]&&!k.state[99]&&!k.state[28] ) 
 		{
 			if ( clock() != oclock ) 

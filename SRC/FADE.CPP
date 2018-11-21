@@ -1,9 +1,11 @@
 #include "GLOBVAR.H"
 #include "GRAPHICS.H"
-#include <math.h>
-#include <stdlib.h>
-#include <string.h>
-#define max( a, b ) a > b?a:b
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
+
+#define max( a, b ) ((a) > (b) ? (a) : (b))
+
 int sine[256];
 void Draw_Phase( int phase, char *image, char *pal ) 
 {
@@ -44,7 +46,7 @@ void fadein( char *image, char *pal )
 void fadeout( char *image, char *pal ) 
 {
 	int alku, old_c;
-	alku = framecount;
+	alku = old_c = framecount;
 	while( alku + ( 256 / FADE_SPEED )  > framecount ) 
 	{
 		while ( framecount == old_c );

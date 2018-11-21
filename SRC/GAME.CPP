@@ -1,9 +1,9 @@
-#include <stdarg.h> 
-#include <string.h> 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <time.h> 
+#include <cstdarg>
+#include <cstring>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
 #include <iostream>
 
 #include "KEYB.H"
@@ -278,7 +278,7 @@ int check_place( int x, int y, int size )
 void place_enemies() 
 
 {
-	int a, done, nx, ny, b, c;
+	int a, done, nx = 0, ny = 0, b, c;
 	for ( a = 0; a < ENEMIES; a ++  ) 
 	{
 		done = 0;
@@ -312,15 +312,18 @@ void place_normal_game_crates()
 	int a, b, x = 0, y = 0, crat = 0, bullets, weapons;
 	if ( leveldata.version == 1 ) 
 	{
-		weapons = DIFF_WEAPONS - 2; bullets = DIFF_BULLETS - 2;
+		weapons = DIFF_WEAPONS - 2;
+		bullets = DIFF_BULLETS - 2;
 	}
-	if ( leveldata.version == 2 ) 
+	else if ( leveldata.version == 2 )
 	{
-		weapons = DIFF_WEAPONS - 1; bullets = DIFF_BULLETS - 1;
+		weapons = DIFF_WEAPONS - 1;
+		bullets = DIFF_BULLETS - 1;
 	}
-	if ( leveldata.version == 3 || leveldata.version >= 4) 
+	else // used to be: if ( leveldata.version == 3 || leveldata.version >= 4)
 	{
-		weapons = DIFF_WEAPONS; bullets = DIFF_BULLETS;
+		weapons = DIFF_WEAPONS;
+		bullets = DIFF_BULLETS;
 	}
 	for ( a = 0; a < weapons; a ++  ) 
 	for ( b = 0; b < normal_game_level_info.weapon_crates[a]; b ++ , crat ++  ) 
@@ -2450,6 +2453,7 @@ void menu()
 		}
 		memcpy( screen, virbuff, 64000 );
 		tk_port_event_tick();
+		oclock = clock();
 		while (!(quit || k.state[94] || k.state[99] || k.state[28]))
 		{
 			if ( clock() != oclock )

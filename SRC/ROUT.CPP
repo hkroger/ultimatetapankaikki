@@ -1,7 +1,7 @@
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cmath>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include "DEFINES.H"
 #include "GLOBVAR.H"
 
@@ -43,17 +43,17 @@ int get_volume( int x1, int y1, int x2 , int y2)
 
 int get_angle( int x, int y, int x2, int y2 ) 
 {
-	int s1, s2, ang;
+	int s1, s2, ang = 0;
 	float jako;
 	s1 = x - x2;
 	s2 = y - y2;
-	if ( s1!= 0 ) 
+	if ( s1 != 0 )
 	{
 		jako = ( float ) ( s2 ) / ( float ) ( s1 );
 		ang = atan( jako ) *360 / 2 / pi;
 		if ( x > x2 ) ang = ang + 180;
 	}
-	if ( s1 == 0 ) 
+	else
 	{
 		if ( y < y2 ) ang = 90;
 		if ( y > y2 ) ang = 270;

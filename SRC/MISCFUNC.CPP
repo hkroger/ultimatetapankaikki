@@ -1,8 +1,8 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-#include <time.h>  // must be included before local headers due to clock() shenanigans
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
+#include <cctype>
+#include <ctime>  // must be included before local headers due to clock() shenanigans
 #include "KEYB.H"
 #include "EFP/EFP.H"
 #include "DRAW.H"
