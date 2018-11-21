@@ -86,8 +86,10 @@ void statics()
 	sprintf( text, "%d", aplayer[0]->total_kills );
 	writefonts( 76, 130, text, M_YELLOW );
 	writefonts( 16, 140, "Accuracy:", M_RED );
-	if ( aplayer[0]->shooted > 0 ) 
-	sprintf( text, "%d", ( ( float ) aplayer[0]->hitten / aplayer[0]->shooted ) *100 );
+	if ( aplayer[0]->shooted > 0 )
+	{
+		sprintf( text, "%d", (int) (((float) aplayer[0]->hitten / aplayer[0]->shooted) * 100));
+	}
 	else strcpy( text, "0" );
 	strcat( text, "%" );
 	writefonts( 76, 140, text, M_YELLOW );
@@ -131,8 +133,10 @@ void statics()
 		sprintf( text, "%d", aplayer[1]->total_kills );
 		writefonts( 76 + 160, 130, text, M_YELLOW );
 		writefonts( 16 + 160, 140, "Accuracy:", M_RED );
-		if ( aplayer[1]->shooted > 0 ) 
-		sprintf( text, "%d", ( ( float ) aplayer[1]->hitten / aplayer[1]->shooted ) *100 );
+		if ( aplayer[1]->shooted > 0 )
+		{
+			sprintf( text, "%d", (int) (((float) aplayer[1]->hitten / aplayer[1]->shooted) * 100));
+		}
 		else strcpy( text, "0" );
 		strcat( text, "%" );
 		writefonts( 76 + 160, 140, text, M_YELLOW );
