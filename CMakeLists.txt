@@ -9,7 +9,7 @@ endif()
 
 find_package(SDL2 REQUIRED)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -funsigned-char")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -funsigned-char -Wall -Wno-pedantic -Wno-sign-compare")
 
 file(GLOB SOURCES SRC/*.H SRC/*.CPP SRC/EFP/*.H SRC/EFP/*.CPP SRC/ERROR/*.H SRC/ERROR/*.CPP SRC/IPX/*.H SRC/IPX/*.CPP)
 add_executable(tk3 ${SOURCES})
