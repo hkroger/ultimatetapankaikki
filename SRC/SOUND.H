@@ -1,27 +1,44 @@
 #ifndef __TK__SOUND__
 #define __TK__SOUND__
 
-// TODO AUDIO
+#include <cstdint>
 
-typedef void *MIDASsample;
-typedef void *MIDASmodule;
-typedef void *MIDASmodulePlayHandle;
-typedef void *MIDASsamplePlayHandle;
+#define TRUE 1
+#define FALSE 0
 
-#define MIDAS_CHANNEL_AUTO 0
-#define MIDAS_PAN_MIDDLE 0
+enum MIDASpanning
+{
+	MIDAS_PAN_LEFT = -64,
+	MIDAS_PAN_MIDDLE = 0,
+	MIDAS_PAN_RIGHT = 64,
+	MIDAS_PAN_SURROUND = 0x80
+};
 
-#define MIDASstartup(...) true
-#define MIDASinit(...) true
-#define MIDASsetTimerCallbacks(...) false
-#define MIDASopenChannels(...) true
-#define MIDASallocAutoEffectChannels(...) true
-#define MIDASclose(...) NULL
-#define MIDASloadWaveSample(...) NULL
-#define MIDASloadModule(...) NULL
-MIDASsamplePlayHandle MIDASplaySample(MIDASsample sample, unsigned channel, int priority, unsigned rate, unsigned volume, int panning);
-#define MIDASplayModule(...) NULL
-#define MIDASstopModule(...) NULL
-#define MIDASsetMusicVolume(...) NULL
+
+enum MIDASchannels
+{
+	MIDAS_CHANNEL_AUTO = 0xFFFF,
+	MIDAS_ILLEGAL_CHANNEL = 0xFFFF
+};
+
+struct _MIDASsample;
+struct _MIDASmodule;
+typedef struct _MIDASsample *MIDASsample;
+typedef struct _MIDASmodule *MIDASmodule;
+typedef int MIDASmodulePlayHandle;
+typedef int MIDASsamplePlayHandle;
+
+int MIDASstartup( void );
+int MIDASinit( void );
+int MIDASsetTimerCallbacks( uint16_t rate, int displaySync, void (*preVR)(), void (*immVR)(), void (*inVR)());
+int MIDASopenChannels( int numChannels );
+int MIDASallocAutoEffectChannels( unsigned numChannels );
+int MIDASclose( void );
+MIDASsample MIDASloadWaveSample( char *fileName, int loopSample );
+MIDASmodule MIDASloadModule( char *fileName );
+MIDASsamplePlayHandle MIDASplaySample( MIDASsample sample, unsigned channel, int priority, unsigned rate, unsigned volume, int panning );
+MIDASmodulePlayHandle MIDASplayModule( MIDASmodule module, int loopSong );
+int MIDASstopModule( MIDASmodulePlayHandle playHandle );
+int MIDASsetMusicVolume( MIDASmodulePlayHandle playHandle, unsigned volume );
 
 #endif
