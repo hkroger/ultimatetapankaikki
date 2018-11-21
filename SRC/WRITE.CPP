@@ -200,9 +200,3 @@ void readline( int x, int y, int len, char *str, char *screen )
 		}
 	}
 }
-
-void freefonts() 
-{
-	free( thefonts );
-}
-
