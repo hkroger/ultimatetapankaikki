@@ -57,7 +57,7 @@ int tk_port_init( void )
 		SDL_Log( "Error initializing SDL renderer:  %s", SDL_GetError());
 		return 3;
 	}
-	surface = SDL_CreateRGBSurfaceWithFormat( 0, 320, 200, 8, SDL_PIXELFORMAT_INDEX8 );
+	surface = SDL_CreateRGBSurface( 0, 320, 200, 8, 0, 0, 0, 0 );
 	if ( surface == NULL )
 	{
 		SDL_Log( "SDL_CreateRGBSurfaceWithFormat() failed: %s", SDL_GetError());
