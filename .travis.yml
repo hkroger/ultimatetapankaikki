@@ -1,0 +1,24 @@
+language: cpp
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+    - os: linux
+      compiler: clang
+    - os: osx
+      compiler: clang
+
+addons:
+  apt:
+    packages:
+      - libsdl2-dev
+  homebrew:
+    packages:
+      - sdl2
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
