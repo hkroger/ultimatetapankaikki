@@ -33,7 +33,7 @@ void writefonts( int x, int y, const char *str, int cq )
 	{
 		c = 0;
 		col = 0;
-		while ( col < 2 &c < f_x_size[FONT_NUM] ) 
+		while ( col < 2 && c < f_x_size[FONT_NUM] )
 		{
 			// check from left
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
@@ -43,7 +43,7 @@ void writefonts( int x, int y, const char *str, int cq )
 		xpos1 = c;
 		c = f_x_size[FONT_NUM];
 		col = 0;
-		while ( col < 2 &c > 0 ) 
+		while ( col < 2 && c > 0 )
 		{
 			// check from right
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
@@ -81,7 +81,7 @@ void writefonts2( int x, int y, const char *str, int cq )
 	{
 		c = 0;
 		col = 0;
-		while (col == 0 & c < f_x_size[FONT_NUM])
+		while (col == 0 && c < f_x_size[FONT_NUM])
 		{
 			// check from left
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
@@ -91,7 +91,7 @@ void writefonts2( int x, int y, const char *str, int cq )
 		xpos1 = c;
 		c = f_x_size[FONT_NUM];
 		col = 0;
-		while (col == 0 & c > 0)
+		while (col == 0 && c > 0)
 		{
 			// check from right
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
