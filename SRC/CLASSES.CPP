@@ -628,8 +628,8 @@ void Player::move_scr()
 	int spd;
 	if ( GAME_MODE == SPLIT_SCREEN ) 
 	{
-		if ( abs( ( scr_x + 80 )  - ( x + 14 )  )  > 100 ) scr_x = x - 80;
-		spd = abs( ( scr_x + 80 )  - ( ( 35*sini[angle] )  + x + 14 )  )  / 4;
+		if ( abs((int)((scr_x + 80) - (x + 14))) > 100 ) scr_x = x - 80;
+		spd = abs((int)(((scr_x + 80)) - ((35 * sini[angle]) + x + 14))) / 4;
 		if ( scr_x + 80 < ( 35*sini[angle] )  + x + 14 ) scr_x += spd;
 		if ( scr_x + 80 > ( 35*sini[angle] )  + x + 14 ) scr_x -= spd;
 		if ( scr_x < 0 ) scr_x = 0;
@@ -637,15 +637,15 @@ void Player::move_scr()
 	}
 	else 
 	{
-		if ( abs( ( scr_x + 160 )  - ( x + 14 )  )  > 160 ) scr_x = x - 160;
-		spd = abs( ( scr_x + 160 )  - ( ( 25*sini[angle] )  + x + 14 )  )  / 4;
+		if ( abs((int)((scr_x + 160) - (x + 14))) > 160 ) scr_x = x - 160;
+		spd = abs((int)((scr_x + 160) - ((25 * sini[angle]) + x + 14))) / 4;
 		if ( scr_x + 160 < ( 25*sini[angle] )  + x + 14 ) scr_x += spd;
 		if ( scr_x + 160 > ( 25*sini[angle] )  + x + 14 ) scr_x -= spd;
 		if ( scr_x < 0 ) scr_x = 0;
 		if ( scr_x > ( level_x_size*20 )  - 320 ) scr_x = ( level_x_size*20 )  - 320;
 	}
-	if ( abs( ( scr_y + ( scr_y_size / 2 )  )  - ( y + 14 )  )  > 120 ) scr_y = y - ( scr_y_size / 2 );
-	spd = abs( ( scr_y + ( scr_y_size / 2 )  )  - ( ( 25*cosi[angle] )  + y + 14 )  )  / 4;
+	if ( abs((int) ((scr_y + (scr_y_size / 2)) - (y + 14))) > 120 ) scr_y = y - (scr_y_size / 2);
+	spd = abs((int)(((scr_y + (scr_y_size / 2)) - ((25 * cosi[angle]) + y + 14)))) / 4;
 	if ( scr_y + ( scr_y_size / 2 )  < ( 25*cosi[angle] )  + y + 14 ) scr_y += spd;
 	if ( scr_y + ( scr_y_size / 2 )  > ( 25*cosi[angle] )  + y + 14 ) scr_y -= spd;
 	if ( scr_y > ( level_y_size*20 )  - scr_y_size ) scr_y = ( level_y_size*20 )  - scr_y_size;
