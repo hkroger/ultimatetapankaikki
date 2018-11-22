@@ -3,13 +3,9 @@
 
 #include <cstdint>
 
-// DJGPP's time.h defines CLOCKS_PER_SEC as 91,
 // openwatcom (https://github.com/open-watcom/owp4v1copy/blob/master/bld/hdr/watcom/time.mh#L94)
 // defines it as 1000.
-// Given how clock() is used in the source otherwise, assuming 1000 seems safer.
-// Oh, no, wait, disregard the above. The value below has been eyeballed by comparing the
-// menu animations of the actual GAME.EXE running in DOSBox to the recompilation.
-#define VINTAGE_CLOCKS_PER_SEC 104
+#define VINTAGE_CLOCKS_PER_SEC 1000
 
 #if defined (__APPLE__) && defined (__MACH__)
 #define TK_PORT_MAC
