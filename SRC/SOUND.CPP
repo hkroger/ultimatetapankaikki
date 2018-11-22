@@ -56,7 +56,7 @@ int MIDASclose( void )
 	return true;
 }
 
-MIDASsample MIDASloadWaveSample( char *fileName, int loopSample )
+MIDASsample MIDASloadWaveSample( const char *fileName, int loopSample )
 {
 	MIDASsample smp = static_cast<MIDASsample>(calloc( 1, sizeof( _MIDASsample )));
 	Mix_Chunk *chunk = Mix_LoadWAV( fileName );
@@ -70,7 +70,7 @@ MIDASsample MIDASloadWaveSample( char *fileName, int loopSample )
 	return smp;
 }
 
-MIDASmodule MIDASloadModule( char *fileName )
+MIDASmodule MIDASloadModule( const char *fileName )
 {
 	MIDASmodule mod = static_cast<MIDASmodule>(calloc( 1, sizeof( _MIDASmodule )));
 	Mix_Music *music = Mix_LoadMUS( fileName );

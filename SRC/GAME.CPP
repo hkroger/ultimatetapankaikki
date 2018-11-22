@@ -2451,7 +2451,7 @@ void menu()
 {
 	int a, cnt = 0, selected = 0, quit = 0, oclock;
 	int starty = ( Menu_texts*15 )  / 2;
-	ph = NULL;
+	ph = 0;
 	menu_scr();
 	menu_biisi();
 	while( !quit ) 

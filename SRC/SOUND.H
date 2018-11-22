@@ -34,8 +34,8 @@ int MIDASsetTimerCallbacks( uint16_t rate, int displaySync, void (*preVR)(), voi
 int MIDASopenChannels( int numChannels );
 int MIDASallocAutoEffectChannels( unsigned numChannels );
 int MIDASclose( void );
-MIDASsample MIDASloadWaveSample( char *fileName, int loopSample );
-MIDASmodule MIDASloadModule( char *fileName );
+MIDASsample MIDASloadWaveSample( const char *fileName, int loopSample );
+MIDASmodule MIDASloadModule( const char *fileName );
 MIDASsamplePlayHandle MIDASplaySample( MIDASsample sample, unsigned channel, int priority, unsigned rate, unsigned volume, int panning );
 MIDASmodulePlayHandle MIDASplayModule( MIDASmodule module, int loopSong );
 int MIDASstopModule( MIDASmodulePlayHandle playHandle );
