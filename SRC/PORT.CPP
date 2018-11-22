@@ -21,9 +21,6 @@ static mach_timebase_info_data_t timer_timebase_info;
 static uint64_t timer_zero = 0;
 #endif
 
-
-static void tk_port_screen_test();
-
 static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
 {
 	framecount++;
@@ -74,8 +71,10 @@ int tk_port_init(  )
 	// Now that we have a linear 320x200x8 surface, assign it as our "VGA 0xA0000"
 	// all other code can write into.
 	screen = (char *) surface->pixels;
+	memset(screen, 0, 320 * 200);
+	// I mean, the first 768 bytes of `screen` are zero...
+	tk_port_set_palette(screen, 0);
 
-	tk_port_screen_test();
 	tk_port_event_tick();  // Tick once so we get the window up at this point
 
 	// Set up the timer to update the framecount global.
@@ -93,24 +92,6 @@ int tk_port_init(  )
 	timer_zero = mach_absolute_time();
 #endif
 	return 0;
-}
-
-static void tk_port_screen_test()
-{
-	for ( int i = 0; i < 256; i++ )
-	{
-		palette->colors[i].r = palette->colors[i].g = palette->colors[i].b = (Uint8) i;
-	}
-
-	SDL_SetSurfacePalette( surface, palette );
-
-	for ( int y = 0; y < 200; y++ )
-	{
-		for ( int x = 0; x < 320; x++ )
-		{
-			screen[y * 320 + x] = (char) ((x & 0xFF) ^ (y & 0xFF));
-		}
-	}
 }
 
 void tk_port_exit(  )
@@ -235,10 +216,11 @@ void tk_port_set_palette( char palette_entries[768], int brightness )
 		// (ref. http://joco.homeserver.hu/vgalessons/lesson6.html)
 		// up to the 0..255 expected by SDL.
 		#define DARKEN(c) clamp(((int)(c) - 255 + brightness), 0, 255)
-		palette->colors[i].r = clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
-		palette->colors[i].g = clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
-		palette->colors[i].b = clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
+		palette->colors[i].r = (uint8_t)clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
+		palette->colors[i].g = (uint8_t)clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
+		palette->colors[i].b = (uint8_t)clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
 	}
+	SDL_SetSurfacePalette( surface, palette );
 }
 
 void tk_port_sleep( int msec )
