@@ -197,7 +197,10 @@ void tk_port_event_tick( void )
 				k.state[tk_key] = down;
 				if ( down )
 				{
-					//printf("key down: %04x (tk = %d)\n", e.key.keysym.scancode, tk_key);
+					if(tk_port_debug)
+					{
+						printf( "key down: %04x (tk = %d)\n", e.key.keysym.scancode, tk_key );
+					}
 					k._last_getch = tk_key;
 					k._kbhit_flag = true;
 				}

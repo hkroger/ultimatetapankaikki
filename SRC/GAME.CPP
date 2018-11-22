@@ -617,20 +617,20 @@ void chkeys()
 		if ( !aplayer[a]->DEAD )
 			aplayer[a]->chk_keys( a );
 
-	if ( k.state[57] )
+	if ( k.state['m'] )
 	{
 		MAP_ON = !MAP_ON ? 1 : 0;
-		k.state[57] = 0;
+		k.state['m'] = 0;
 	}
-	if ( k.state[33] )
+	if ( k.state['f'] )
 	{
 		FRAMES_ON = FRAMES_ON == 0 ? 1 : 0;
-		k.state[33] = 0;
+		k.state['f'] = 0;
 	}
-	if ( k.state[88] )
+	if ( k.state[69] )
 	{
 		screen_capture();
-		k.state[88] = 0;
+		k.state[69] = 0;
 	}
 }
 
