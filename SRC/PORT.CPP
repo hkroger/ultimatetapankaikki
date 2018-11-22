@@ -28,7 +28,7 @@ static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
 	// Return the next interval to be used. This technically allows
 	// for dynamic speed changes during the game by mutating the `target_frames`
 	// global...
-	return target_frames;
+	return 1000 / target_frames;
 }
 
 
@@ -94,11 +94,7 @@ int tk_port_init(  )
 	tk_port_event_tick();  // Tick once so we get the window up at this point
 
 	// Set up the timer to update the framecount global.
-	// According to https://github.com/OpenEmu/VICE-Core/blob/ff96ffd72cb223216a5705d3824f1b9385008ea9/vice/src/arch/msdos/vsync.c#L223-L224
-	// MIDASsetTimerCallbacks() takes its rate parameter as kHz; the original call in
-	// do_all() in GAME.CPP is MIDASsetTimerCallbacks( target_frames*1000 , ...),
-	// so presumably target_frames is in hz.
-	SDL_AddTimer( target_frames, tk_port_update_framecount, NULL );
+	SDL_AddTimer( 1000 / target_frames, tk_port_update_framecount, NULL );
 
 #ifdef TK_PORT_POSIX
 	clock_gettime(CLOCK_MONOTONIC, &timer_zero);
