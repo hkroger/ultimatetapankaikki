@@ -105,11 +105,13 @@ int choose_load_file( char *name, int episode )
         }
         if ( k.state[94] )
         {
-            if ( sel > 0 ) sel --;k.state[94] = 0;
+            if ( sel > 0 ) sel --;
+            k.state[94] = 0;
         }
         if ( k.state[99] )
         {
-            if ( sel < files - 1 ) sel ++;k.state[99] = 0;
+            if ( sel < files - 1 ) sel ++;
+            k.state[99] = 0;
         }
         pos = sel - 8;
         if ( pos < 0 ) pos = 0;
@@ -174,11 +176,13 @@ int choose_episode()
         }
         if ( k.state[94] )
         {
-            if ( sel > 0 ) sel --;k.state[94] = 0;
+            if ( sel > 0 ) sel --;
+            k.state[94] = 0;
         }
         if ( k.state[99] )
         {
-            if ( sel < dirs - 1 ) sel ++;k.state[99] = 0;
+            if ( sel < dirs - 1 ) sel ++;
+            k.state[99] = 0;
         }
         pos = sel - 3;
         if ( pos < 0 ) pos = 0;

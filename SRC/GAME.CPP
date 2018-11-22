@@ -233,7 +233,8 @@ void do_all()
     CalCuLaTE_Sine_Table_AND_Be_Happy();// for fade
     std::cout << "\nSine and Cosine tables ready\n";
     for ( a = 0; a < LIGHTS; a ++  )
-    light[a].make( Light_sizes[a] );std::cout << "Lights mapped\n";
+        light[a].make( Light_sizes[a] );
+    std::cout << "Lights mapped\n";
     make_light_tables();
     std::cout << "Palette tables calculated \n";
     load_efp_pal( "EFPS/WALLS1.EFP", pal );
