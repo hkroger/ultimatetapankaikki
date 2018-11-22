@@ -9,6 +9,7 @@ static SDL_Renderer *renderer;
 static SDL_Surface *surface;
 static SDL_Palette *palette;
 bool tk_port_quit_flag = false;
+uint32_t tk_port_debug = 0;
 
 #ifdef TK_PORT_POSIX
 static struct timespec timer_zero;
@@ -30,8 +31,23 @@ static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
 	return target_frames;
 }
 
+
+static void read_tk_port_debug()
+{
+	const char *tk_port_debug_s = getenv( "TK_PORT_DEBUG");
+	if(tk_port_debug_s == NULL) {
+		return;
+	}
+	tk_port_debug =  strtoul( tk_port_debug_s, NULL, 10);
+	if(tk_port_debug != 0) {
+		SDL_Log("tk_port_debug = %d (%08x)", tk_port_debug, tk_port_debug);
+	}
+}
+
+
 int tk_port_init(  )
 {
+	read_tk_port_debug();
 	if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 )
 	{
 		SDL_Log( "Error initializing SDL:  %s", SDL_GetError());
