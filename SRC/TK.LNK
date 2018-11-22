@@ -1,6 +1,0 @@
-system dos4g
-option stack=256000
-file game,error,efp,ipx,int,rgbhsl,globvar,miscfunc,draw,fade,write,classes,rout,newfuncs,options,ipxdefs
-library midas.lib
-name ..\game
-
