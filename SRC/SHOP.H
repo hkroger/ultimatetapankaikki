@@ -142,7 +142,10 @@ void Player::shop()
 		!k.state[K_UP]&&
 		!k.state[K_DOWN]&&
 		!k.state[K_SHOOT]&&
-		!k.state[K_SHIFT]);
+		!k.state[K_SHIFT])
+		{
+			tk_port_event_tick();
+		}
 		if ( k.state[K_UP] ) if ( sel1 > 0 ) sel1 --;
 		if ( k.state[K_DOWN] ) if ( sel1 < 2 ) sel1 ++;
 		if ( k.state[K_LEFT] ) sel2 --;
@@ -230,7 +233,10 @@ void Player::shop()
 			writefonts2( 10, 115, "press fire to confirm", 1 );
 			memcpy( screen, virbuff, 64000 );
 			k.clear_stack();
-			while ( !k.kbhit()  ) ;
+			while ( !k.kbhit() )
+			{
+				tk_port_event_tick();
+			}
 			if ( k.state[K_SHOOT] ) quit = 1;
 			k.state[1] = 0;
 		}
