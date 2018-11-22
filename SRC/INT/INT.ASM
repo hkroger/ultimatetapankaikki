@@ -9,7 +9,7 @@
     .386p
     .model flat,c
     locals
-    jumps 
+    jumps
 
       ; Macros to Decrement Counter & Jump on Condition
 LOOPx MACRO Register, Destination
@@ -40,18 +40,18 @@ POPALL MACRO      ; Pops all registers from stack = 18c
 ENDM
 
 POPALLSEGS MACRO
-    POP GS 
+    POP GS
     POP FS
     POP ES
     POP DS
 ENDM
-    
+
 PUSHALLSEGS MACRO
     PUSH DS
     PUSH ES
     PUSH FS
     PUSH GS
-ENDM    
+ENDM
 
 SWAPPA MACRO Register   ; Swaps low and high byte in a word...
     ROL     Register,8
@@ -65,7 +65,7 @@ ENDM
   lseg DW 0
   global lsel:word
   lsel DW 0
-    
+
   global getlowmem:PROC
   global freelowmem:PROC
 
@@ -100,5 +100,5 @@ ENDM
     POPALL
     RET
   freelowmem ENDP
-  
+
 END

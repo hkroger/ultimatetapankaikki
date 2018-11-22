@@ -70,12 +70,12 @@ int opensocket(byte longevity,word socket)
 
   //Set up real-mode call structure
   clearrmi();
-  RMI.EBX=0x0;  
+  RMI.EBX=0x0;
   RMI.EAX=longevity;
   RMI.EDX=swap(socket);
   callrealint(0x7a);
   socketid=(word)swap(RMI.EDX);
-  
+
   return (byte)(RMI.EAX);
 }
 
@@ -97,26 +97,26 @@ int initipx(void)
   if ((RMI.EAX&255)!=255) return(0);
 
   getlocaladdress();
-  for (q=0;q<6;q++) 
+  for (q=0;q<6;q++)
    {
-	   nodes[0].node[q]=localadd->node.node[q]; // HOME
-	   nodes[MAXNODES].node[q]=0xff; // BROADCAST
+       nodes[0].node[q]=localadd->node.node[q]; // HOME
+       nodes[MAXNODES].node[q]=0xff; // BROADCAST
    }
   return(1);
 }
 
 struct nodeaddr BROADCAST()
 {
-	return nodes[MAXNODES];
+    return nodes[MAXNODES];
 }
 
 void getlocaladdress(void)
 {
   if (localadd==NULL)
-  	{
-	  localadd=(struct localaddr *)MK_FP(getlowmem(sizeof(struct localaddr)/16+1),0);
-	  localaddl=lsel;
-	};
+    {
+      localadd=(struct localaddr *)MK_FP(getlowmem(sizeof(struct localaddr)/16+1),0);
+      localaddl=lsel;
+    };
   clearrmi();
   RMI.EBX=9;
   RMI.ES=lseg;
@@ -159,14 +159,14 @@ void initreceivepacket(struct packet *packetet,word lseg)
 
   packetet->ecb.fragdata[1]=lseg;
   // lseg contains the latest allocated lowmem segment.
-  
+
   packetet->ecb.fragsize=sizeof(struct packet)-sizeof(struct ecbtype);
-}                     
-						   
+}
+
 void initsendpacket(struct packet *packetet,word lseg)
 {
   _fmemset(packetet,0,sizeof(struct packet));
-  
+
   packetet->ecb.socket=(word)swap(socketid);
   packetet->ecb.fragcount=1;
   packetet->ecb.fragdata[0]=sizeof(struct ecbtype);
@@ -217,30 +217,30 @@ void sendpacket(word ecbseg,struct nodeaddr destnode, struct packet *packetet,wo
 
   if (len>MAXDATASIZE) len=MAXDATASIZE;
   packetet->ecb.fragsize=(word)(sizeof(struct ipxheader)+len);
-      
+
   RMI.ESI=0;
   RMI.ES=ecbseg;
   RMI.EBX=3;
   callrealint(0x7a);
 
   if (RMI.EAX&255) error("sendpacket: sending failed (%x)\ncompletioncode: %d\ndestination: 0x%x%x%x%x%x%x\nfragsize: %d\nDatalen: %d\n",
-  					RMI.EAX,
-  					packetet->ecb.complete,
-  					packetet->ecb.immedaddr[0],
-  					packetet->ecb.immedaddr[1],
-  					packetet->ecb.immedaddr[2],
-  					packetet->ecb.immedaddr[3],
-  					packetet->ecb.immedaddr[4],
-  					packetet->ecb.immedaddr[5],
-  					packetet->ecb.fragsize,
-  					len);
-   
+                    RMI.EAX,
+                    packetet->ecb.complete,
+                    packetet->ecb.immedaddr[0],
+                    packetet->ecb.immedaddr[1],
+                    packetet->ecb.immedaddr[2],
+                    packetet->ecb.immedaddr[3],
+                    packetet->ecb.immedaddr[4],
+                    packetet->ecb.immedaddr[5],
+                    packetet->ecb.fragsize,
+                    len);
+
 }
 
-void char2hex(char *str,char ch) 
-{	char hex[]="0123456789ABCDEF";
-	str[0]=hex[ch>>4];
-	str[1]=hex[ch&0xf];
+void char2hex(char *str,char ch)
+{   char hex[]="0123456789ABCDEF";
+    str[0]=hex[ch>>4];
+    str[1]=hex[ch&0xf];
 }
 
 char *decode_localaddress(char *str,struct localaddr *la)

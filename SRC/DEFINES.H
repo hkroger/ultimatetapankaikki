@@ -2,8 +2,8 @@
 #define __TK__DEFINES__
 #define Version "v1.2 beta"
 #define pi 3.14159265358979
-#define CRATE_WAKE_UP_COUNT 500	// = 12.5 secs if 40 frames per sec
-#define MESSAGE_TIME_ON_SCREEN 200	// = 5 secs if 40 frames per sec
+#define CRATE_WAKE_UP_COUNT 500 // = 12.5 secs if 40 frames per sec
+#define MESSAGE_TIME_ON_SCREEN 200  // = 5 secs if 40 frames per sec
 #define MAX_MESSAGES 6
 #define MAX_MESSAGE_LENGTH 40
 #define MAX_PLAYERS 8  // max amount of players in game
@@ -61,18 +61,18 @@
 #define FOOTPRINT 9
 #define EXPLO_RAY 10
 // Sounds...
-#define DIFF_WAVS 10 
+#define DIFF_WAVS 10
 
-#define MAGNUMWAV 1 
-#define	SHOTGUNWAV 2 
-#define	PISTOLWAV 3 
-#define	SINKOWAV 4 
-#define	HITWAV 5 
-#define	EXPLOWAV 6 
-#define	KLIKWAV 7
-#define	DEATHWAV 8 
-#define	WOOSHWAV 9 
-#define	FLAMEWAV 10
+#define MAGNUMWAV 1
+#define SHOTGUNWAV 2
+#define PISTOLWAV 3
+#define SINKOWAV 4
+#define HITWAV 5
+#define EXPLOWAV 6
+#define KLIKWAV 7
+#define DEATHWAV 8
+#define WOOSHWAV 9
+#define FLAMEWAV 10
 
 #define min(a,b) ((a)<=(b)? (a):(b))
 

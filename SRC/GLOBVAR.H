@@ -56,7 +56,7 @@ extern int FONT_NUM;
 extern KeyboardHandler k;
 extern Keys keys1, keys2;
 extern Message_board message_board;
-extern Player player[MAX_PLAYERS];// PLAYERS 
+extern Player player[MAX_PLAYERS];// PLAYERS
 extern Player *aplayer[2];
 extern Body_part body_part[MAX_BODY_PARTS];
 extern Enemy enemy[MAX_ENEMIES];
@@ -93,4 +93,4 @@ extern vile filelist[256][1024];
 extern vile dirlist[256];
 extern int files_in_episode[256];
 extern int dirs;
-#endif 
+#endif

@@ -9,7 +9,7 @@
 #ifndef __IPX_H_
 #define __IPX_H_
 
-#define byte unsigned char  // commonly defined ever.. (8 
+#define byte unsigned char  // commonly defined ever.. (8
 #define word unsigned short
 #define dword unsigned long
 #define MAXDATASIZE 1024

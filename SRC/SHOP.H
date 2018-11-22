@@ -1,33 +1,33 @@
 #define OTHER_STUFF 2
-void draw_wares( int row, int colu ) 
+void draw_wares( int row, int colu )
 {
 	int a;
-	for ( a = 0; a < DIFF_WEAPONS; a ++  ) 
+	for ( a = 0; a < DIFF_WEAPONS; a ++  )
 	{
 		draw_ware( 9 + a*18, 130, 0, a );
-		if ( row == 0 ) if ( colu == a ) 
+		if ( row == 0 ) if ( colu == a )
 		rectangle( 8 + a*18, 129, 8 + 17 + a*18, 129 + 17, 98 );
 	}
-	for ( a = 0; a < DIFF_BULLETS; a ++  ) 
+	for ( a = 0; a < DIFF_BULLETS; a ++  )
 	{
 		draw_ware( 9 + a*18, 130 + 18, 1, a );
-		if ( row == 1 ) if ( colu == a ) 
+		if ( row == 1 ) if ( colu == a )
 		rectangle( 8 + a*18, 129 + 18, 8 + 17 + a*18, 129 + 17 + 18, 98 );
 	}
-	for ( a = 0; a < OTHER_STUFF; a ++  ) 
+	for ( a = 0; a < OTHER_STUFF; a ++  )
 	{
 		draw_ware( 9 + a*18, 130 + 18 + 18, 2, a );
-		if ( row == 2 ) if ( colu == a ) 
+		if ( row == 2 ) if ( colu == a )
 		rectangle( 8 + a*18, 129 + 18 + 18, 8 + 17 + a*18, 129 + 17 + 18 + 18, 98 );
 	}
 }
 
-void draw_ware_info( Player *P, int sel1, int sel2 ) 
+void draw_ware_info( Player *P, int sel1, int sel2 )
 {
 	char text[20];
 	int a;
 	FONT_NUM = 1;
-	if ( sel1 == 0 ) 
+	if ( sel1 == 0 )
 	{
 		writefonts( 20, 50, weapon[sel2 + 1].name, M_YELLOW );
 		writefonts( 20, 70, "Cost:", M_BLUE );
@@ -39,16 +39,16 @@ void draw_ware_info( Player *P, int sel1, int sel2 )
 		writefonts( 20, 90, "Bullet type:", M_BLUE );
 		writefonts( 20 + str_length( "Bullet type: " ), 90, bullet_type[weapon[sel2 + 1].btype].name, M_YELLOW );
 	}
-	if ( sel1 == 1 ) 
+	if ( sel1 == 1 )
 	{
 		writefonts( 20, 50, bullet_type[sel2 + 1].name, M_YELLOW );
 		writefonts( 20, 70, "Cost:", M_BLUE );
 		sprintf( text, "%d", bullet_type[sel2 + 1].cost );
 		writefonts( 20 + str_length( "Cost: " ), 70, text, M_YELLOW );
 	}
-	if ( sel1 == 2 ) 
+	if ( sel1 == 2 )
 	{
-		if ( sel2 == 0 ) 
+		if ( sel2 == 0 )
 		{
 			writefonts( 20, 50, "Shield", M_YELLOW );
 			writefonts( 20, 70, "Cost:", M_BLUE );
@@ -59,7 +59,7 @@ void draw_ware_info( Player *P, int sel1, int sel2 )
 			sprintf( text, "%d", sell_price[DIFF_WEAPONS] + ( ( a*15 )  >> 1 ) );
 			writefonts( 20 + str_length( "Sell_price: " ), 80, text, M_YELLOW );
 		}
-		if ( sel2 == 1 ) 
+		if ( sel2 == 1 )
 		{
 			writefonts( 20, 50, "Target system", M_YELLOW );
 			writefonts( 20, 70, "Cost:", M_BLUE );
@@ -72,12 +72,12 @@ void draw_ware_info( Player *P, int sel1, int sel2 )
 	}
 }
 
-void Player::shop() 
+void Player::shop()
 {
 	int a, sx, sel1 = 0, sel2 = 0, quit = 0, x;
 	char text[20];
 	load_efp( "EFPS/SHOP.EFP", picture, 0 );
-	for ( a = 0; a < 17; a ++  ) 
+	for ( a = 0; a < 17; a ++  )
 	{
 		draw_box1( 9 + a*18, 130, 25 + a*18, 130 + 16, 8 );
 		draw_box1( 9 + a*18, 130 + 18, 25 + a*18, 130 + 16 + 18, 8 );
@@ -90,7 +90,7 @@ void Player::shop()
 	sx = 160 - ( str_length( "the shop" )  / 2 );
 	first = 1;
 	shield_data.max = 30;
-	while ( !quit ) 
+	while ( !quit )
 	{
 		memcpy( virbuff, picture, 64000 );
 		FONT_NUM = 0;
@@ -104,14 +104,14 @@ void Player::shop()
 		draw_wares( sel1, sel2 );
 		draw_ware_info( this, sel1, sel2 );
 		FONT_NUM = 3;
-		for ( a = 0; a < DIFF_WEAPONS; a ++  ) 
-		if ( weapons[a + 1] == 1 ) 
+		for ( a = 0; a < DIFF_WEAPONS; a ++  )
+		if ( weapons[a + 1] == 1 )
 		{
 			writefonts( 8 + a*18, 131 + 11, "1", 0 );
 			writefonts( 9 + a*18, 130 + 11, "1", M_YELLOW );
 		}
-		for ( a = 0; a < DIFF_BULLETS; a ++  ) 
-		if ( bullets[a] > 0 ) 
+		for ( a = 0; a < DIFF_BULLETS; a ++  )
+		if ( bullets[a] > 0 )
 		{
 			x = bullets[a] / bullet_type[a + 1].mul;
 			if ( x < 1 ) x = 1;
@@ -119,19 +119,19 @@ void Player::shop()
 			writefonts( 8 + a*18, 131 + 11 + 18, text, 0 );
 			writefonts( 9 + a*18, 130 + 11 + 18, text, M_YELLOW );
 		}
-		if ( shield > 0 ) 
+		if ( shield > 0 )
 		{
 			sprintf( text, "%d", shield );
 			writefonts( 8, 131 + 11 + 18 + 18, text, 0 );
 			writefonts( 9, 130 + 11 + 18 + 18, text, M_YELLOW );
 		}
-		if ( TARGET == 1 ) 
+		if ( TARGET == 1 )
 		{
 			writefonts( 8 + 18, 131 + 11 + 18 + 18, "1", 0 );
 			writefonts( 9 + 18, 130 + 11 + 18 + 18, "1", M_YELLOW );
 		}
 		if ( !first ) memcpy( screen, virbuff, 64000 );
-		if ( first == 1 ) 
+		if ( first == 1 )
 		{
 			fadein( virbuff, pal );
 			first = 0;
@@ -154,66 +154,66 @@ void Player::shop()
 		if ( sel1 == 0 ) if ( sel2 >= DIFF_WEAPONS ) sel2 = DIFF_WEAPONS - 1;
 		if ( sel1 == 1 ) if ( sel2 >= DIFF_BULLETS ) sel2 = DIFF_BULLETS - 1;
 		if ( sel1 == 2 ) if ( sel2 >= OTHER_STUFF ) sel2 = OTHER_STUFF - 1;
-		if ( k.state[K_SHOOT] ) 
+		if ( k.state[K_SHOOT] )
 		{
-			if ( sel1 == 0 ) 
-			if ( weapons[sel2 + 1] == 0 ) 
-			if ( cash >= weapon[sel2 + 1].cost ) 
+			if ( sel1 == 0 )
+			if ( weapons[sel2 + 1] == 0 )
+			if ( cash >= weapon[sel2 + 1].cost )
 			{
 				weapons[sel2 + 1] = 1;
 				cash -= weapon[sel2 + 1].cost;
 			}
-			if ( sel1 == 1 ) 
-			if ( bullets[sel2] < bullet_type[sel2 + 1].max*bullet_type[sel2 + 1].mul ) 
-			if ( cash >= bullet_type[sel2 + 1].cost ) 
+			if ( sel1 == 1 )
+			if ( bullets[sel2] < bullet_type[sel2 + 1].max*bullet_type[sel2 + 1].mul )
+			if ( cash >= bullet_type[sel2 + 1].cost )
 			{
 				bullets[sel2] += bullet_type[sel2 + 1].mul;
 				cash -= bullet_type[sel2 + 1].cost;
 			}
-			if ( sel1 == 2 ) 
+			if ( sel1 == 2 )
 			{
-				if ( sel2 == 0 ) 
-				if ( cash >= shield_data.cost + shield*15 ) 
-				if ( shield < shield_data.max ) 
+				if ( sel2 == 0 )
+				if ( cash >= shield_data.cost + shield*15 )
+				if ( shield < shield_data.max )
 				{
 					cash -= shield_data.cost + shield*15;
 					shield ++;
 				}
-				if ( sel2 == 1 ) 
-				if ( TARGET == 0 ) 
-				if ( cash >= target_cost ) 
+				if ( sel2 == 1 )
+				if ( TARGET == 0 )
+				if ( cash >= target_cost )
 				{
 					TARGET = 1;
 					cash -= target_cost;
 				}
 			}
 		}
-		if ( k.state[K_SHIFT] ) 
+		if ( k.state[K_SHIFT] )
 		{
-			if ( sel1 == 0 ) 
-			if ( weapons[sel2 + 1] > 0 ) 
+			if ( sel1 == 0 )
+			if ( weapons[sel2 + 1] > 0 )
 			{
 				weapons[sel2 + 1] = 0;
 				cash += sell_price[sel2];
 			}
-			if ( sel1 == 1 ) 
-			if ( bullets[sel2] > 0 ) 
+			if ( sel1 == 1 )
+			if ( bullets[sel2] > 0 )
 			{
 				bullets[sel2] -= bullet_type[sel2 + 1].mul;
 				if ( bullets[sel2] < 0 ) bullets[sel2] = 0;
 				cash += bullet_type[sel2 + 1].cost;
 			}
-			if ( sel1 == 2 ) 
+			if ( sel1 == 2 )
 			{
-				if ( sel2 == 0 ) 
-				if ( shield > 0 ) 
+				if ( sel2 == 0 )
+				if ( shield > 0 )
 				{
 					a = shield - 1; if ( a < 0 ) a = 0;
 					cash += sell_price[DIFF_WEAPONS] + ( ( 15*a )  / 2 );
 					shield --;
 				}
-				if ( sel2 == 1 ) 
-				if ( TARGET == 1 ) 
+				if ( sel2 == 1 )
+				if ( TARGET == 1 )
 				{
 					TARGET = 0;
 					cash += sell_price[DIFF_WEAPONS + 1];
@@ -227,7 +227,7 @@ void Player::shop()
 		k.state[K_SHOOT] = 0;
 		k.state[K_SHIFT] = 0;
 		MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22000, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-		if ( k.state[1] ) 
+		if ( k.state[1] )
 		{
 			FONT_NUM = 0;
 			writefonts2( 10, 115, "press fire to confirm", 1 );
@@ -243,4 +243,3 @@ void Player::shop()
 	}
 	fadeout( virbuff, pal );
 }
-
