@@ -20,7 +20,7 @@ extern void game();
 void save_options()
 {
 	FILE *cfg;
-	cfg = fopen( "options.cfg", "wb" );
+	cfg = fopen( "OPTIONS.CFG", "wb" );
 	fwrite( &keys1, sizeof( class Keys ), 1, cfg );
 	fwrite( &keys2, sizeof( class Keys ), 1, cfg );
 	fwrite( name1, sizeof( name1 ), 1, cfg );
@@ -42,7 +42,7 @@ void save_options()
 void load_options() 
 {
 	FILE *cfg;
-	cfg = fopen( "options.cfg", "rb" );
+	cfg = fopen( "OPTIONS.CFG", "rb" );
 	if ( cfg ) 
 	{
 		fread( &keys1, sizeof( class Keys ), 1, cfg );
@@ -81,9 +81,9 @@ int choose_load_file( char *name, int episode )
 		FONT_NUM = 1;
 		for ( a = 0; a < b; a ++  ) 
 		if ( a + pos == sel ) 
-			writefonts( 160 - ( str_length( strlwr( filelist[episode][a + pos].name )  )  >> 1 ), 50 + a*8, strlwr( filelist[episode][a + pos].name ), M_YELLOW );
+			writefonts( 160 - ( str_length( filelist[episode][a + pos].name )  >> 1 ), 50 + a*8, filelist[episode][a + pos].name, M_YELLOW );
 		else 
-			writefonts( 160 - ( str_length( strlwr( filelist[episode][a + pos].name )  )  >> 1 ), 50 + a*8, strlwr( filelist[episode][a + pos].name ), M_BLUE );
+			writefonts( 160 - ( str_length( filelist[episode][a + pos].name )  >> 1 ), 50 + a*8, filelist[episode][a + pos].name, M_BLUE );
 		if ( pos > 0 ) writefonts( 156, 42, "", M_BLUE );
 		if ( files > 15 ) if ( pos < files - 15 ) writefonts( 156, 50 + 15*8, "", M_BLUE );
 		if ( first == 1 ) 
@@ -143,12 +143,12 @@ int choose_episode()
 			if ( a + pos == sel ) 
 			{
 				FONT_NUM = 0;
-				writefonts2( 160 - ( str_length( strlwr( dirlist[a + pos].name )  )  >> 1 ), 50 + a*16, strlwr( dirlist[a + pos].name ), 1 );
+				writefonts2( 160 - ( str_length( dirlist[a + pos].name )  >> 1 ), 50 + a*16, dirlist[a + pos].name, 1 );
 			}
 			else 
 			{
 				FONT_NUM = 2;
-				writefonts2( 160 - ( str_length( strlwr( dirlist[a + pos].name )  )  >> 1 ), 50 + a*16, strlwr( dirlist[a + pos].name ), 1 );
+				writefonts2( 160 - ( str_length( dirlist[a + pos].name )  >> 1 ), 50 + a*16, dirlist[a + pos].name, 1 );
 			}
 		}
 		FONT_NUM = 1;
@@ -545,10 +545,10 @@ void multiplayer_options()
 		if ( KILLING_MODE == COOPERATIVE &&DEATH_MATCH_EPISODE == 0 ) 
 		{
 			DEATH_MATCH_EPISODE = 1;
-	 	  	strcpy( DEATH_MATCH_LEVEL, strlwr( filelist[DEATH_MATCH_EPISODE][0].name )  );
+	 	  	strcpy( DEATH_MATCH_LEVEL, filelist[DEATH_MATCH_EPISODE][0].name );
 		}
 		strcpy( text, "episode: " );
-		if ( DEATH_MATCH_EPISODE > 0 ) strcat( text, strlwr( dirlist[DEATH_MATCH_EPISODE - 1].name )  );
+		if ( DEATH_MATCH_EPISODE > 0 ) strcat( text, dirlist[DEATH_MATCH_EPISODE - 1].name );
 		else strcat( text, "dm levels" );
 		strcpy(multip_opt_text[2] ,text );
 		strcpy( text, "level: " );
@@ -675,7 +675,7 @@ void multiplayer_options()
 			}
 			if ( selected == 2 ) 
 			{
-				DEATH_MATCH_EPISODE ++;if ( DEATH_MATCH_EPISODE > dirs ) DEATH_MATCH_EPISODE = 0; strcpy( DEATH_MATCH_LEVEL, strlwr( filelist[DEATH_MATCH_EPISODE][0].name )  );
+				DEATH_MATCH_EPISODE ++;if ( DEATH_MATCH_EPISODE > dirs ) DEATH_MATCH_EPISODE = 0; strcpy( DEATH_MATCH_LEVEL, filelist[DEATH_MATCH_EPISODE][0].name );
 			}
 			if ( selected == 3 ) if ( KILLING_MODE == DEATHMATCH ) 
 			{

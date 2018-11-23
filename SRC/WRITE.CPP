@@ -2,7 +2,14 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
+#include <cctype>
 #include <ERROR/ERROR.H>
+
+static int get_font_chr(char c)
+{
+	return tolower(c);
+}
+
 
 void pixeli( int x, int y, char col ) 
 {
@@ -31,13 +38,14 @@ void writefonts( int x, int y, const char *str, int cq )
 	textcnt = 0;
 	for ( a = 0; str[a]!= 0; a ++  ) 
 	{
+		int chr = get_font_chr(str[a]);
 		c = 0;
 		col = 0;
 		while ( col < 2 && c < f_x_size[FONT_NUM] )
 		{
 			// check from left
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-				if ( thefonts[FONT_NUM][str[a] * fsize + d * f_x_size[FONT_NUM] + (c)] > 1 ) col = 2;
+				if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c)] > 1 ) col = 2;
 			if ( col < 2 ) c++;
 		}
 		xpos1 = c;
@@ -47,7 +55,7 @@ void writefonts( int x, int y, const char *str, int cq )
 		{
 			// check from right
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-				if ( thefonts[FONT_NUM][str[a] * fsize + d * f_x_size[FONT_NUM] + (c - 1)] > 1 ) col = 2;
+				if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c - 1)] > 1 ) col = 2;
 			if ( col < 2 ) c--;
 		}
 		xpos2 = c;
@@ -62,7 +70,7 @@ void writefonts( int x, int y, const char *str, int cq )
 			{
 				px = (c - xpos1) + x + (textcnt);
 				py = d + y;
-				col = thefonts[FONT_NUM][str[a] * fsize + (d * f_x_size[FONT_NUM]) + c];
+				col = thefonts[FONT_NUM][chr * fsize + (d * f_x_size[FONT_NUM]) + c];
 				if ( px >= 0 && px < 320 && py >= 0 && py < scr_y_size && col != 0 )
 				{
 					if ( cq != 0 && col != 1 ) pixeli( px, py, (char) (cq + d));
@@ -79,13 +87,14 @@ void writefonts2( int x, int y, const char *str, int cq )
 	textcnt = 0;
 	for ( a = 0; str[a] != 0; a++ )
 	{
+		int chr = get_font_chr(str[a]);
 		c = 0;
 		col = 0;
 		while (col == 0 && c < f_x_size[FONT_NUM])
 		{
 			// check from left
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-				if ( thefonts[FONT_NUM][str[a] * fsize + d * f_x_size[FONT_NUM] + (c)] != 0 ) col = 1;
+				if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c)] != 0 ) col = 1;
 			if ( col == 0 ) c++;
 		}
 		xpos1 = c;
@@ -95,7 +104,7 @@ void writefonts2( int x, int y, const char *str, int cq )
 		{
 			// check from right
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-				if ( thefonts[FONT_NUM][str[a] * fsize + d * f_x_size[FONT_NUM] + (c - 1)] != 0 ) col = 1;
+				if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c - 1)] != 0 ) col = 1;
 			if ( col == 0 ) c--;
 		}
 		xpos2 = c;
@@ -106,12 +115,12 @@ void writefonts2( int x, int y, const char *str, int cq )
 		}
 		for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
 			for ( c = xpos1; c < xpos2; c++ )
-				if ( thefonts[FONT_NUM][str[a] * fsize + (d * f_x_size[FONT_NUM]) + c] != 0 )
+				if ( thefonts[FONT_NUM][chr * fsize + (d * f_x_size[FONT_NUM]) + c] != 0 )
 				{
 					if ( cq != 0 )
 					{
 						pixeli((c - xpos1) + x + (textcnt), d + y,
-						       thefonts[FONT_NUM][str[a] * fsize + (d * f_x_size[FONT_NUM]) + c] );
+						       thefonts[FONT_NUM][chr * fsize + (d * f_x_size[FONT_NUM]) + c] );
 					}
 					else
 					{
@@ -128,13 +137,14 @@ int str_length( const char *str )
 	int a, c, d, col, xpos1, xpos2;
 	for ( a = 0; str[a] != 0; a++ )
 	{
+		int chr = get_font_chr(str[a]);
 		c = 0;
 		col = 0;
 		while (col < 2 && c < f_x_size[FONT_NUM])
 		{
 			// check from left
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-				if ( thefonts[FONT_NUM][str[a] * (f_x_size[FONT_NUM] * f_y_size[FONT_NUM]) + d * f_x_size[FONT_NUM] +
+				if ( thefonts[FONT_NUM][chr * (f_x_size[FONT_NUM] * f_y_size[FONT_NUM]) + d * f_x_size[FONT_NUM] +
 				                        (c)] > 1 )
 					col = 2;
 			if ( col < 2 ) c++;
@@ -146,7 +156,7 @@ int str_length( const char *str )
 		{
 			// check from right
 			for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-				if ( thefonts[FONT_NUM][str[a] * (f_x_size[FONT_NUM] * f_y_size[FONT_NUM]) + d * f_x_size[FONT_NUM] +
+				if ( thefonts[FONT_NUM][chr * (f_x_size[FONT_NUM] * f_y_size[FONT_NUM]) + d * f_x_size[FONT_NUM] +
 				                        (c - 1)] > 1 )
 					col = 2;
 			if ( col < 2 ) c--;
