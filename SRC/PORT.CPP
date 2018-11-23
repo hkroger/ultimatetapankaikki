@@ -20,6 +20,7 @@ static struct timespec timer_zero;
 
 static mach_timebase_info_data_t timer_timebase_info;
 static uint64_t timer_zero = 0;
+
 #endif
 
 static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
@@ -34,30 +35,24 @@ static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
 
 static void read_tk_port_debug()
 {
-	const char *tk_port_debug_s = getenv( "TK_PORT_DEBUG");
-	if(tk_port_debug_s == NULL) {
+	const char *tk_port_debug_s = getenv( "TK_PORT_DEBUG" );
+	if ( tk_port_debug_s == NULL )
+	{
 		return;
 	}
-	tk_port_debug =  strtoul( tk_port_debug_s, NULL, 10);
-	if(tk_port_debug != 0) {
-		SDL_Log("tk_port_debug = %d (%08x)", tk_port_debug, tk_port_debug);
+	tk_port_debug = strtoul( tk_port_debug_s, NULL, 10 );
+	if ( tk_port_debug != 0 )
+	{
+		SDL_Log( "tk_port_debug = %d (%08x)", tk_port_debug, tk_port_debug );
 	}
 }
 
-
-int tk_port_init(  )
+static int tk_port_init_graphics()
 {
-	read_tk_port_debug();
-	if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 )
-	{
-		SDL_Log( "Error initializing SDL:  %s", SDL_GetError());
-		return 1;
-	}
-
 	window = SDL_CreateWindow(
-			"TK",
-			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 600,
-			SDL_WINDOW_RESIZABLE
+		"TK",
+		SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 600,
+		SDL_WINDOW_RESIZABLE
 	);
 	if ( !window )
 	{
@@ -87,12 +82,13 @@ int tk_port_init(  )
 	// Now that we have a linear 320x200x8 surface, assign it as our "VGA 0xA0000"
 	// all other code can write into.
 	screen = (char *) surface->pixels;
-	memset(screen, 0, 320 * 200);
+	memset( screen, 0, 320 * 200 );
 	// I mean, the first 768 bytes of `screen` are zero...
-	tk_port_set_palette(screen, 0);
+	tk_port_set_palette( screen, 0 );
+}
 
-	tk_port_event_tick();  // Tick once so we get the window up at this point
-
+static void tk_port_init_time()
+{
 	// Set up the timer to update the framecount global.
 	SDL_AddTimer( 1000 / target_frames, tk_port_update_framecount, NULL );
 
@@ -103,10 +99,26 @@ int tk_port_init(  )
 	mach_timebase_info( &timer_timebase_info );
 	timer_zero = mach_absolute_time();
 #endif
+}
+
+int tk_port_init()
+{
+	int ret;
+	read_tk_port_debug();
+	if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 )
+	{
+		SDL_Log( "Error initializing SDL:  %s", SDL_GetError());
+		return 1;
+	}
+	if((ret = tk_port_init_graphics()) != 0) {
+		return ret;
+	}
+	tk_port_init_time();
+	tk_port_event_tick();  // Tick once so we get the window up at this point
 	return 0;
 }
 
-void tk_port_exit(  )
+void tk_port_exit()
 {
 	SDL_Quit();
 }
@@ -114,7 +126,8 @@ void tk_port_exit(  )
 static uint8_t tk_port_remap_key( SDL_Keycode keycode, SDL_Scancode scancode )
 {
 	// TODO: add all special characters here
-	switch(scancode) {
+	switch (scancode)
+	{
 		case SDL_SCANCODE_LCTRL:
 			return 29;
 		case SDL_SCANCODE_RCTRL:
@@ -132,7 +145,8 @@ static uint8_t tk_port_remap_key( SDL_Keycode keycode, SDL_Scancode scancode )
 		default:
 			break;
 	}
-	switch(keycode) {
+	switch (keycode)
+	{
 		case SDLK_ESCAPE:
 			return 1;
 		case SDLK_TAB:
@@ -184,16 +198,16 @@ void tk_port_event_tick( void )
 				bool down = (e.key.type == SDL_KEYDOWN);
 
 				// Shift+ESC hard-kills the game, for development.
-				if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE && e.key.keysym.mod & KMOD_LSHIFT)
+				if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE && e.key.keysym.mod & KMOD_LSHIFT )
 				{
 					tk_port_quit_flag = true;
-					exit(42);
+					exit( 42 );
 				}
 				uint8_t tk_key = tk_port_remap_key( e.key.keysym.sym, e.key.keysym.scancode );
 				k.state[tk_key] = down;
 				if ( down )
 				{
-					if(tk_port_debug)
+					if ( tk_port_debug )
 					{
 						printf( "key down: %04x (tk = %d)\n", e.key.keysym.scancode, tk_key );
 					}
@@ -230,10 +244,10 @@ void tk_port_set_palette( char palette_entries[768], int brightness )
 		// The left-shifts below scale the assumedly 0..63 VGA palette
 		// (ref. http://joco.homeserver.hu/vgalessons/lesson6.html)
 		// up to the 0..255 expected by SDL.
-		#define DARKEN(c) clamp(((int)(c) - 255 + brightness), 0, 255)
-		palette->colors[i].r = (uint8_t)clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
-		palette->colors[i].g = (uint8_t)clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
-		palette->colors[i].b = (uint8_t)clamp(DARKEN(*(palette_ptr++)) << 2, 0, 255 );
+#define DARKEN( c ) clamp(((int)(c) - 255 + brightness), 0, 255)
+		palette->colors[i].r = (uint8_t) clamp( DARKEN( *(palette_ptr++)) << 2, 0, 255 );
+		palette->colors[i].g = (uint8_t) clamp( DARKEN( *(palette_ptr++)) << 2, 0, 255 );
+		palette->colors[i].b = (uint8_t) clamp( DARKEN( *(palette_ptr++)) << 2, 0, 255 );
 	}
 	SDL_SetSurfacePalette( surface, palette );
 }
