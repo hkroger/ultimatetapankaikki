@@ -11,16 +11,12 @@ static SDL_Palette *palette;
 bool tk_port_quit_flag = false;
 uint32_t tk_port_debug = 0;
 
-#ifdef TK_PORT_POSIX
-static struct timespec timer_zero;
-#endif
+static uint64_t timer_zero;
+#define TK_PORT_NSEC_PER_SEC 1000000000L
+
 #ifdef TK_PORT_MAC
-
 #include <mach/mach_time.h>
-
 static mach_timebase_info_data_t timer_timebase_info;
-static uint64_t timer_zero = 0;
-
 #endif
 
 static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
@@ -95,7 +91,9 @@ static void tk_port_init_time()
     SDL_AddTimer( 1000 / target_frames, tk_port_update_framecount, NULL );
 
 #ifdef TK_PORT_POSIX
-    clock_gettime(CLOCK_MONOTONIC, &timer_zero);
+    struct timespec tv;
+    clock_gettime(CLOCK_MONOTONIC, &tv);
+    timer_zero = tv.tv_sec * TK_PORT_NSEC_PER_SEC + tv.tv_nsec;
 #endif
 #ifdef TK_PORT_MAC
     mach_timebase_info( &timer_timebase_info );
@@ -268,18 +266,15 @@ void tk_port_sleep( int msec )
  * A clock that returns wallclock values in "vintage time", which are arbitrary ticks.
  * @return integer describing the current time.
  */
-#define TK_PORT_NSEC_PER_SEC 1000000000L
-
 static uint64_t tk_port_nanoclock()
 {
 #if defined(TK_PORT_MAC)
     uint64_t now = mach_absolute_time();
     return (now - timer_zero) * timer_timebase_info.numer / timer_timebase_info.denom;
 #elif defined(TK_PORT_POSIX)
-    // TODO: This code is untested!
     struct timespec now;
     clock_gettime(CLOCK_MONOTONIC, &now);
-    return ( now.tv_sec - timer_zero.tv_sec ) * TK_PORT_NSEC_PER_SEC + ( now.tv_nsec - timer_zero.tv_nsec );
+    return (now.tv_sec * TK_PORT_NSEC_PER_SEC + now.tv_nsec) - timer_zero;
 #else
 #error No nanoclock
 #endif
