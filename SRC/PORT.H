@@ -5,7 +5,7 @@
 
 // openwatcom (https://github.com/open-watcom/owp4v1copy/blob/master/bld/hdr/watcom/time.mh#L94)
 // defines it as 1000.
-#define VINTAGE_CLOCKS_PER_SEC 1000
+#define VINTAGE_CLOCKS_PER_SEC 22
 
 #if defined (__APPLE__) && defined (__MACH__)
 #define TK_PORT_MAC
