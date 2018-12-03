@@ -85,6 +85,8 @@ static int tk_port_init_graphics()
     memset( screen, 0, 320 * 200 );
     // I mean, the first 768 bytes of `screen` are zero...
     tk_port_set_palette( screen, 0 );
+
+    return 0;
 }
 
 static void tk_port_init_time()
