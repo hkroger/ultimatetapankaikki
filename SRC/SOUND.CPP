@@ -12,6 +12,7 @@ struct _MIDASmodule {
     Mix_Music *mix_music;
 };
 
+static bool started = false;
 
 int MIDASstartup( void )
 {
@@ -22,35 +23,42 @@ int MIDASstartup( void )
     }
     if ( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 1024 ) == -1 )
     {
+        Mix_Quit();
         printf( "Error initializing mixer API: %s\n", Mix_GetError());
         return false;
     }
+    started = true;
     return true;
 }
 
 int MIDASinit( void )
 {
+    if (!started) return false;
     return true;
 }
 
 int MIDASsetTimerCallbacks( uint16_t rate, int displaySync, void (*preVR)(), void (*immVR)(), void (*inVR)())
 {
+    if (!started) return false;
     return true;
 }
 
 int MIDASopenChannels( int numChannels )
 {
+    if (!started) return false;
     Mix_AllocateChannels( numChannels );
     return true;
 }
 
 int MIDASallocAutoEffectChannels( unsigned numChannels )
 {
+    if (!started) return false;
     return true;
 }
 
 int MIDASclose( void )
 {
+    if (!started) return false;
     Mix_CloseAudio();
     Mix_Quit();
     return true;
@@ -58,6 +66,7 @@ int MIDASclose( void )
 
 MIDASsample MIDASloadWaveSample( const char *fileName, int loopSample )
 {
+    if (!started) return NULL;
     MIDASsample smp = static_cast<MIDASsample>(calloc( 1, sizeof( _MIDASsample )));
     Mix_Chunk *chunk = Mix_LoadWAV( fileName );
     if ( !chunk )
@@ -72,6 +81,7 @@ MIDASsample MIDASloadWaveSample( const char *fileName, int loopSample )
 
 MIDASmodule MIDASloadModule( const char *fileName )
 {
+    if (!started) return NULL;
     MIDASmodule mod = static_cast<MIDASmodule>(calloc( 1, sizeof( _MIDASmodule )));
     Mix_Music *music = Mix_LoadMUS( fileName );
     if ( !music )
@@ -86,6 +96,7 @@ MIDASmodule MIDASloadModule( const char *fileName )
 MIDASsamplePlayHandle
 MIDASplaySample( MIDASsample sample, unsigned channel, int priority, unsigned rate, unsigned volume, int panning )
 {
+    if (!started) return 0;
     int mix_chan = Mix_PlayChannel( -1, sample->mix_chunk, 0 );
     if ( mix_chan == -1 )
     {
@@ -107,6 +118,7 @@ MIDASplaySample( MIDASsample sample, unsigned channel, int priority, unsigned ra
 
 MIDASmodulePlayHandle MIDASplayModule( MIDASmodule module, int loopSong )
 {
+    if (!started) return 0;
     Mix_HaltMusic();
     if ( Mix_PlayMusic( module->mix_music, loopSong ? -1 : 0 ) != 0 )
     {
@@ -118,12 +130,14 @@ MIDASmodulePlayHandle MIDASplayModule( MIDASmodule module, int loopSong )
 
 int MIDASstopModule( MIDASmodulePlayHandle playHandle )
 {
+    if (!started) return true;
     Mix_HaltMusic();
     return true;
 }
 
 int MIDASsetMusicVolume( MIDASmodulePlayHandle playHandle, unsigned volume )
 {
+    if (!started) return true;
     Mix_VolumeMusic( volume );  // TODO: is the range of MIDAS' volume 0..127?
     return true;
 }

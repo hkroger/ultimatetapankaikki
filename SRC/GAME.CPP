@@ -200,7 +200,10 @@ void do_all()
         */
         std::cout << std::endl;
     }
-    else error( "Error in MIDAS startup !!!\n" );
+    else
+    {
+        warn("Could not start MIDAS, starting without sounds\n");
+    }
     k.init( 0 );
     std::cout << "Keyboard handler initialized\n";
     std::cout << "Loading fonts";
