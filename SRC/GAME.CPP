@@ -270,6 +270,12 @@ void free_all()
 int check_place( int x, int y, int size )
 {
     int a, ret = 0;
+
+    // Check that the object fits to level vertically...
+    if ( ( ( y + size ) / 20 ) >= level_y_size ) ret = 1;
+    // ... and horizontally
+    if ( ( ( x + size ) / 20 ) >= level_x_size ) ret = 1;
+
     if ( level[( y / 20 ) *level_x_size + ( x / 20 ) ].type!= FLOOR ) ret = 1;
     if ( level[( ( y + size )  / 20 ) *level_x_size + ( x / 20 ) ].type!= FLOOR ) ret = 1;
     if ( level[( y / 20 ) *level_x_size + ( ( x + size )  / 20 ) ].type!= FLOOR ) ret = 1;
