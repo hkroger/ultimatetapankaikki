@@ -127,9 +127,13 @@ void tk_port_exit()
     SDL_Quit();
 }
 
-static uint8_t tk_port_remap_key( SDL_Keycode keycode, SDL_Scancode scancode )
+static uint8_t tk_port_remap_key( SDL_Keycode keycode )
 {
-    // TODO: add all special characters here
+    return keycode & 0xFF;
+}
+
+static uint8_t tk_port_get_scancode_index( SDL_Keycode keycode, SDL_Scancode scancode )
+{
     switch (scancode)
     {
         case SDL_SCANCODE_LCTRL:
@@ -149,6 +153,12 @@ static uint8_t tk_port_remap_key( SDL_Keycode keycode, SDL_Scancode scancode )
         default:
             break;
     }
+
+    if ( keycode >= 'a' && keycode <= 'z' )
+    {
+        return keycode & 0xDF;
+    }
+
     switch (keycode)
     {
         case SDLK_ESCAPE:
@@ -207,10 +217,13 @@ void tk_port_event_tick( void )
                     tk_port_quit_flag = true;
                     exit( 42 );
                 }
-                uint8_t tk_key = tk_port_remap_key( e.key.keysym.sym, e.key.keysym.scancode );
-                k.state[tk_key] = down;
+
+                k.state[tk_port_get_scancode_index( e.key.keysym.sym, e.key.keysym.scancode )] = down;
+
                 if ( down )
                 {
+                    const uint8_t tk_key = tk_port_remap_key( e.key.keysym.sym );
+
                     if ( tk_port_debug )
                     {
                         printf( "key down: %04x (tk = %d)\n", e.key.keysym.scancode, tk_key );
