@@ -13,9 +13,19 @@ endif()
 find_package(SDL2 REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -funsigned-char -Wall -Wno-pedantic -Wno-sign-compare")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+if (NOT WIN32)
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -funsigned-char -Wall -Wno-pedantic -Wno-sign-compare")
+endif()
 
 file(GLOB SOURCES SRC/*.H SRC/*.CPP SRC/EFP/*.H SRC/EFP/*.CPP SRC/ERROR/*.H SRC/ERROR/*.CPP SRC/IPX/*.H SRC/IPX/*.CPP)
+
+if (WIN32)
+	file(GLOB MSVC_SOURCES SRC/MSVC/*.H SRC/MSVC/*.CPP)
+	list(APPEND SOURCES ${MSVC_SOURCES})
+endif()
+
 add_executable(tk3 ${SOURCES})
 target_include_directories(tk3 SYSTEM PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/SRC ${SDL2_INCLUDE_DIR} ${SDL2_MIXER_INCLUDE_DIRS})
 target_link_libraries(tk3 ${SDL2_LIBRARY} ${SDL2_MIXER_LIBRARIES})

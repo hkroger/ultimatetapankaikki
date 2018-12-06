@@ -19,6 +19,10 @@
 #include <libgen.h>
 #endif
 
+#ifdef TK_PORT_MSVC
+#include "MSVC/MISCFUNC_MSVC.H"
+#endif
+
 void change_name( int num )
 {
     int x;
@@ -543,8 +547,7 @@ void explo( int x, int y, int size, int index )
  */
 void list_files( int *no, vile *filelist, const char *wildcard, int type )
 {
-    // TODO: Add Windows implementation? (FindFirstFile/FindNextFile)
-#ifdef TK_PORT_POSIXISH
+#if defined(TK_PORT_POSIXISH)
     glob_t globp;
     glob(wildcard, 0, NULL, &globp);
     for (int i = 0; i < globp.gl_pathc; i++) {
@@ -561,9 +564,13 @@ void list_files( int *no, vile *filelist, const char *wildcard, int type )
         }
     }
     globfree(&globp);
+#elif defined(TK_PORT_MSVC)
+    return list_files_msvc( no, filelist, wildcard, type );
 #endif
 }
 
+#ifndef TK_PORT_MSVC
+// windows.h has these already
 char *strlwr( char *str )
 {
     char *p = str;
@@ -589,3 +596,4 @@ char *strupr( char *str )
 
     return str;
 }
+#endif

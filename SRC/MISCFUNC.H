@@ -15,6 +15,9 @@ void explo( int x, int y, int size, int index);
 void list_files( int *no, vile *filelist, const char *wildcard, int type );
 #define _A_SUBDIR 0
 #define _A_NORMAL 1
+#ifndef TK_PORT_MSVC
+// windows.h has these already
 char *strlwr( char *str );
 char *strupr( char *str );
+#endif
 #endif

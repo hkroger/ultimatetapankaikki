@@ -10,10 +10,11 @@
 #if defined (__APPLE__) && defined (__MACH__)
 #define TK_PORT_MAC
 #define TK_PORT_POSIXISH
-#endif
-#if defined (__unix__)
+#elif defined (__unix__)
 #define TK_PORT_POSIX
 #define TK_PORT_POSIXISH
+#elif defined (_WINDOWS)
+#define TK_PORT_MSVC
 #endif
 
 int tk_port_init( void );

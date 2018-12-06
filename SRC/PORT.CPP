@@ -1,5 +1,8 @@
 #define _PORT_IMPL
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <SDL.h>
 #include "PORT.H"
 #include "GLOBVAR.H"
@@ -13,6 +16,7 @@ uint32_t tk_port_debug = 0;
 
 static uint64_t timer_zero;
 #define TK_PORT_NSEC_PER_SEC 1000000000L
+#define TK_PORT_NSEC_PER_MSEC 1000000L
 
 #ifdef TK_PORT_MAC
 #include <mach/mach_time.h>
@@ -275,6 +279,9 @@ static uint64_t tk_port_nanoclock()
     struct timespec now;
     clock_gettime(CLOCK_MONOTONIC, &now);
     return (now.tv_sec * TK_PORT_NSEC_PER_SEC + now.tv_nsec) - timer_zero;
+#elif defined(TK_PORT_MSVC)
+    // Not very accurate and wraps over if running for ~49 days but works
+    return TK_PORT_NSEC_PER_MSEC * SDL_GetTicks();
 #else
 #error No nanoclock
 #endif

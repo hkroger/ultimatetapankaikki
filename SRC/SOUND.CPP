@@ -1,4 +1,7 @@
 #include <cstddef>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <SDL_mixer.h>
 #include <SDL_log.h>
 #include "SOUND.H"
