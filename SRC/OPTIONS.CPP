@@ -211,7 +211,7 @@ void multip_options_scr( int opt, const char *filename )
 
 void player_options()
 {
-    int yoffs = ( 15*num_player_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
+    int yoffs = ( 15*num_player_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_player_options, "EFPS/COOL.EFP" );
     k.state[28] = 0;
@@ -290,7 +290,7 @@ void player_options()
 
 void game_options()
 {
-    int yoffs = ( 15*num_game_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
+    int yoffs = ( 15*num_game_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_game_options, "EFPS/COOL.EFP" );
     k.state[28] = 0;
@@ -371,7 +371,7 @@ void game_options()
 
 void sound_options()
 {
-    int yoffs = ( 15*num_sound_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
+    int yoffs = ( 15*num_sound_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     char text[30], text2[30];
     fadeout( virbuff, pal );
     options_scr( num_sound_options, "EFPS/SUBBARI.EFP" );
@@ -462,7 +462,7 @@ void sound_options()
 int deathmatch_options()
 {
     int start=0;
-    int yoffs = ( 15*num_deathmatch_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
+    int yoffs = ( 15*num_deathmatch_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_deathmatch_options, "EFPS/COOL.EFP" );
     k.state[28] = 0;
@@ -535,7 +535,7 @@ int deathmatch_options()
 
 void multiplayer_options()
 {
-    int yoffs = ( 15*num_multip_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
+    int yoffs = ( 15*num_multip_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     int dontfade = 0;
     char text[50];
     fadeout( virbuff, pal );
@@ -715,7 +715,7 @@ void multiplayer_options()
 
 void options()
 {
-    int yoffs = ( 15*num_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock;
+    int yoffs = ( 15*num_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_options, "EFPS/COOL.EFP" );
     k.state[28] = 0;
