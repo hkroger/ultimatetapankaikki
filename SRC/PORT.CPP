@@ -281,7 +281,7 @@ static uint64_t tk_port_nanoclock()
     return (now.tv_sec * TK_PORT_NSEC_PER_SEC + now.tv_nsec) - timer_zero;
 #elif defined(TK_PORT_MSVC)
     // Not very accurate and wraps over if running for ~49 days but works
-    return TK_PORT_NSEC_PER_MSEC * SDL_GetTicks();
+    return static_cast<uint64_t>(SDL_GetTicks()) * TK_PORT_NSEC_PER_MSEC;
 #else
 #error No nanoclock
 #endif
