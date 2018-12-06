@@ -36,15 +36,11 @@ char suicidetexts[][MAX_MESSAGE_LENGTH-20]=
   "%s ain't EF..."
 };
 
-
-
-// TODO NETWORK
-#define sendipx(...) ((void)0)
+void sendipx(int dest, int type, ...);
 
 void Message_board::add_message(char msg[])
 {
  int a;
- msg[MAX_MESSAGE_LENGTH-1] = 0;
 
  if (messages<MAX_MESSAGES) strcpy(message[messages++], msg);
     else

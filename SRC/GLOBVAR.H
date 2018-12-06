@@ -4,14 +4,14 @@
 #include "PORT.H"
 #include "KEYB.H"
 #include "DEFINES.H"
-#include "IPXDEFS.H"
+#include "NETDEFS.H"
 #include "TYPES.H"
 #include "CLASSES.H"
 #include "SOUND.H"
 
 extern int saved_game_mode;
 extern int saved_killing_mode;
-extern int ipxavail;
+extern int net_avail;
 extern int BACK_TO_MENU;
 extern int scr_y_size, GAME_MODE, NETWORK_MODE;
 extern int KILLING_MODE, SHOW_ENEMIES, target_cost;// tähtäimen hinta

@@ -3,7 +3,7 @@
 #include "TYPES.H"
 #include "CLASSES.H"
 
-#define sendipx(...) ((void)0)
+void sendipx(int dest, int type, ...);
 
 void new_body_part( int x, int y, int angle, int speed, int num )
 {

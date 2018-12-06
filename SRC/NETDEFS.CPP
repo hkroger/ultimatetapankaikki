@@ -1,8 +1,7 @@
-#include "IPX/IPX.H"
-#include "IPXDEFS.H"
+#include "NET/NET.H"
+#include "NETDEFS.H"
 #include "CLASSES.H"
 
-word SOCKET = 0x869C;// DOOM Socket
 int IPXMSGLEN[] =
 {
     1,  // END
@@ -28,5 +27,7 @@ int IPXMSGLEN[] =
     0, //  NEWBULLET
     0, // Bööning
     0, // messsssssaaaaaaaaaaage
-    0 // saund
+    0, // saund
+    0, // NEWPLAYERDATA
+    0  // PLAYERDISCONNECTED
 };

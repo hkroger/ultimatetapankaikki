@@ -1,7 +1,7 @@
-#ifndef __IPX__DEFS__
-#define __IPX__DEFS__
+#ifndef __NET__DEFS__
+#define __NET__DEFS__
 
-#include "IPX/IPX.H"
+#include "NET/NET.H"
 
 #define IPX_END 0
 #define IPX_SERVERSEARCH 1
@@ -27,11 +27,11 @@
 #define IPX_BURNING 21
 #define IPX_MESSAGE 22
 #define IPX_SOUND 23
+#define IPX_NEWPLAYERDATA 24
+#define IPX_PLAYERDISCONNECTED 25
 
 #define SERVER 1
 #define CLIENT 0
-#define RECEIVERS 16
 
-extern word SOCKET;// DOOM Socket
 extern int IPXMSGLEN[];
 #endif

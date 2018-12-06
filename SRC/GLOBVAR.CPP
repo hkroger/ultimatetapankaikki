@@ -1,5 +1,5 @@
 #include "DEFINES.H"
-#include "IPXDEFS.H"
+#include "NETDEFS.H"
 #include "TYPES.H"
 #include "CLASSES.H"
 #include <ctime>
@@ -8,7 +8,7 @@
 
 int BACK_TO_MENU = 0;
 int scr_y_size = 200;
-int ipxavail = 0;
+int net_avail = 0;
 int GAME_MODE = 0, NETWORK_MODE = CLIENT;
 int KILLING_MODE = 0;
 int SHOW_ENEMIES = 0;

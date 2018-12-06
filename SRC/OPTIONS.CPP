@@ -10,10 +10,9 @@
 #include "DRAW.H"
 #include "WRITE.H"
 
-// TODO NETWORK
-#define setup_ipx(...) ((void)0)
-#define desetup_ipx(...) ((void)0)
-#define select_server(...) 0
+void setup_ipx();
+void desetup_ipx();
+int select_server();
 
 extern void game();
 
@@ -689,7 +688,7 @@ void multiplayer_options()
             {
                 if (GAME_MODE==SPLIT_SCREEN)
                 {
-                    if (ipxavail) GAME_MODE=NETWORK;
+                    if (net_avail) GAME_MODE=NETWORK;
                 }
                 else GAME_MODE=SPLIT_SCREEN;
              saved_game_mode=GAME_MODE;

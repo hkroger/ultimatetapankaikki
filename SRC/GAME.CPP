@@ -15,19 +15,16 @@
 
 /*************************NET STUFF **************************************/
 #include "INT/INT.H"
-#include "IPX/IPX.H"
+#include "NET/NET.H"
 
-#include "IPXDEFS.H"
+#include "NETDEFS.H"
 
 int ipxofs[MAX_PLAYERS];
 char ipxstream[MAX_PLAYERS][MAXDATASIZE];
 struct nodeaddr serveraddr;
 char servername[10];
-// send defined here overrides send() and bad things happen
-//struct packet *send, *rec[RECEIVERS];
-unsigned short sendl, sendseg, recl[RECEIVERS], recseg[RECEIVERS];
+struct packet *send, *rec[RECEIVERS];
 
-#define sendipx(...) ((void)0)
 /************************* NET STUFF **************************************/
 #include "MISCFUNC.H"
 #include "WRITE.H"// tosi paskoja rutiineja !!!
@@ -96,69 +93,51 @@ void load_tables()
 }
 */
 
-// TODO NETWORK
-#define allocipxmem(...) ((void)0)
-#if 0
-void allocipxmem()
+void alloc_net_mem()
 {
     int a;
-    send = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
+    send = ( struct packet * ) malloc( sizeof( struct packet ) );
     if ( send == NULL )
     {
         std::cout << "Can't alloc lowmem!\n" << std::endl;
-        ipxavail = 0;
+        net_avail = 0;
         return;
     }
-    sendl = lsel;
-    sendseg = lseg;
     for ( a = 0; a < RECEIVERS; a ++  )
     {
-        rec[a] = ( struct packet * ) MK_FP( getlowmem( sizeof( struct packet )  / 16 + 1 ), 0 );
+        rec[a] = ( struct packet * ) malloc( sizeof( struct packet ) );
         if ( rec[a] == NULL )
         {
             std::cout << "Can't alloc lowmem!\n"<< std::endl;
-            ipxavail = 0;
+            net_avail = 0;
             return;
         }
-        recl[a] = lsel;
-        recseg[a] = lseg;
     }
 }
-#endif
 
-// TODO NETWORK
-#define freeipxmem(...)
-#if 0
-void freeipxmem()
+void free_net_mem()
 {
     int a;
-    if (ipxavail)
+    if ( net_avail )
     {
-        freelowmem( sendl );
+        free( send );
         for ( a = 0; a < RECEIVERS; a ++  )
         {
-            freelowmem( recl[a] );
-            recseg[a] = lseg;
+            free( rec[a] );
         }
     }
 }
-#endif
 
 void do_all()
 {
     int a;
     char text[30];
     std::cout << "\n                ================== Starting TK =================\n\n";
-    if ( initipx()  )
+    if ( !initnet()  )
     {
-        /*
-        char str[256];
-        std::cout << "IPX protocol detected!\n";
-        getlocaladdress();
-        printf( "IPX address: %s\n", decode_localaddress( str, localadd )  );
-        ipxavail = 1;
-        allocipxmem();
-        */
+        std::cout << "TCP/IP stack initialized\n";
+        net_avail = 1;
+        alloc_net_mem();
     }
     else std::cout << "IPX _NOT_ detected!\n";
     if ( MIDASstartup()  )
@@ -263,7 +242,8 @@ void do_all()
 void free_all()
 {
     MIDASclose();
-    freeipxmem();
+    free_net_mem();
+    deinitnet();
     k.deinit();
 }
 
@@ -873,6 +853,8 @@ void fire_lights()
             }
 }
 
+void sendipx(int dest, int type, ...);
+
 void chk_burn()
 {
     int a,b;
@@ -1043,11 +1025,6 @@ void victory()
         }
 }
 
-// TODO NETWORK
-#define do_client_shit(...) ((void)0)
-#define do_server_shit(...) ((void)0)
-#define chk_for_loosers(...) ((void)0)
-#if 0
 void flushipx()
 {
     int a,b;
@@ -1062,8 +1039,7 @@ void flushipx()
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
          send->data[b]=ipxstream[a][b];
-        while (send->ecb.inuse);
-        sendpacket( sendseg, player[a].ipxnode, send, (word)(ipxofs[a]+1) );
+        sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
       }
@@ -1086,8 +1062,7 @@ void docheckflush()
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
          send->data[b]=ipxstream[a][b];
-        while (send->ecb.inuse);
-        sendpacket( sendseg, player[a].ipxnode, send, (word)(ipxofs[a]+1) );
+        sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
     }
@@ -1095,6 +1070,30 @@ void docheckflush()
 //  message_board.add_message("flushed2...");
 }
 
+static void serialize_player_data( char player_index, int* data_index, char* buffer )
+{
+    int a;
+    char *str;
+    buffer[(*data_index)++] = player_index;
+    str = (char *)&player[player_index].x;
+    for (a = 0;a < sizeof(float);a++) buffer[(*data_index)++] = *(str++);
+    str = (char *)&player[player_index].y;
+    for (a = 0;a < sizeof(float);a++) buffer[(*data_index)++] = *(str++);
+    str = (char *)&player[player_index].rangle;
+    for (a = 0;a < sizeof(int);a++) buffer[(*data_index)++] = *(str++);
+    buffer[(*data_index)++] = (char)player[player_index].color;
+    str = (char *)&player[player_index].burning;
+    for (a = 0;a < sizeof(int);a++) buffer[(*data_index)++] = *(str++);
+    str = (char *)&player[player_index].node;
+    for (a = 0;a < sizeof(struct nodeaddr);a++) buffer[(*data_index)++] = *(str++);
+    for (a = 0;a < 10;a++) buffer[(*data_index)++] = player[player_index].name[a];
+    str = (char *)&player[player_index].ANIM;
+    for (a = 0;a < sizeof(int);a++) buffer[(*data_index)++] = *(str++);
+    str = (char *)&player[player_index].player_kills;
+    for (a = 0;a < sizeof(int);a++) buffer[(*data_index)++] = *(str++);
+    str = (char *)&player[player_index].DEAD;
+    for (a = 0;a < sizeof(int);a++) buffer[(*data_index)++] = *(str++);
+}
 
 void sendipxnow( struct nodeaddr *node, int type, ... )
 {
@@ -1105,11 +1104,9 @@ void sendipxnow( struct nodeaddr *node, int type, ... )
     char *p;
 
 //  TEMP VARIABLES END
-    auto va_list ap;
+    va_list ap;
     va_start( ap, type );
 
-    if (send->ecb.inuse)
-     while (send->ecb.inuse);
     switch( type )
     {
         case IPX_GAMEDATA:    send->data[a++] = ( char ) type;
@@ -1122,30 +1119,15 @@ void sendipxnow( struct nodeaddr *node, int type, ... )
                               for (d=0;d<MAX_PLAYERS;d++)
                               if ((player[d].enabled) || (d==b))
                               {
-                              send->data[a++] = ( char ) d;
-                              str = (char *) &player[d].x;
-                              for (c=0;c<sizeof(float);c++) send->data[a++]=*(str++);
-                              str = (char *) &player[d].y;
-                              for (c=0;c<sizeof(float);c++) send->data[a++]=*(str++);
-                              str = (char *) &player[d].rangle;
-                              for (c=0;c<sizeof(int);c++) send->data[a++]=*(str++);
-                              send->data[a++]=(char) player[d].color;
-                              str = (char *) &player[d].burning;
-                              for (c=0;c<sizeof(int);c++) send->data[a++]=*(str++);
-                              str = (char *) &player[d].ipxnode;
-                              for (c=0;c<sizeof(struct nodeaddr);c++) send->data[a++]=*(str++);
-                              for (c=0;c<10;c++) send->data[a++]=player[d].name[c];
-                              str = (char *) &player[d].ANIM;
-                              for (c=0;c<sizeof(int);c++) send->data[a++]=*(str++);
-                              str = (char *) &player[d].player_kills;
-                              for (c=0;c<sizeof(int);c++) send->data[a++]=*(str++);
-                              str = (char *) &player[d].DEAD;
-                              for (c=0;c<sizeof(int);c++) send->data[a++]=*(str++);
+                                  serialize_player_data(d, &a, send->data);
                               }
                               message_board.add_message("Gamedata sent");
                               break;
-/*      case IPX_NEWPLAYERDATA:
-                              break;*/
+        case IPX_NEWPLAYERDATA:send->data[a++] = (char)type;
+                              // b = index of new player
+                              b = va_arg(ap, int);
+                              serialize_player_data(b, &a, send->data);
+                              break;
         case IPX_IMJOININGNOW:send->data[a++] = ( char ) type;
                               str = va_arg( ap, char *);
                               for (b=0;b<10;b++)
@@ -1198,7 +1180,7 @@ void sendipxnow( struct nodeaddr *node, int type, ... )
         default:error("sendipxnow: message %d not yet implemented\n", type );
     }
     send->data[a++] = IPX_END;
-    sendpacket( sendseg, *node, send, (word)(a+1) );
+    sendpacket( *node, send, (word)(a+1) );
     va_end( ap );
 }
 
@@ -1341,6 +1323,13 @@ void sendipx( int dest, int type, ... )
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
         break;
 
+        case IPX_PLAYERDISCONNECTED:
+        ipxstream[dest][ipxofs[dest] ++ ] = (char)type;
+        // d = player index
+        d=va_arg( ap,char );
+        ipxstream[dest][ipxofs[dest] ++ ] = d;
+        break;
+
         default:error( "sendipx: Command not implemented yet!\n" );
     }
     docheckflush();
@@ -1349,24 +1338,25 @@ void sendipx( int dest, int type, ... )
 
 void setup_ipx()
 {
+    const unsigned int port = 8099;
     int a;
-    if ( opensocket( 0, SOCKET) )
-        error( "setup_ipx: Couldn't open socket (%Xh)\n", SOCKET );
     for ( a = 0; a < MAX_PLAYERS; a ++  ) ipxofs[a] = 0;
     if ( NETWORK_MODE == SERVER )
     {
         strcpy( servername, name1 );
-        for (a=0;a<6;a++)
-         serveraddr.node[a]=localadd->node.node[a];
+        serveraddr.node = 0;
+        if ( createsocket(port) )
+        {
+            error("opensocket: Couldn't open socket (%u)\n", port);
+        }
     }
-    initsendpacket(send,sendseg);
-    for (a=0;a<RECEIVERS;a++)
-     {
-         initreceivepacket(rec[a],recseg[a]);
-         listenforpacket(recseg[a]);
-     }
-    for (a=0;a<MAX_PLAYERS;a++)
-     ipxofs[a]=0;
+    else if (NETWORK_MODE == CLIENT)
+    {
+        if ( connectsocket(port) )
+        {
+            error("opensocket: Couldn't open socket (%u)\n", port);
+        }
+    }
 }
 
 void desetup_ipx()
@@ -1377,10 +1367,7 @@ void desetup_ipx()
     flushipx();
     if ((GAME_MODE==NETWORK)&&(NETWORK_MODE==SERVER))
         sendipxnow(&n,IPX_SERVERSHUTDOWN);
-    for (a=0;a<RECEIVERS;a++)
-     if (rec[a]->ecb.inuse)
-      cancelpacket(recseg[a]);
-    closesocket( (word) socketid );
+    closesockets();
 }
 
 void server_add_player(char *name,struct nodeaddr *n)
@@ -1390,7 +1377,7 @@ void server_add_player(char *name,struct nodeaddr *n)
 
     for (a=0;a<MAX_PLAYERS && player[a].enabled;a++);
     strcpy(player[a].name,name);
-    memcpy(&player[a].ipxnode,n,sizeof(struct nodeaddr));
+    memcpy(&player[a].node,n,sizeof(struct nodeaddr));
     player[a].DEAD=0;
     player[a].enabled=0;
     memset(player[a].kills,0,DIFF_ENEMIES*4);
@@ -1403,10 +1390,10 @@ void server_add_player(char *name,struct nodeaddr *n)
     player[a].time_since_last_alive=0;
 
     sendipxnow(n,IPX_GAMEDATA,(int)a);
-/*  for (b=1;b<MAX_PLAYERS;b++)
+    for (b=1;b<MAX_PLAYERS;b++)
      if (b!=a)
       if (player[b].enabled)
-       sendipxnow(&player[a].ipxnode,IPX_NEWPLAYERDATA,b,a);*/
+       sendipxnow(&player[b].node,IPX_NEWPLAYERDATA,a);
 }
 
 void do_server_shit()
@@ -1421,8 +1408,10 @@ void do_server_shit()
     char *str;
     int pl;
 
+    acceptconnections();
+
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( rec[a]-> ecb.inuse == 0 )
+    if ( receive(rec, a) )
     {
         data =  - 1;
         ofs = 0;
@@ -1594,8 +1583,7 @@ void do_server_shit()
 
                 case IPX_IMJOININGNOW:
                 pcom[pcoms++]=data;
-                for (b=0;b<6;b++)
-                 n.node[b]=rec[a]->ipx.src.node.node[b];
+                n.node=rec[a]->header.src.node;
                 for(b=0;b<10;b++)
                  buf[b]=rec[a]->data[ofs++];
                 server_add_player(buf,&n);
@@ -1603,8 +1591,7 @@ void do_server_shit()
 
                 case IPX_SERVERSEARCH:
                 pcom[pcoms++]=data;
-                for (b=0;b<6;b++)
-                 n.node[b]=rec[a]->ipx.src.node.node[b];
+                n.node=rec[a]->header.src.node;
                 sendipxnow(&n, IPX_SERVERANSWER,servername);
                 break;
 
@@ -1619,8 +1606,7 @@ void do_server_shit()
 
                 case IPX_JOINREQUEST:
                 pcom[pcoms++]=data;
-                for (b=0;b<6;b++)
-                 n.node[b]=rec[a]->ipx.src.node.node[b];
+                n.node=rec[a]->header.src.node;
                 if (player_amount()<MAX_PLAYERS)
                 // &&(!gamelock))
                     sendipxnow(&n, IPX_JOINACCEPT,1);
@@ -1629,15 +1615,13 @@ void do_server_shit()
 
                 case IPX_SENDLEVELINFO:
                 pcom[pcoms++]=data;
-                for (b=0;b<6;b++)
-                 n.node[b]=rec[a]->ipx.src.node.node[b];
+                n.node=rec[a]->header.src.node;
                 sendipxnow(&n, IPX_LEVELINFO);
                 break;
 
                 case IPX_SENDLEVEL:
                 pcom[pcoms++]=data;
-                for (b=0;b<6;b++)
-                 n.node[b]=rec[a]->ipx.src.node.node[b];
+                n.node=rec[a]->header.src.node;
                 b=rec[a]->data[ofs++];
                 b+=rec[a]->data[ofs++]<<8;
                 sendipxnow(&n, IPX_TRANSMITLEVEL, (int) b);
@@ -1655,9 +1639,35 @@ void do_server_shit()
                 error(buf);
             };
         }
-        listenforpacket( recseg[a] );
+
     }
     flushipx();
+}
+
+static void deserialize_player_data(int* data_index, char* buffer)
+{
+    char *str;
+    int a, pno = buffer[(*data_index)++];
+    if (player[pno].enabled) error("realjoin: IPX_GAMEDATA mismatch detected!\n(player[%d].enabled==1)", pno);
+    str = (char *)&player[pno].x;
+    for (a = 0;a < sizeof(float);a++) str[a] = buffer[(*data_index)++];
+    str = (char *)&player[pno].y;
+    for (a = 0;a < sizeof(float);a++) str[a] = buffer[(*data_index)++];
+    str = (char *)&player[pno].rangle;
+    for (a = 0;a < sizeof(int);a++) str[a] = buffer[(*data_index)++];
+    player[pno].color = buffer[(*data_index)++];
+    str = (char *)&player[pno].burning;
+    for (a = 0;a < sizeof(int);a++) str[a] = buffer[(*data_index)++];
+    str = (char *)&player[pno].node;
+    for (a = 0;a < sizeof(struct nodeaddr);a++) str[a] = buffer[(*data_index)++];
+    for (a = 0;a < 10;a++) player[pno].name[a] = buffer[(*data_index)++];
+    str = (char *)&player[pno].ANIM;
+    for (a = 0;a < sizeof(int);a++) str[a] = buffer[(*data_index)++];
+    str = (char *)&player[pno].player_kills;
+    for (a = 0;a < sizeof(int);a++) str[a] = buffer[(*data_index)++];
+    str = (char *)&player[pno].DEAD;
+    for (a = 0;a < sizeof(int);a++) str[a] = buffer[(*data_index)++];
+    player[pno].enabled = 1;
 }
 
 void do_client_shit()
@@ -1673,7 +1683,7 @@ void do_client_shit()
     int pl;
 
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( rec[a]-> ecb.inuse == 0 )
+    if ( receive(rec, a) )
     {
         data =  - 1;
         ofs = 0;
@@ -1799,6 +1809,17 @@ void do_client_shit()
                 pcom[pcoms++]=data;
                 break;
 
+                case IPX_NEWPLAYERDATA:
+                pcom[pcoms++] = data;
+                deserialize_player_data( &ofs, rec[a]->data );
+                break;
+
+                case IPX_PLAYERDISCONNECTED:
+                pcom[pcoms++] = data;
+                pl = rec[a]->data[ofs++];
+                player[pl].enabled = false;
+                break;
+
                 default:
                 sprintf(buf,"do_client_shit: receiver %d\nunknown client command %d at offset %d\n", a, data,ofs );
                 sprintf(buf2,"Previous commands:\n");
@@ -1811,7 +1832,6 @@ void do_client_shit()
                 error(buf);
             };
         }
-        listenforpacket( recseg[a] );
     }
     sendipx(0,IPX_ALIVE);
     flushipx();
@@ -1839,7 +1859,7 @@ int realjoin()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (rec[a]->ecb.inuse==0)
+            if (receive(rec, a))
             {
                 data =  - 1;
                 ofs = 0;
@@ -1854,27 +1874,7 @@ int realjoin()
                         aplayer[0]->speed=rec[a]->data[ofs++];
                         for (c=0;c<plyers;c++)
                         {
-                            pno=rec[a]->data[ofs++];
-                            if (player[pno].enabled) error("realjoin: IPX_GAMEDATA mismatch detected!\n(player[%d].enabled==1)",pno);
-                            str=(char *)&player[pno].x;
-                            for (b=0;b<sizeof(float);b++) str[b]=rec[a]->data[ofs++];
-                            str=(char *)&player[pno].y;
-                            for (b=0;b<sizeof(float);b++) str[b]=rec[a]->data[ofs++];
-                            str=(char *)&player[pno].rangle;
-                            for (b=0;b<sizeof(int);b++) str[b]=rec[a]->data[ofs++];
-                            player[pno].color=rec[a]->data[ofs++];
-                            str=(char *)&player[pno].burning;
-                            for (b=0;b<sizeof(int);b++) str[b]=rec[a]->data[ofs++];
-                            str=(char *)&player[pno].ipxnode;
-                            for (b=0;b<sizeof(struct nodeaddr);b++) str[b]=rec[a]->data[ofs++];
-                            for (b=0;b<10;b++) player[pno].name[b]=rec[a]->data[ofs++];
-                            str=(char *)&player[pno].ANIM;
-                            for (b=0;b<sizeof(int);b++) str[b]=rec[a]->data[ofs++];
-                            str=(char *)&player[pno].player_kills;
-                            for (b=0;b<sizeof(int);b++) str[b]=rec[a]->data[ofs++];
-                            str=(char *)&player[pno].DEAD;
-                            for (b=0;b<sizeof(int);b++) str[b]=rec[a]->data[ofs++];
-                            player[pno].enabled=1;
+                            deserialize_player_data( &ofs, rec[a]->data );
                         }
                         if (!aplayer[0]->enabled) message_board.add_message("realjoin: something missing...");
                         received=1;
@@ -1884,7 +1884,6 @@ int realjoin()
                         default:ofs+=IPXMSGLEN[data]-1;
                     };
                 }
-                listenforpacket( recseg[a] );
             }
             if ((framecount-s)>target_frames) timeout=1;
         }
@@ -1918,7 +1917,7 @@ int getlevel()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (rec[a]->ecb.inuse==0)
+            if (receive(rec, a))
             {
                 data =  - 1;
                 ofs = 0;
@@ -1939,7 +1938,6 @@ int getlevel()
                         default:ofs+=IPXMSGLEN[data]-1;
                     };
                 }
-                listenforpacket( recseg[a] );
             }
             if ((framecount-s)>target_frames) timeout=1;
         }
@@ -1965,7 +1963,7 @@ int getlevelinfo()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (rec[a]->ecb.inuse==0)
+            if (receive(rec, a))
             {
                 data =  - 1;
                 ofs = 0;
@@ -1987,7 +1985,6 @@ int getlevelinfo()
                         default:ofs+=IPXMSGLEN[data]-1;
                     };
                 }
-                listenforpacket( recseg[a] );
             }
             if ((framecount-s)>target_frames) timeout=1;
         }
@@ -2037,7 +2034,7 @@ int waitfor(int msg,int secs)
     while ((!timeout)&&(yes!=0))
     {
         for ( a = 0; a < RECEIVERS; a ++  )
-        if (rec[a]->ecb.inuse==0)
+        if (receive(rec, a))
         {
             data =  - 1;
             ofs = 0;
@@ -2050,7 +2047,6 @@ int waitfor(int msg,int secs)
                                            else yes=-1;
                 } else ofs+=IPXMSGLEN[data]-1;
             }
-            listenforpacket( recseg[a] );
         }
         if ((framecount-s)>target_frames*secs) timeout=1;
     }
@@ -2098,7 +2094,7 @@ int select_server()
                 servers--;
                 for (c=select;c<servers;c++)
                 {
-                    memcpy(&nodez[c],&nodez[c+1],6);
+                    memcpy(&nodez[c],&nodez[c+1],sizeof(nodeaddr));
                     strcpy(servernames[c],servernames[c+1]);
                 }
             }
@@ -2127,6 +2123,7 @@ int select_server()
                     fadein(virbuff,pal);
                     first=0;
                 }
+        tk_port_event_tick();
         if ( clock() != oclock )
         {
             oclock = clock();
@@ -2139,7 +2136,7 @@ int select_server()
         sendipxnow(&bc,IPX_SERVERSEARCH);
 
         for ( a = 0; a < RECEIVERS; a ++  )
-        if (rec[a]->ecb.inuse==0)
+        if (receive(rec, a))
         {
             data =  - 1;
             ofs = 0;
@@ -2149,17 +2146,16 @@ int select_server()
                 switch ( data )
                 {
                     case IPX_SERVERANSWER:
-                    for (b=0;b<6;b++)
-                     tempnode.node[b]=rec[a]->ipx.src.node.node[b];
+                    tempnode.node=rec[a]->header.src.node;
                     for (b=0;b<10;b++)
                      tempname[b]=rec[a]->data[ofs++];
                     if (servers<10)
                     {
-                        for (b=0;(b<servers)&&(memcmp(&tempnode,&nodez[b],6)!=0);b++);
+                        for (b=0;(b<servers)&&(memcmp(&tempnode,&nodez[b],sizeof(nodeaddr))!=0);b++);
                         if (b==servers)
                         {
                             chg=1;
-                            memcpy(&nodez[servers],&tempnode,6);
+                            memcpy(&nodez[servers],&tempnode,sizeof(nodeaddr));
                             strcpy(servernames[servers],tempname);
                             servers++;
                         }
@@ -2167,16 +2163,15 @@ int select_server()
                     break;
 
                     case IPX_SERVERSHUTDOWN:
-                    for (b=0;b<6;b++)
-                     tempnode.node[b]=rec[a]->ipx.src.node.node[b];
-                    for (b=0;b<servers&&memcmp(&tempnode,&nodez[b],6)!=0;b++);
+                    tempnode.node=rec[a]->header.src.node;
+                    for (b=0;b<servers&&memcmp(&tempnode,&nodez[b],sizeof(nodeaddr))!=0;b++);
                     if (b!=servers)
                     {
                         chg=1;
                         servers--;
                         for (c=b;c<servers;c++)
                          {
-                            memcpy(&nodez[c],&nodez[c+1],6);
+                            memcpy(&nodez[c],&nodez[c+1],sizeof(nodeaddr));
                             strcpy(servernames[c],servernames[c+1]);
                          }
                     }
@@ -2191,7 +2186,6 @@ int select_server()
                     default:ofs+=IPXMSGLEN[data]-1;
                 };
             }
-            listenforpacket( recseg[a] );
         }
         if (k.state[1]) return 0;
     }
@@ -2203,21 +2197,23 @@ int select_server()
 void chk_for_loosers()
 {
     int a,b;
-    char kakka[100];
+    char message[100];
 
     for (a=1;a<MAX_PLAYERS;a++)
      if (player[a].enabled)
       if (player[a].time_since_last_alive++>=40*3)
        {
         player[a].enabled=0;
-        sprintf(kakka,"%s (%d) left the game",player[a].name,player[a].tindex);
+        sprintf(message,"%s (%d) left the game",player[a].name,player[a].tindex);
         for (b=1;b<MAX_PLAYERS;b++)
          if (player[b].enabled)
-          sendipx(b,IPX_MESSAGE,kakka);
-        message_board.add_message(kakka);
+         {
+          sendipx(b, IPX_MESSAGE, message);
+          sendipx(b, IPX_PLAYERDISCONNECTED, (char) a);
+         }
+        message_board.add_message(message);
        }
 }
-#endif
 
 void game()
 {
@@ -2250,10 +2246,7 @@ void game()
      player[0].enabled=1;
      aplayer[0]=&(player[0]);
 
-     /* TODO NETWORK
-     for (a=0;a<6;a++)
-      aplayer[0]->ipxnode.node[a]=localadd->node.node[a];
-     */
+     aplayer[0]->node.node=0;
     }
 
     if ((GAME_MODE!=NETWORK)||

@@ -2,7 +2,7 @@
 #define __TK__CLASSES__
 #include "DEFINES.H"
 #include "TYPES.H"
-#include "IPX/IPX.H"
+#include "NET/NET.H"
 
 class Crate_info
 {
@@ -169,7 +169,7 @@ class Player
     int color;
     int burning;
     Player *Frying_player;
-    nodeaddr ipxnode;
+    nodeaddr node;
     char name[10];
     int HIT, WALK, FIRE, DEAD, KICK, ANIM;
     int K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
