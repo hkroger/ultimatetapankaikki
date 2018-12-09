@@ -627,15 +627,15 @@ void chkeys()
         if ( !aplayer[a]->DEAD )
             aplayer[a]->chk_keys( a );
 
-    if ( k.state[static_cast<int>('m')] )
+    if ( k.state[static_cast<int>('M')] )
     {
         MAP_ON = !MAP_ON ? 1 : 0;
-        k.state[static_cast<int>('m')] = 0;
+        k.state[static_cast<int>('M')] = 0;
     }
-    if ( k.state[static_cast<int>('f')] )
+    if ( k.state[static_cast<int>('F')] )
     {
         FRAMES_ON = FRAMES_ON == 0 ? 1 : 0;
-        k.state[static_cast<int>('f')] = 0;
+        k.state[static_cast<int>('F')] = 0;
     }
     if ( k.state[69] )
     {
