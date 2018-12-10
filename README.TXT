@@ -1,3 +1,32 @@
+Ultimate Tapan Kaikki
+=====================
+
+This is the legendary 1990's game Ultimate Tapan Kaikki, ported to
+SDL2. It runs at least on macOS, Linux, FreeBSD and Windows.
+
+Suomipelit GitHub: https://github.com/suomipelit
+Suomipelit Slack: https://tinyurl.com/suomipelit-slack
+
+
+Build requirements
+------------------
+
+- CMake
+- C++ compiler: At least gcc, clang and Visual Studio are supported
+- Libraries: SDL2, SDL2_mixer
+
+
+Building and running
+--------------------
+
+cmake .
+make
+./tk3
+
+
+
+The original README.TXT follows:
+
 ┌-- -   
 |           ----========== ERROR FREE PRODUCTIONS =========----
                      --=====  proudly presents  =====--
