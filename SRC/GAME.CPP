@@ -23,7 +23,7 @@ int ipxofs[MAX_PLAYERS];
 char ipxstream[MAX_PLAYERS][MAXDATASIZE];
 struct nodeaddr serveraddr;
 char servername[10];
-struct packet *send, *rec[RECEIVERS];
+struct packet *snd, *rec[RECEIVERS];
 
 /************************* NET STUFF **************************************/
 #include "MISCFUNC.H"
@@ -96,8 +96,8 @@ void load_tables()
 void alloc_net_mem()
 {
     int a;
-    send = ( struct packet * ) malloc( sizeof( struct packet ) );
-    if ( send == NULL )
+    snd = ( struct packet * ) malloc( sizeof( struct packet ) );
+    if ( snd == NULL )
     {
         std::cout << "Can't alloc lowmem!\n" << std::endl;
         net_avail = 0;
@@ -120,7 +120,7 @@ void free_net_mem()
     int a;
     if ( net_avail )
     {
-        free( send );
+        free( snd );
         for ( a = 0; a < RECEIVERS; a ++  )
         {
             free( rec[a] );
@@ -900,7 +900,7 @@ int steam_rates[s_r_a] =
 void do_steam()
 {
     int a, b, du = 0, yl1 = scr_y_size / 2, yl2 = scr_y_size*1.5;
-    for ( a = 0; a < Steam_amount; a ++ , du = 0 )
+    for ( a = 0; a < (int)Steam_amount; a ++ , du = 0 )
     {
         if ( steam[a].x > aplayer[0]->scr_x - 160 )
          if ( steam[a].x < aplayer[0]->scr_x + 480 )
@@ -1038,8 +1038,8 @@ void flushipx()
       {
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
-         send->data[b]=ipxstream[a][b];
-        Net::sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
+         snd->data[b]=ipxstream[a][b];
+        Net::sendpacket( player[a].node, snd, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
       }
@@ -1061,8 +1061,8 @@ void docheckflush()
     {
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
-         send->data[b]=ipxstream[a][b];
-        Net::sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
+         snd->data[b]=ipxstream[a][b];
+        Net::sendpacket( player[a].node, snd, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
     }
@@ -1109,83 +1109,84 @@ void sendipxnow( struct nodeaddr *node, int type, ... )
 
     switch( type )
     {
-        case IPX_GAMEDATA:    send->data[a++] = ( char ) type;
+        case IPX_GAMEDATA:    snd->data[a++] = ( char ) type;
                               b = va_arg( ap, int);
                            //   for (c=0;c<6;c++)
                            //    player[b].ipxnode.node[c]=node->node[c];
-                              send->data[a++] = ( char ) player_amount()+1;
-                              send->data[a++] = ( char ) b;
-                              send->data[a++] = ( char ) DEATH_MATCH_SPEED;
+                              snd->data[a++] = ( char ) player_amount()+1;
+                              snd->data[a++] = ( char ) b;
+                              snd->data[a++] = ( char ) DEATH_MATCH_SPEED;
                               for (d=0;d<MAX_PLAYERS;d++)
                               if ((player[d].enabled) || (d==b))
                               {
-                                  serialize_player_data(d, &a, send->data);
+                                  serialize_player_data(d, &a, snd->data);
                               }
-                              message_board.add_message("Gamedata sent");
+                              message_board.add_message((char*)"Gamedata sent");
                               break;
-        case IPX_NEWPLAYERDATA:send->data[a++] = (char)type;
+        case IPX_NEWPLAYERDATA:snd->data[a++] = (char)type;
                               // b = index of new player
                               b = va_arg(ap, int);
-                              serialize_player_data(b, &a, send->data);
+                              serialize_player_data(b, &a, snd->data);
                               break;
-        case IPX_IMJOININGNOW:send->data[a++] = ( char ) type;
+        case IPX_IMJOININGNOW:snd->data[a++] = ( char ) type;
                               str = va_arg( ap, char *);
                               for (b=0;b<10;b++)
-                               send->data[a++]=*(str++);
+                               snd->data[a++]=*(str++);
                               break;
-        case IPX_SERVERSEARCH:send->data[a++] = ( char ) type;
+        case IPX_SERVERSEARCH:snd->data[a++] = ( char ) type;
                               break;
-        case IPX_SERVERANSWER:send->data[a++] = ( char ) type;
+        case IPX_SERVERANSWER:snd->data[a++] = ( char ) type;
                               str = va_arg( ap, char * );
                               for ( b = 0; b < 10; b++ )
-                              send->data[a++ ] = str[b];
+                              snd->data[a++ ] = str[b];
                               break;
-        case IPX_SERVERSHUTDOWN:send->data[a++] = ( char ) type;
+        case IPX_SERVERSHUTDOWN:snd->data[a++] = ( char ) type;
                                 break;
-        case IPX_JOINREQUEST:send->data[a++] = ( char ) type;
+        case IPX_JOINREQUEST:snd->data[a++] = ( char ) type;
                              break;
-        case IPX_SENDLEVELINFO:send->data[a++] = ( char ) type;
+        case IPX_SENDLEVELINFO:snd->data[a++] = ( char ) type;
                                break;
-        case IPX_SENDLEVEL:send->data[a++] = ( char ) type;
+        case IPX_SENDLEVEL:snd->data[a++] = ( char ) type;
                            b = va_arg( ap, int);
-                           send->data[a++] = (char)(b & 255);
-                           send->data[a++] = (char)(b >> 8 );
+                           snd->data[a++] = (char)(b & 255);
+                           snd->data[a++] = (char)(b >> 8 );
                            break;
         case IPX_TRANSMITLEVEL:
-                           send->data[a++] = ( char ) type;
+                           snd->data[a++] = ( char ) type;
                            b = va_arg( ap, int);
-                           send->data[a++] = (char)(b & 255);
-                           send->data[a++] = (char)(b >> 8 );
+                           snd->data[a++] = (char)(b & 255);
+                           snd->data[a++] = (char)(b >> 8 );
                            str=(char*)level;
                            for (c=b*(MAXDATASIZE-24);(c<(b+1)*(MAXDATASIZE-24))&&(c<(12*level_x_size*level_y_size));c++)
-                            send->data[a++] = str[c];
+                            snd->data[a++] = str[c];
 
                            break;
-        case IPX_JOINACCEPT:send->data[a++] = ( char ) type;
+        case IPX_JOINACCEPT:snd->data[a++] = ( char ) type;
                             b = va_arg(ap, int);
-                            send->data[a++] = (char) b;
-                            if (b) message_board.add_message("Accepting player...");
-                              else message_board.add_message("Player NOT accepted...");
+                            snd->data[a++] = (char) b;
+                            if (b) message_board.add_message((char*)"Accepting player...");
+                              else message_board.add_message((char*)"Player NOT accepted...");
 
                             break;
-        case IPX_LEVELINFO: send->data[a++]=(char)type;
-                            send->data[a++]=(char)(level_x_size&255);
-                            send->data[a++]=(char)(level_x_size>>8);
-                            send->data[a++]=(char)(level_y_size&255);
-                            send->data[a++]=(char)(level_y_size>>8);
+        case IPX_LEVELINFO: snd->data[a++]=(char)type;
+                            snd->data[a++]=(char)(level_x_size&255);
+                            snd->data[a++]=(char)(level_x_size>>8);
+                            snd->data[a++]=(char)(level_y_size&255);
+                            snd->data[a++]=(char)(level_y_size>>8);
                             p=(char *)&general_level_info;
-                            for (b=0;b<sizeof(General_level_info);b++)
-                             send->data[a++]=p[b];
+                            for (b=0;b<(int)sizeof(General_level_info);b++)
+                             snd->data[a++]=p[b];
                             break;
-        default:error("sendipxnow: message %d not yet implemented\n", type );
+        default:error("sndipxnow: message %d not yet implemented\n", type );
     }
-    send->data[a++] = IPX_END;
-    Net::sendpacket( *node, send, (word)(a+1) );
+    snd->data[a++] = IPX_END;
+    Net::sendpacket( *node, snd, (word)(a+1) );
     va_end( ap );
 }
 
 void sendipx( int dest, int type, ... )
-{   int c,b,a;
+{   int b,a;
+    unsigned int c;
     char *str;
     char d;
 
@@ -1284,7 +1285,7 @@ void sendipx( int dest, int type, ... )
         ipxstream[dest][ipxofs[dest]++] = (char)type;
         d=va_arg(ap, char);ipxstream[dest][ipxofs[dest]++] = d;
         d=va_arg(ap, char);ipxstream[dest][ipxofs[dest]++] = d;
-        str = (char *) &player[d].player_kills;
+        str = (char *) &player[(int)d].player_kills;
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
         break;
 
@@ -1298,8 +1299,8 @@ void sendipx( int dest, int type, ... )
         ipxstream[dest][ipxofs[dest]++] = (char)type;
         d=va_arg( ap,char );
         ipxstream[dest][ipxofs[dest]++] = d;
-        x = player[d].x;
-        y = player[d].y;
+        x = player[(int)d].x;
+        y = player[(int)d].y;
 
         str = (char *)&x;
         for (c=0;c<sizeof(float);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
@@ -1311,7 +1312,7 @@ void sendipx( int dest, int type, ... )
         ipxstream[dest][ipxofs[dest] ++ ] = (char)type;
         d=va_arg( ap,char );
         ipxstream[dest][ipxofs[dest] ++ ] = d;
-        str = (char *)&player[d].rangle;
+        str = (char *)&player[(int)d].rangle;
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
         break;
 
@@ -1319,7 +1320,7 @@ void sendipx( int dest, int type, ... )
         ipxstream[dest][ipxofs[dest] ++ ] = (char)type;
         d=va_arg( ap,char );
         ipxstream[dest][ipxofs[dest] ++ ] = d;
-        str = (char *)&player[d].ANIM;
+        str = (char *)&player[(int)d].ANIM;
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
         break;
 
@@ -1398,7 +1399,8 @@ void server_add_player(char *name,struct nodeaddr *n)
 
 void do_server_shit()
 {
-    int a,b=0,c,d, data, ofs;
+    int a,b=0,d, data, ofs;
+    unsigned int c;
     int param1,param2,param3,param4;
     struct nodeaddr n;
     char buf[256],buf2[256];
@@ -1439,7 +1441,7 @@ void do_server_shit()
                 pl=rec[a]->data[ofs++];
                 player[pl].burning=rec[a]->data[ofs++];
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=pl)
+                 if ((int)c!=pl)
                   if (player[c].enabled)
                    sendipx(c,IPX_BURNING,(char)pl,(char)player[pl].burning);
                 break;
@@ -1456,7 +1458,7 @@ void do_server_shit()
                 for (c=0;c<sizeof(int);c++) *(str++)=rec[a]->data[ofs++];
                 MIDASplaySample( samplep[param1], MIDAS_CHANNEL_AUTO, 0, param2, get_volume(aplayer[0]->x,aplayer[0]->y,param3,param4),get_pan(aplayer[0]->x,param3));
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=pl)
+                 if ((int)c!=pl)
                   if (player[c].enabled)
                    sendipx(c,IPX_SOUND,(char)0,(char)param1,param2,param3,param4);
                 break;
@@ -1482,7 +1484,7 @@ void do_server_shit()
                 for (c=0;c<sizeof(int);c++) *(str++)=rec[a]->data[ofs++];
 
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=pl)
+                 if ((int)c!=pl)
                   if (player[c].enabled)
                    sendipx(c,IPX_NEWBULLET,(char)0,(int)d,(int)b);
                 break;
@@ -1516,7 +1518,7 @@ void do_server_shit()
                             crate[pl].wake_up_count=1;
                         }
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=b)
+                 if ((int)c!=b)
                   if (player[c].enabled)
                    sendipx(c,IPX_UPDCRATE,0,pl);
                 break;
@@ -1540,7 +1542,7 @@ void do_server_shit()
                 player[pl].x=x;
                 player[pl].y=y;
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=pl)
+                 if ((int)c!=pl)
                   if (player[c].enabled)
                    sendipx(c,IPX_PLYXY,(char)pl);
                 break;
@@ -1553,7 +1555,7 @@ void do_server_shit()
                 str = (char *) &player[b].player_kills;
                 for (c=0;c<sizeof(int);c++) *(str++)=rec[a]->data[ofs++];
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=pl)
+                 if ((int)c!=pl)
                   if (player[c].enabled)
                    sendipx(c,IPX_UPDKILLS,0,b);
                 break;
@@ -1565,7 +1567,7 @@ void do_server_shit()
                 str = (char *)&player[pl].rangle;
                 for (c=0;c<sizeof(int);c++) str[c]=rec[a]->data[ofs++];
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=pl)
+                 if ((int)c!=pl)
                   if (player[c].enabled)
                    sendipx(c,IPX_PLYRANGLE,pl);
                 break;
@@ -1576,7 +1578,7 @@ void do_server_shit()
                 str = (char *)&player[pl].ANIM;
                 for (c=0;c<sizeof(int);c++) str[c]=rec[a]->data[ofs++];
                 for (c=1;c<MAX_PLAYERS;c++)
-                 if (c!=pl)
+                 if ((int)c!=pl)
                   if (player[c].enabled)
                    sendipx(c,IPX_PLYANIM,pl);
                 break;
@@ -1647,7 +1649,8 @@ void do_server_shit()
 static void deserialize_player_data(int* data_index, char* buffer)
 {
     char *str;
-    int a, pno = buffer[(*data_index)++];
+    unsigned int a;
+    int pno = buffer[(*data_index)++];
     if (player[pno].enabled) error("realjoin: IPX_GAMEDATA mismatch detected!\n(player[%d].enabled==1)", pno);
     str = (char *)&player[pno].x;
     for (a = 0;a < sizeof(float);a++) str[a] = buffer[(*data_index)++];
@@ -1672,7 +1675,8 @@ static void deserialize_player_data(int* data_index, char* buffer)
 
 void do_client_shit()
 {
-    int a,b,c,d, data, ofs;
+    int a,b,d, data, ofs;
+    unsigned int c;
     int param1,param2,param3,param4;
 //  struct nodeaddr n;
     char buf[1024],buf2[1024];
@@ -1869,13 +1873,13 @@ int realjoin()
                     {
                         case IPX_GAMEDATA:
                         plyers=rec[a]->data[ofs++];
-                        aplayer[0]=&(player[rec[a]->data[ofs++]]);
+                        aplayer[0]=&(player[(int)rec[a]->data[ofs++]]);
                         aplayer[0]->speed=rec[a]->data[ofs++];
                         for (c=0;c<plyers;c++)
                         {
                             deserialize_player_data( &ofs, rec[a]->data );
                         }
-                        if (!aplayer[0]->enabled) message_board.add_message("realjoin: something missing...");
+                        if (!aplayer[0]->enabled) message_board.add_message((char*)"realjoin: something missing...");
                         received=1;
                         if (rec[a]->data[ofs+1]!=IPX_END) error("realjoin: IPX packet mismatching!");
 
@@ -1884,7 +1888,7 @@ int realjoin()
                     };
                 }
             }
-            if ((framecount-s)>target_frames) timeout=1;
+            if ((int)(framecount-s)>target_frames) timeout=1;
         }
     }
     return 1;
@@ -1938,7 +1942,7 @@ int getlevel()
                     };
                 }
             }
-            if ((framecount-s)>target_frames) timeout=1;
+            if ((int)(framecount-s)>target_frames) timeout=1;
         }
     }
     }
@@ -1977,7 +1981,7 @@ int getlevelinfo()
                         level_y_size =rec[a]->data[ofs++];
                         level_y_size+=rec[a]->data[ofs++]<<8;
                         p=(char *)&general_level_info;
-                        for (b=0;b<sizeof(General_level_info);b++)
+                        for (b=0;b<(int)sizeof(General_level_info);b++)
                          p[b]=rec[a]->data[ofs++];
                         received=1;
                         break;
@@ -1985,7 +1989,7 @@ int getlevelinfo()
                     };
                 }
             }
-            if ((framecount-s)>target_frames) timeout=1;
+            if ((int)(framecount-s)>target_frames) timeout=1;
         }
     }
     return 1;
@@ -2047,7 +2051,7 @@ int waitfor(int msg,int secs)
                 } else ofs+=IPXMSGLEN[data]-1;
             }
         }
-        if ((framecount-s)>target_frames*secs) timeout=1;
+        if ((int)(framecount-s)>target_frames*secs) timeout=1;
     }
     if ((yes<0)||(timeout)) return 0;
                        else return 1;
