@@ -1070,11 +1070,11 @@ void docheckflush()
 //  message_board.add_message("flushed2...");
 }
 
-static void serialize_player_data( char player_index, int* data_index, char* buffer )
+static void serialize_player_data( int player_index, int* data_index, char* buffer )
 {
-    int a;
+    unsigned int a;
     char *str;
-    buffer[(*data_index)++] = player_index;
+    buffer[(*data_index)++] = (char) player_index;
     str = (char *)&player[player_index].x;
     for (a = 0;a < sizeof(float);a++) buffer[(*data_index)++] = *(str++);
     str = (char *)&player[player_index].y;
@@ -1360,7 +1360,7 @@ void setup_ipx()
 }
 
 void desetup_ipx()
-{   int a;
+{
     struct nodeaddr n;
 
     n=Net::BROADCAST();
@@ -1839,9 +1839,8 @@ void do_client_shit()
 
 int realjoin()
 {   int received=0;
-    int a,pno,b,c;
+    int a,c;
     int plyers=0;
-    char *str;
     int timeout,s;
     int data,ofs;
 

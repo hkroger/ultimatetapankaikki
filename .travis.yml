@@ -26,10 +26,12 @@ addons:
     packages:
       - libsdl2-dev
       - libsdl2-mixer-dev
+      - libsdl2-net-dev
   homebrew:
     packages:
       - sdl2
       - sdl2_mixer
+      - sdl2_net
 
 script:
   - mkdir build
