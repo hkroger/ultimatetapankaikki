@@ -1200,9 +1200,9 @@ void sendipx( int dest, int type, ... )
     {
         case IPX_SOUND:
         ipxstream[dest][ipxofs[dest]++] = (char)type;
-        d=va_arg(ap,char);
+        d=va_arg(ap,int);
         ipxstream[dest][ipxofs[dest] ++ ] = d;
-        d=va_arg(ap,char);
+        d=va_arg(ap,int);
         ipxstream[dest][ipxofs[dest] ++ ] = d;
         b= va_arg(ap,int);
         str = (char *) &b;
@@ -1217,7 +1217,7 @@ void sendipx( int dest, int type, ... )
 
         case IPX_NEWBULLET:
         ipxstream[dest][ipxofs[dest]++] = (char)type;
-        d=va_arg(ap,char);
+        d=va_arg(ap,int);
         ipxstream[dest][ipxofs[dest] ++ ] = d;
         b= va_arg(ap,int);
         str = (char *) &b;
@@ -1237,9 +1237,9 @@ void sendipx( int dest, int type, ... )
 
         case IPX_UPDCRATE:
         ipxstream[dest][ipxofs[dest]++] = (char)type;
-        d= va_arg(ap,char);
+        d= va_arg(ap,int);
         ipxstream[dest][ipxofs[dest] ++ ] = d;
-        a = va_arg(ap, char);
+        a = va_arg(ap,int);
 
         str = (char *) &a;
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
@@ -1275,7 +1275,7 @@ void sendipx( int dest, int type, ... )
 
         case IPX_BURNING:
         ipxstream[dest][ipxofs[dest]++] = (char) type;
-        d=va_arg(ap,char);
+        d=va_arg(ap,int);
         c=va_arg(ap,int);
         ipxstream[dest][ipxofs[dest]++] = (char) d;
         ipxstream[dest][ipxofs[dest]++] = (char) (c!=0? 1:0);
@@ -1283,21 +1283,21 @@ void sendipx( int dest, int type, ... )
 
         case IPX_UPDKILLS:
         ipxstream[dest][ipxofs[dest]++] = (char)type;
-        d=va_arg(ap, char);ipxstream[dest][ipxofs[dest]++] = d;
-        d=va_arg(ap, char);ipxstream[dest][ipxofs[dest]++] = d;
+        d=va_arg(ap, int);ipxstream[dest][ipxofs[dest]++] = d;
+        d=va_arg(ap, int);ipxstream[dest][ipxofs[dest]++] = d;
         str = (char *) &player[(int)d].player_kills;
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
         break;
 
         case IPX_SENDCRATES:
         ipxstream[dest][ipxofs[dest] ++ ] = (char)type;
-        c= va_arg(ap,char);
+        c= va_arg(ap,int);
         ipxstream[dest][ipxofs[dest] ++ ] = c;
         break;
 
         case IPX_PLYXY:
         ipxstream[dest][ipxofs[dest]++] = (char)type;
-        d=va_arg( ap,char );
+        d=va_arg( ap,int );
         ipxstream[dest][ipxofs[dest]++] = d;
         x = player[(int)d].x;
         y = player[(int)d].y;
@@ -1310,7 +1310,7 @@ void sendipx( int dest, int type, ... )
 
         case IPX_PLYRANGLE:
         ipxstream[dest][ipxofs[dest] ++ ] = (char)type;
-        d=va_arg( ap,char );
+        d=va_arg( ap,int );
         ipxstream[dest][ipxofs[dest] ++ ] = d;
         str = (char *)&player[(int)d].rangle;
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
@@ -1318,7 +1318,7 @@ void sendipx( int dest, int type, ... )
 
         case IPX_PLYANIM:
         ipxstream[dest][ipxofs[dest] ++ ] = (char)type;
-        d=va_arg( ap,char );
+        d=va_arg( ap,int );
         ipxstream[dest][ipxofs[dest] ++ ] = d;
         str = (char *)&player[(int)d].ANIM;
         for (c=0;c<sizeof(int);c++) ipxstream[dest][ipxofs[dest]++]=*(str++);
@@ -1327,7 +1327,7 @@ void sendipx( int dest, int type, ... )
         case IPX_PLAYERDISCONNECTED:
         ipxstream[dest][ipxofs[dest] ++ ] = (char)type;
         // d = player index
-        d=va_arg( ap,char );
+        d=va_arg( ap,int );
         ipxstream[dest][ipxofs[dest] ++ ] = d;
         break;
 
