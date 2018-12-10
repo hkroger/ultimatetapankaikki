@@ -28,18 +28,21 @@ struct packet
   char data[MAXDATASIZE];
 };
 
-int initnet();
-void deinitnet();
+namespace Net
+{
+bool init();
+void deinit();
 
-int createsocket(const unsigned int port);
-int connectsocket(const unsigned int port);
+int create_server(const unsigned int port);
+int connect_server(const unsigned int port);
 
-void closesockets();
+void close_connections();
 
-void acceptconnections();
+void accept_connections();
 bool receive(struct packet *rec[RECEIVERS], const unsigned int index);
 
 void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len);
 struct nodeaddr BROADCAST();
+}
 
 #endif

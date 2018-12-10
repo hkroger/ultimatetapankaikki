@@ -15,12 +15,15 @@ TCPsocket server_socket;
 SDLNet_SocketSet set;
 std::vector<TCPsocket> sockets(MAX_PLAYERS, nullptr);
 
-int initnet(void)
+namespace Net
+{
+
+bool init()
 {
     if (SDLNet_Init() == -1)
     {
         printf("Error initializing net API: %s\n", SDLNet_GetError());
-        return 1;
+        return false;
     }
 
     set = SDLNet_AllocSocketSet(MAX_PLAYERS);
@@ -28,13 +31,13 @@ int initnet(void)
     if (!set)
     {
         printf("Error allocating socket set: %s\n", SDLNet_GetError());
-        return 2;
+        return false;
     }
 
-    return 0;
+    return true;
 }
 
-void deinitnet()
+void deinit()
 {
     if (set)
     {
@@ -45,7 +48,7 @@ void deinitnet()
     SDLNet_Quit();
 }
 
-int createsocket(const unsigned int port)
+int create_server(const unsigned int port)
 {
     IPaddress ip;
 
@@ -66,7 +69,7 @@ int createsocket(const unsigned int port)
     return 0;
 }
 
-int connectsocket(const unsigned int port)
+int connect_server(const unsigned int port)
 {
     IPaddress ip;
     // TODO: currently server finder works only for
@@ -94,7 +97,7 @@ int connectsocket(const unsigned int port)
     return 0;
 }
 
-void closesockets()
+void close_connections()
 {
     if (server_socket)
     {
@@ -114,7 +117,7 @@ void closesockets()
     std::fill(sockets.begin(), sockets.end(), nullptr);
 }
 
-void acceptconnections()
+void accept_connections()
 {
     TCPsocket newClient = SDLNet_TCP_Accept(server_socket);
 
@@ -191,4 +194,5 @@ void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len)
             disconnect(destnode.node);
         }
     }
+}
 }

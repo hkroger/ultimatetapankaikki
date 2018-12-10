@@ -133,7 +133,7 @@ void do_all()
     int a;
     char text[30];
     std::cout << "\n                ================== Starting TK =================\n\n";
-    if ( !initnet()  )
+    if ( Net::init()  )
     {
         std::cout << "TCP/IP stack initialized\n";
         net_avail = 1;
@@ -243,7 +243,7 @@ void free_all()
 {
     MIDASclose();
     free_net_mem();
-    deinitnet();
+    Net::deinit();
     k.deinit();
 }
 
@@ -1039,7 +1039,7 @@ void flushipx()
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
          send->data[b]=ipxstream[a][b];
-        sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
+        Net::sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
       }
@@ -1062,7 +1062,7 @@ void docheckflush()
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
          send->data[b]=ipxstream[a][b];
-        sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
+        Net::sendpacket( player[a].node, send, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
     }
@@ -1180,7 +1180,7 @@ void sendipxnow( struct nodeaddr *node, int type, ... )
         default:error("sendipxnow: message %d not yet implemented\n", type );
     }
     send->data[a++] = IPX_END;
-    sendpacket( *node, send, (word)(a+1) );
+    Net::sendpacket( *node, send, (word)(a+1) );
     va_end( ap );
 }
 
@@ -1345,14 +1345,14 @@ void setup_ipx()
     {
         strcpy( servername, name1 );
         serveraddr.node = 0;
-        if ( createsocket(port) )
+        if ( Net::create_server(port) )
         {
             error("opensocket: Couldn't open socket (%u)\n", port);
         }
     }
     else if (NETWORK_MODE == CLIENT)
     {
-        if ( connectsocket(port) )
+        if ( Net::connect_server(port) )
         {
             error("opensocket: Couldn't open socket (%u)\n", port);
         }
@@ -1363,11 +1363,11 @@ void desetup_ipx()
 {   int a;
     struct nodeaddr n;
 
-    n=BROADCAST();
+    n=Net::BROADCAST();
     flushipx();
     if ((GAME_MODE==NETWORK)&&(NETWORK_MODE==SERVER))
         sendipxnow(&n,IPX_SERVERSHUTDOWN);
-    closesockets();
+    Net::close_connections();
 }
 
 void server_add_player(char *name,struct nodeaddr *n)
@@ -1408,10 +1408,10 @@ void do_server_shit()
     char *str;
     int pl;
 
-    acceptconnections();
+    Net::accept_connections();
 
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( receive(rec, a) )
+    if ( Net::receive(rec, a) )
     {
         data =  - 1;
         ofs = 0;
@@ -1683,7 +1683,7 @@ void do_client_shit()
     int pl;
 
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( receive(rec, a) )
+    if ( Net::receive(rec, a) )
     {
         data =  - 1;
         ofs = 0;
@@ -1859,7 +1859,7 @@ int realjoin()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (receive(rec, a))
+            if (Net::receive(rec, a))
             {
                 data =  - 1;
                 ofs = 0;
@@ -1917,7 +1917,7 @@ int getlevel()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (receive(rec, a))
+            if (Net::receive(rec, a))
             {
                 data =  - 1;
                 ofs = 0;
@@ -1963,7 +1963,7 @@ int getlevelinfo()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (receive(rec, a))
+            if (Net::receive(rec, a))
             {
                 data =  - 1;
                 ofs = 0;
@@ -2034,7 +2034,7 @@ int waitfor(int msg,int secs)
     while ((!timeout)&&(yes!=0))
     {
         for ( a = 0; a < RECEIVERS; a ++  )
-        if (receive(rec, a))
+        if (Net::receive(rec, a))
         {
             data =  - 1;
             ofs = 0;
@@ -2081,7 +2081,7 @@ int select_server()
 
     k.state[1] = 0;
     k.state[28] = 0;
-    bc=BROADCAST();
+    bc=Net::BROADCAST();
 
     while ( !done )
     {
@@ -2136,7 +2136,7 @@ int select_server()
         sendipxnow(&bc,IPX_SERVERSEARCH);
 
         for ( a = 0; a < RECEIVERS; a ++  )
-        if (receive(rec, a))
+        if (Net::receive(rec, a))
         {
             data =  - 1;
             ofs = 0;
