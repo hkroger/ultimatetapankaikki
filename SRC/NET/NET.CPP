@@ -137,13 +137,15 @@ void accept_connections()
 
 static void disconnect(const unsigned int index)
 {
-    // Disconnect is not propagated up but application
-    // relies on IPX_ALIVE keep-alive messages.
+    // Disconnect is not propagated up but server
+    // relies on IPX_ALIVE keep-alive messages. It
+    // then propagates disconnects to clients with
+    // PLAYERDISCONNECTED message.
     SDLNet_TCP_DelSocket(set, sockets[index]);
     sockets[index] = nullptr;
 }
 
-bool receive(struct packet *rec[RECEIVERS], const unsigned int index)
+bool receive(struct packet *buffer, const unsigned int index)
 {
     if (index >= sockets.size() || sockets[index] == nullptr) return false;
 
@@ -151,9 +153,9 @@ bool receive(struct packet *rec[RECEIVERS], const unsigned int index)
     {
         if (SDLNet_SocketReady(sockets[index]))
         {
-            if (SDLNet_TCP_Recv(sockets[index], rec[index]->data, MAXDATASIZE))
+            if (SDLNet_TCP_Recv(sockets[index], buffer->data, MAXDATASIZE))
             {
-                rec[index]->header.src.node = index;
+                buffer->header.src.node = index;
                 return true;
             }
             else

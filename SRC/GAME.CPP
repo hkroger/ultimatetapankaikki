@@ -1177,7 +1177,7 @@ void sendipxnow( struct nodeaddr *node, int type, ... )
                             for (b=0;b<(int)sizeof(General_level_info);b++)
                              snd->data[a++]=p[b];
                             break;
-        default:error("sndipxnow: message %d not yet implemented\n", type );
+        default:error("sendipxnow: message %d not yet implemented\n", type );
     }
     snd->data[a++] = IPX_END;
     Net::sendpacket( *node, snd, (word)(a+1) );
@@ -1437,7 +1437,7 @@ void do_server_shit()
     Net::accept_connections();
 
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( Net::receive(rec, a) )
+    if ( Net::receive(rec[a], a) )
     {
         data =  - 1;
         ofs = 0;
@@ -1711,7 +1711,7 @@ void do_client_shit()
     int pl;
 
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( Net::receive(rec, a) )
+    if ( Net::receive(rec[a], a) )
     {
         data =  - 1;
         ofs = 0;
@@ -1886,7 +1886,7 @@ int realjoin()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (Net::receive(rec, a))
+            if ( Net::receive(rec[a], a) )
             {
                 data =  - 1;
                 ofs = 0;
@@ -1944,7 +1944,7 @@ int getlevel()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (Net::receive(rec, a))
+            if ( Net::receive(rec[a], a) )
             {
                 data =  - 1;
                 ofs = 0;
@@ -1990,7 +1990,7 @@ int getlevelinfo()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if (Net::receive(rec, a))
+            if ( Net::receive(rec[a], a) )
             {
                 data =  - 1;
                 ofs = 0;
@@ -2061,7 +2061,7 @@ int waitfor(int msg,int secs)
     while ((!timeout)&&(yes!=0))
     {
         for ( a = 0; a < RECEIVERS; a ++  )
-        if (Net::receive(rec, a))
+        if ( Net::receive(rec[a], a) )
         {
             data =  - 1;
             ofs = 0;
@@ -2163,7 +2163,7 @@ int select_server()
         sendipxnow(&bc,IPX_SERVERSEARCH);
 
         for ( a = 0; a < RECEIVERS; a ++  )
-        if (Net::receive(rec, a))
+        if ( Net::receive(rec[a], a) )
         {
             data =  - 1;
             ofs = 0;

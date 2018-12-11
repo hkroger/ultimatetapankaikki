@@ -1,7 +1,7 @@
 #ifndef __NET_H__
 #define __NET_H__
 
-#define RECEIVERS 16
+#define RECEIVERS MAX_PLAYERS
 #define MAXDATASIZE 1024
 #define BROADCAST_ID 0xFF
 
@@ -9,12 +9,8 @@
 
 struct nodeaddr
 {
+  // Socket index is used to identify connections
   unsigned int node;
-};
-
-struct netaddress
-{
-  struct nodeaddr node;
 };
 
 struct header
@@ -39,9 +35,10 @@ int connect_server(const char*, const unsigned int port);
 void close_connections();
 
 void accept_connections();
-bool receive(struct packet *rec[RECEIVERS], const unsigned int index);
 
+bool receive(struct packet *buffer, const unsigned int index);
 void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len);
+
 struct nodeaddr BROADCAST();
 }
 
