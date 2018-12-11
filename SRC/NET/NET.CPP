@@ -69,14 +69,11 @@ int create_server(const unsigned int port)
     return 0;
 }
 
-int connect_server(const unsigned int port)
+int connect_server(const char* server_address, const unsigned int port)
 {
     IPaddress ip;
-    // TODO: currently server finder works only for
-    // localhost - UI selecting the remote is missing.
-    const char* server = "127.0.0.1";
 
-    if (SDLNet_ResolveHost(&ip, server, port) == -1)
+    if (SDLNet_ResolveHost(&ip, server_address, port) == -1)
     {
         printf("Error resolving host: %s\n", SDLNet_GetError());
         return 1;

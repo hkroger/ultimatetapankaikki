@@ -34,7 +34,7 @@ bool init();
 void deinit();
 
 int create_server(const unsigned int port);
-int connect_server(const unsigned int port);
+int connect_server(const char*, const unsigned int port);
 
 void close_connections();
 

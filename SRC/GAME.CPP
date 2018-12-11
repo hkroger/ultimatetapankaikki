@@ -1337,8 +1337,29 @@ void sendipx( int dest, int type, ... )
     va_end( ap );
 }
 
+static const char* prompt_server_address()
+{
+    // Allocate space for 123.123.123.123 at max. Static so
+    // that the address is remembered over gaming session.
+    static char server_address[] = "127.0.0.1\0\0\0\0\0\0";
+    const char title[] = "enter server address";
+    int x;
+    fadeout(virbuff, pal);
+    load_efp("EFPS/COOL.EFP", picture, 0);
+    FONT_NUM = 0;
+    x = 160 - (str_length(title) / 2);
+    draw_box1(x - 10, 75, 320 - x + 10, 125, 5);
+    memcpy(virbuff, picture, 64000);
+    writefonts2(x, 85, title, 1);
+    fadein(virbuff, pal);
+    k.clear_stack();
+    readline(x, 100, sizeof(server_address), server_address, screen);
+    return server_address;
+}
+
 void setup_ipx()
 {
+    // TODO: Port could be configurable.
     const unsigned int port = 8099;
     int a;
     for ( a = 0; a < MAX_PLAYERS; a ++  ) ipxofs[a] = 0;
@@ -1353,9 +1374,12 @@ void setup_ipx()
     }
     else if (NETWORK_MODE == CLIENT)
     {
-        if ( Net::connect_server(port) )
+        // Connection to nonexisting server has long timeout within
+        // SDL net for which time it blocks. It's not great UX but
+        // will do for now.
+        if ( Net::connect_server(prompt_server_address(), port) )
         {
-            error("opensocket: Couldn't open socket (%u)\n", port);
+            warn("opensocket: Couldn't open socket (%u)\n", port);
         }
     }
 }
