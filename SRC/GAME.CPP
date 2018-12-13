@@ -2390,12 +2390,13 @@ void game()
                 if ( framecount )
                 {
                    if (FRAMES_ON){
+                    const int op_table_size = sizeof( op ) / sizeof( op[0] );
                     op[opcnt2] = opcnt;
                     opcnt2 ++;
-                    if ( opcnt2 > 5 ) opcnt2 = 0;
+                    if ( opcnt2 >= op_table_size) opcnt2 = 0;
                     opcnt = 0;
                     if ( opcnt2 == 0 )
-                    OVER_POWER = ( op[0] + op[1] + op[2] + op[3] + op[4] )  / 5;
+                    OVER_POWER = ( op[0] + op[1] + op[2] + op[3] + op[4] ) / op_table_size;
                     }
                     framecount = 0;// incremented by MIDAS timer
                     game_shit();// do the game !!!!
