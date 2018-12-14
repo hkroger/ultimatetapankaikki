@@ -257,15 +257,15 @@ void tk_port_set_palette( char palette_entries[768], int brightness )
 {
     char *palette_ptr = palette_entries;
 
-    // Adjust palette by the sine of brightness
-    double brightness_factor = sin(brightness * pi / 2 / 255);
-
     for ( int i = 0; i < 256; i++ )
     {
+        // We didn't have the implementation of setpal(), so this
+        // "algorithm" was disassembled from GAME.EXE.
+#define DARKEN( c ) clamp((int)(c * brightness) >> 8, 0, 63)
+
         // The left-shifts below scale the assumedly 0..63 VGA palette
         // (ref. http://joco.homeserver.hu/vgalessons/lesson6.html)
         // up to the 0..255 expected by SDL.
-#define DARKEN( c ) clamp((int)(c * brightness_factor), 0, 255)
         palette->colors[i].r = (uint8_t) clamp( DARKEN( *(palette_ptr++)) << 2, 0, 255 );
         palette->colors[i].g = (uint8_t) clamp( DARKEN( *(palette_ptr++)) << 2, 0, 255 );
         palette->colors[i].b = (uint8_t) clamp( DARKEN( *(palette_ptr++)) << 2, 0, 255 );
