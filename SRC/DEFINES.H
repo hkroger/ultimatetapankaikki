@@ -74,6 +74,4 @@
 #define WOOSHWAV 9
 #define FLAMEWAV 10
 
-#define min(a,b) ((a)<=(b)? (a):(b))
-
 #endif

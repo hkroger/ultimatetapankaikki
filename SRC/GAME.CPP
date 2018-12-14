@@ -2136,11 +2136,15 @@ int select_server()
         if (chg) writefonts2( 160 - ( str_length( "select server" )  >> 1 ), 20, "select server", 1 );
         FONT_NUM = 1;
         if (chg)
-         for (a=0;a<servers;a++)
-          if (select!=a)
-          writefonts( 100,50+a*10,servernames[a],M_BLUE);
-          else
-          writefonts( 100,50+a*10,servernames[a],M_YELLOW);
+        {
+            for (a=0;a<servers;a++)
+            {
+                if (select!=a)
+                    writefonts( 100,50+a*10,servernames[a],M_BLUE );
+                else
+                    writefonts( 100,50+a*10,servernames[a],M_YELLOW );
+            }
+        }
         if (!first) {
                         if (chg) memcpy( screen, virbuff, 64000);
                         chg=0;
