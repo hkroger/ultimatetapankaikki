@@ -246,6 +246,11 @@ void tk_port_present_screen( void )
     SDL_DestroyTexture( surface_texture );
 }
 
+void tk_port_save_screenshot( const char* path )
+{
+    SDL_SaveBMP( surface, path );
+}
+
 static int clamp( int val, int min, int max )
 {
     if ( val < min ) return min;

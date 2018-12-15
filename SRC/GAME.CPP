@@ -574,27 +574,21 @@ void quiti()
 
 void screen_capture()
 {
-    /* TODO
     FILE *sci;
     int free = 0, num = 0;
-    char text1[13], text2[13];
-    Image pic;
-    pic.alloc( 320, scr_y_size, 8, 1 );
-    while ( free == 0 &&num < 99 )
+    char text1[19], text2[13];
+    while ( free == 0 && num <= 99 )
     {
         strcpy( text1, "screen" );
         sprintf( text2, "%d", num );
         strcat( text1, text2 );
-        strcat( text1, ".pcx" );
+        strcat( text1, ".bmp" );
         if ( ( sci = fopen( text1, "rb" )  )  == NULL ) free = 1;else fclose( sci );
         num ++;
     }
-    memcpy( pic.image, screen, 320*scr_y_size );
-    memcpy( pic.palette, pal, 3*256 );
-    pic.save_pcx( text1 );
-    strcat(text1," saved");
+    tk_port_save_screenshot( text1 );
+    strncat( text1, " saved" , sizeof( text1 ) - strlen( text1 ) - 1 );
     message_board.add_message(text1);
-    */
 }
 
 void chkeys()
