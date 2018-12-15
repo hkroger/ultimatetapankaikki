@@ -5,6 +5,18 @@ matrix:
     - os: linux
       compiler: gcc
     - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-8
+            - libsdl2-dev
+            - libsdl2-mixer-dev
+      before_install:
+        - CC=gcc-8 && CXX=g++-8
+    - os: linux
       compiler: clang
     - os: osx
       compiler: clang
