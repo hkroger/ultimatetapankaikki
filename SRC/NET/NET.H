@@ -1,7 +1,7 @@
 #ifndef __NET_H__
 #define __NET_H__
 
-#define RECEIVERS MAX_PLAYERS
+#define RECEIVERS 16 // Defines how many packets can be handled during a frame
 #define MAXDATASIZE 1024
 #define BROADCAST_ID 0xFF
 
@@ -36,7 +36,7 @@ void close_connections();
 
 void accept_connections();
 
-bool receive(struct packet *buffer, const unsigned int index);
+bool receive(struct packet *buffer);
 void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len);
 
 struct nodeaddr BROADCAST();

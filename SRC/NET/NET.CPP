@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "NET.H"
+#include "../ERROR/ERROR.H"
 #include "NETDEFS.H"
 #include "DEFINES.H"
 #include "SDL_net.h"
@@ -11,9 +12,18 @@
 #include <iterator>
 #include <vector>
 
-TCPsocket server_socket;
-SDLNet_SocketSet set;
-std::vector<TCPsocket> sockets(MAX_PLAYERS, nullptr);
+
+namespace
+{
+static TCPsocket server_socket;
+static SDLNet_SocketSet set;
+static std::vector<TCPsocket> sockets(MAX_PLAYERS, nullptr);
+static std::vector<std::vector<char>> socket_storages(MAX_PLAYERS);
+
+static const int PACKET_HEADER_SIZE = 2; // 2 length bytes (16-bit) at the beginning
+static const int PACKET_CHECKSUM_SIZE = 1; // 1 checksum byte at the and
+static const int PACKET_OVERHEAD_SIZE = PACKET_HEADER_SIZE + PACKET_CHECKSUM_SIZE;
+}
 
 namespace Net
 {
@@ -112,6 +122,11 @@ void close_connections()
     }
 
     std::fill(sockets.begin(), sockets.end(), nullptr);
+
+    for (auto& storage : socket_storages)
+    {
+        storage.clear();
+    }
 }
 
 void accept_connections()
@@ -138,25 +153,61 @@ void accept_connections()
 static void disconnect(const unsigned int index)
 {
     // Disconnect is not propagated up but server
-    // relies on IPX_ALIVE keep-alive messages. It
+    // relies on ALIVE keep-alive messages. It
     // then propagates disconnects to clients with
     // PLAYERDISCONNECTED message.
     SDLNet_TCP_DelSocket(set, sockets[index]);
     sockets[index] = nullptr;
+    socket_storages[index].clear();
 }
 
-bool receive(struct packet *buffer, const unsigned int index)
+// Very simple checksum for packet sanity check
+static char checksum(const char* data, word len)
 {
-    if (index >= sockets.size() || sockets[index] == nullptr) return false;
+    char c = (char)0xAA;
+    for (int i = 0; i < len; ++i)
+    {
+        c ^= data[i];
+    }
+    return c;
+}
+
+static std::vector<char> get_packet_envelope(const char* data, word len)
+{
+    std::vector<char> packet;
+    packet.push_back((char)(len >> 8));
+    packet.push_back((char)(len));
+    for (int i = 0; i < len; ++i)
+    {
+        packet.push_back(data[i]);
+    }
+    packet.push_back(checksum(data, len));
+    return packet;
+}
+
+static int get_payload_length(const char* data)
+{
+    return ((int)data[0] << 8) + (data[1] & 0xFF);
+}
+
+static void receive_to_storage(const unsigned int index)
+{
+    if (index >= sockets.size() || sockets[index] == nullptr) return;
 
     if (SDLNet_CheckSockets(set, 0))
     {
         if (SDLNet_SocketReady(sockets[index]))
         {
-            if (SDLNet_TCP_Recv(sockets[index], buffer->data, MAXDATASIZE))
+            char data[MAXDATASIZE + PACKET_OVERHEAD_SIZE];
+            const int len = SDLNet_TCP_Recv(sockets[index], data, MAXDATASIZE);
+
+            if (len)
             {
-                buffer->header.src.node = index;
-                return true;
+                auto& buffer = socket_storages[index];
+                for (int i = 0; i < len; ++i)
+                {
+                    buffer.push_back(data[i]);
+                }
             }
             else
             {
@@ -164,8 +215,76 @@ bool receive(struct packet *buffer, const unsigned int index)
             }
         }
     }
+}
+
+static bool find_next_packet_from_storage(struct packet *buffer)
+{
+    // Clients always have just one socket to server
+    for (unsigned int i = 0; i < (server_socket ? socket_storages.size() : 1); ++i)
+    {
+        auto& storage = socket_storages[i];
+
+        // Check if there is enough data for packet consisting
+        // of 1 or more payload bytes
+        if (storage.size() >= PACKET_OVERHEAD_SIZE + 1)
+        {
+            const unsigned int payload_length = get_payload_length(storage.data());
+
+            if (storage.size() < payload_length + PACKET_OVERHEAD_SIZE)
+            {
+                // Not enough data in the storage, i.e. packet not yet fully received
+                continue;
+            }
+
+            const char received_checksum = storage.data()[PACKET_HEADER_SIZE + payload_length];
+            const char calculated_checksum = checksum(storage.data() + PACKET_HEADER_SIZE, payload_length);
+
+            if (received_checksum == calculated_checksum)
+            {
+                // Packet fully received, return it to the app
+                memcpy(buffer->data, storage.data() + PACKET_HEADER_SIZE, payload_length);
+                buffer->header.src.node = i;
+
+                // Remove packet from storage
+                storage.erase(storage.begin(), storage.begin() + payload_length + PACKET_OVERHEAD_SIZE);
+
+                return true;
+            }
+            else
+            {
+                warn( "Corrupted packet\n" );
+                storage.clear();
+            }
+        }
+    }
 
     return false;
+}
+
+static unsigned int get_next_socket_to_receive()
+{
+    if (server_socket)
+    {
+        static unsigned int socket_index = 0;
+        // Loops 0 to MAX_PLAYERS - 1
+        return socket_index++ % MAX_PLAYERS;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+bool receive(struct packet *buffer)
+{
+    // Receive data evenly from sockets and store any received
+    // data to storage
+    receive_to_storage(get_next_socket_to_receive());
+
+    // Look through the socket storages to see if there are
+    // any fully received packets. Return one if finding
+    // any.
+    return find_next_packet_from_storage(buffer);
 }
 
 struct nodeaddr BROADCAST()
@@ -176,19 +295,25 @@ struct nodeaddr BROADCAST()
 void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len)
 {
     const int datalength = len - 1;
+    auto packet = get_packet_envelope(packetet->data, datalength);
+
     if (destnode.node == BROADCAST_ID)
     {
-        for (auto socket : sockets)
+        for (unsigned int i = 0; i < sockets.size(); ++i)
         {
+            auto& socket = sockets[i];
             if (socket != nullptr)
             {
-                SDLNet_TCP_Send(socket, packetet->data, datalength);
+                if (SDLNet_TCP_Send(socket, packet.data(), packet.size()) != packet.size())
+                {
+                    disconnect(i);
+                }
             }
         }
     }
     else if (sockets[destnode.node] != nullptr)
     {
-        if (SDLNet_TCP_Send(sockets[destnode.node], packetet->data, datalength) != datalength)
+        if (SDLNet_TCP_Send(sockets[destnode.node], packet.data(), packet.size()) != packet.size())
         {
             disconnect(destnode.node);
         }
