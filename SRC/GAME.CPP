@@ -2417,18 +2417,27 @@ void game()
                     }
                     framecount = 0;// incremented by MIDAS timer
                     game_shit();// do the game !!!!
-                    if (GAME_MODE==NETWORK && NETWORK_MODE==SERVER)
-                     chk_for_loosers();
                     Steam_count ++;
                     Steam_count%= 360;
                     Spot_count += 2;
                     Spot_count%= 360;
                     frame_count ++;
-                }
-                if ( GAME_MODE == NETWORK)
-                {
-                    if (NETWORK_MODE == CLIENT ) do_client_shit();
-                    if (NETWORK_MODE == SERVER ) do_server_shit();
+
+                    if ( GAME_MODE == NETWORK )
+                    {
+                        switch ( NETWORK_MODE )
+                        {
+                        case CLIENT:
+                            do_client_shit();
+                            break;
+                        case SERVER:
+                            chk_for_loosers();
+                            do_server_shit();
+                            break;
+                        default:
+                            error( "Invalid network mode" );
+                        }
+                    }
                 }
                 tk_port_event_tick();
             }  // game loop end
