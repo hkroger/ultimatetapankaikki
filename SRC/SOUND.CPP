@@ -7,8 +7,16 @@
 #include "SOUND.H"
 
 struct _MIDASsample {
-    Mix_Chunk *mix_chunk;
     char *path;
+
+    // Original audio
+    SDL_AudioSpec spec;
+    uint8_t *audio_buf;
+    uint32_t audio_len;
+
+    // Last resampled audio
+    Mix_Chunk *mix_chunk;
+    int mix_rate;
 };
 
 struct _MIDASmodule {
@@ -71,14 +79,13 @@ MIDASsample MIDASloadWaveSample( const char *fileName, int loopSample )
 {
     if (!started) return NULL;
     MIDASsample smp = static_cast<MIDASsample>(calloc( 1, sizeof( _MIDASsample )));
-    Mix_Chunk *chunk = Mix_LoadWAV( fileName );
-    if ( !chunk )
+    if (!SDL_LoadWAV(fileName, &smp->spec, &smp->audio_buf, &smp->audio_len))
     {
-        SDL_Log( "Error loading sound file %s:  %s", fileName, Mix_GetError());
+        SDL_Log( "Error loading sound file %s:  %s", fileName, SDL_GetError());
         return NULL;
     }
     smp->path = strdup( fileName );
-    smp->mix_chunk = chunk;
+    smp->mix_chunk = NULL;
     return smp;
 }
 
@@ -96,19 +103,54 @@ MIDASmodule MIDASloadModule( const char *fileName )
     return mod;
 }
 
+static void resample_if_needed(MIDASsample sample, unsigned rate)
+{
+    if (sample->mix_chunk && sample->mix_rate == rate)
+    {
+        // Resampled audio already cached
+        return;
+    }
+
+    if (sample->mix_chunk)
+    {
+        // Free the previous cached audio
+        Mix_FreeChunk(sample->mix_chunk);
+        sample->mix_chunk = NULL;
+    }
+
+    int dev_freq;
+    uint16_t dev_format;
+    int dev_channels;
+    Mix_QuerySpec(&dev_freq, &dev_format, &dev_channels);
+
+    // Convert from desired sampling rate to device sampling rate. This
+    // resamples the original as if it already had the desired rate.
+
+    SDL_AudioCVT cvt;
+    SDL_BuildAudioCVT(&cvt,
+                      sample->spec.format, sample->spec.channels, rate,
+                      dev_format, dev_channels, dev_freq);
+
+    cvt.len = sample->audio_len;
+    cvt.buf = (uint8_t *)malloc(cvt.len * cvt.len_mult);
+    memcpy(cvt.buf, sample->audio_buf, sample->audio_len);
+
+    SDL_ConvertAudio(&cvt);
+
+    sample->mix_chunk = Mix_QuickLoad_RAW(cvt.buf, cvt.len_cvt);
+    sample->mix_rate = rate;
+}
+
 MIDASsamplePlayHandle
 MIDASplaySample( MIDASsample sample, unsigned channel, int priority, unsigned rate, unsigned volume, int panning )
 {
     if (!started) return 0;
+    resample_if_needed(sample, rate);
+
     int mix_chan = Mix_PlayChannel( -1, sample->mix_chunk, 0 );
     if ( mix_chan == -1 )
     {
         printf( "Mix_PlayChannel: %s\n", Mix_GetError());
-    }
-    if ( rate != 22500 )
-    {
-        // TODO: Support this resampling
-        SDL_Log( "sound %s is requested at non-standard rate %d, this is not supported", sample->path, rate );
     }
     int left_vol = panning * -4;  // -64 (leftmost panning) -> 256
     if ( left_vol >= 255 ) left_vol = 255;
