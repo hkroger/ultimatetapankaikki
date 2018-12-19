@@ -929,8 +929,10 @@ void game_shit()
     for ( a = 0; a < ACTIVE_PLAYERS; a ++  )
      aplayer[a]->move_scr();
     if ( DARK_MODE ) seeing();
-    if (ENEMIES_ON_GAME || GAME_MODE==ONE_PLAYER)
-    if ( (GAME_MODE!= NETWORK)||(NETWORK_MODE == SERVER ))
+
+    // ENEMIES_ON_GAME is a UI option visible only for deathmatch games
+    if ( ( KILLING_MODE != DEATHMATCH || ENEMIES_ON_GAME ) &&
+        ( GAME_MODE != NETWORK || NETWORK_MODE == SERVER ) )
     {
      roll_enemies();
      get_angles();
