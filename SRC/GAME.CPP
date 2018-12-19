@@ -14,7 +14,6 @@
 #include "GLOBVAR.H"
 
 /*************************NET STUFF **************************************/
-#include "INT/INT.H"
 #include "NET/NET.H"
 
 #include "NETDEFS.H"
