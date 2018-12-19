@@ -233,7 +233,6 @@ void do_all()
         strcat( text, dirlist[a].name );
         strcat( text, "/*.LEV" );
         list_files( &files_in_episode[a + 1], filelist[a + 1], text, _A_NORMAL );
-        std::cout << "Episode " << dirlist[a].name << ": " << (files_in_episode[a + 1]) << " levels\n";
     }
     define_bullet_types();
     define_effects();
