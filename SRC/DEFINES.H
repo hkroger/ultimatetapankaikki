@@ -48,6 +48,7 @@
 #define num_multip_options 7
 #define DIFF_K 10
 #define SPEC_K 21
+#define INVALID_EPISODE -1
  // Effects...
 #define BLOOD 0
 #define SMOKE 1

@@ -161,7 +161,7 @@ int choose_episode()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while( !k.state[94]&&!k.state[99]&&!k.state[28] )
+        while( !k.state[94]&&!k.state[99]&&!k.state[28]&&!k.state[1] )
         {
             if ( clock() != oclock )
             {
@@ -182,6 +182,11 @@ int choose_episode()
         {
             if ( sel < dirs - 1 ) sel ++;
             k.state[99] = 0;
+        }
+        if ( k.state[1] )
+        {
+            fadeout( virbuff, pal );
+            return INVALID_EPISODE;
         }
         pos = sel - 3;
         if ( pos < 0 ) pos = 0;

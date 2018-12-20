@@ -2552,7 +2552,10 @@ void menu()
                 GAME_MODE = ONE_PLAYER;
                 KILLING_MODE = COOPERATIVE;
                 episode = choose_episode();
-                game();
+                if ( episode != INVALID_EPISODE )
+                {
+                    game();
+                }
                 menu_scr();
             }
             if ( selected == 1 )
