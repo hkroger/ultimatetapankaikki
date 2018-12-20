@@ -11,6 +11,8 @@ static SDL_Window *window;
 static SDL_Renderer *renderer;
 static SDL_Surface *surface;
 static SDL_Palette *palette;
+static SDL_Rect render_dest_rect;
+static bool window_resized;
 bool tk_port_quit_flag = false;
 uint32_t tk_port_debug = 0;
 
@@ -47,6 +49,30 @@ static void read_tk_port_debug()
     }
 }
 
+static void get_render_rect( SDL_Rect *rect )
+{
+    int window_w, window_h;
+    const double aspect = 320.0 / 200;
+
+    SDL_GetRendererOutputSize( renderer, &window_w, &window_h );
+    if ( 1.0 * window_w / window_h <= aspect )
+    {
+        int h = window_w / aspect;
+        rect->x = 0;
+        rect->y = (window_h - h) / 2;
+        rect->w = window_w;
+        rect->h = h;
+    }
+    else
+    {
+        int w = window_h * aspect;
+        rect->x = (window_w - w) / 2;
+        rect->y = 0;
+        rect->w = w;
+        rect->h = window_h;
+    }
+}
+
 static int tk_port_init_graphics()
 {
     window = SDL_CreateWindow(
@@ -65,6 +91,9 @@ static int tk_port_init_graphics()
         SDL_Log( "Error initializing SDL renderer:  %s", SDL_GetError());
         return 3;
     }
+    get_render_rect(&render_dest_rect);
+    window_resized = false;
+
     surface = SDL_CreateRGBSurface( 0, 320, 200, 8, 0, 0, 0, 0 );
     if ( surface == NULL )
     {
@@ -233,6 +262,13 @@ void tk_port_event_tick( void )
                 }
             }
                 break;
+
+            case SDL_WINDOWEVENT:
+                if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+                {
+                    window_resized = true;
+                }
+                break;
         }
     }
     tk_port_present_screen();
@@ -240,8 +276,15 @@ void tk_port_event_tick( void )
 
 void tk_port_present_screen( void )
 {
+    if ( window_resized )
+    {
+        SDL_RenderClear( renderer );
+        get_render_rect( &render_dest_rect );
+        window_resized = false;
+    }
+
     SDL_Texture *surface_texture = SDL_CreateTextureFromSurface( renderer, surface );
-    SDL_RenderCopy( renderer, surface_texture, NULL, NULL );
+    SDL_RenderCopy( renderer, surface_texture, NULL, &render_dest_rect );
     SDL_RenderPresent( renderer );
     SDL_DestroyTexture( surface_texture );
 }
