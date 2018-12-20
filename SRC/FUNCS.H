@@ -41,6 +41,7 @@ int wanna_quit()
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
             }
+            tk_port_event_tick();
         }
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
         if ( k.state[94] )
