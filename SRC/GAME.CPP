@@ -637,7 +637,7 @@ void move_body_parts()
             if ( body_part[a].speed > 0 )
             {
                 body_part[a].move();
-                body_part[a].speed -= 0.2;
+                body_part[a].speed -= 0.2f;
             }
 }
 
@@ -678,7 +678,7 @@ void move_enemies()
         {
             if ((int) enemy[a].PUSH_POWER > 0 )
                 enemy[a].move( enemy[a].PUSH_ANGLE, (int) enemy[a].PUSH_POWER );
-            enemy[a].PUSH_POWER -= 0.2;
+            enemy[a].PUSH_POWER -= 0.2f;
         }
     }
 }
@@ -690,7 +690,7 @@ void push_players()
         {
             if ((int) aplayer[a]->PUSH_POWER > 0 )
                 aplayer[a]->move( aplayer[a]->PUSH_ANGLE, (int) aplayer[a]->PUSH_POWER, a );
-            aplayer[a]->PUSH_POWER -= 0.2;
+            aplayer[a]->PUSH_POWER -= 0.2f;
         }
 }
 
@@ -857,7 +857,7 @@ void chk_burn()
             if ( a == aplayer[0]->tindex || (GAME_MODE == SPLIT_SCREEN && a == aplayer[1]->tindex))
             {
                 player[a].burning --;
-                player[a].get_damage( 0.4, player[a].Frying_player );
+                player[a].get_damage( 0.4f, player[a].Frying_player );
             }
 
             if ( aplayer[0]->tindex == a && GAME_MODE == NETWORK )
@@ -877,7 +877,7 @@ void chk_burn()
         if ( ! enemy[a].DEAD && enemy[a].burning )
         {
             enemy[a].burning --;
-            enemy[a].get_damage( 0.4, enemy[a].Frying_player );
+            enemy[a].get_damage( 0.4f, enemy[a].Frying_player );
             if ( Steam_count % 6 == 0 )
                 new_effect( NULL, STEAM, enemy[a].x + 14, enemy[a].y + 14, 135, 1 );
         }

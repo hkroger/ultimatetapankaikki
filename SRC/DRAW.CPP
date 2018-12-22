@@ -890,7 +890,7 @@ void draw_targets()
         for ( a = 0; a < dist &&x - aplayer[0]->scr_x >= 0 &&x - aplayer[0]->scr_x < 320 &&y - aplayer[0]->scr_y >= 0 &&y - aplayer[0]->scr_y < scr_y_size &&level[( int ) ( y / 20 ) *level_x_size + ( int ) ( x / 20 ) ].type == FLOOR; a ++  )
         {
             if ( ( a - ( int ) ( plot_count / 2 )  )  % 6 == 0 )
-            virbuff[( int ) ( y - aplayer[0]->scr_y ) *320 + ( int ) ( x - aplayer[0]->scr_x ) ] = 9*16;
+            virbuff[( int ) ( y - aplayer[0]->scr_y ) *320 + ( int ) ( x - aplayer[0]->scr_x ) ]= ( char ) ( 9 * 16 );
             x += sini[aplayer[0]->rangle2];
             y += cosi[aplayer[0]->rangle2];
         }
@@ -908,7 +908,7 @@ void draw_targets()
             for ( a = 0; a < dist &&x - aplayer[0]->scr_x >= 0 &&x - aplayer[0]->scr_x < 160 &&y - aplayer[0]->scr_y >= 0 &&y - aplayer[0]->scr_y < scr_y_size &&level[( int ) ( y / 20 ) *level_x_size + ( int ) ( x / 20 ) ].type == FLOOR; a ++  )
             {
                 if ( ( a - ( int ) ( plot_count / 2 )  )  % 6 == 0 )
-                virbuff[( int ) ( y - aplayer[0]->scr_y ) *320 + ( int ) ( x - aplayer[0]->scr_x ) ] = 9*16;
+                virbuff[( int ) ( y - aplayer[0]->scr_y ) *320 + ( int ) ( x - aplayer[0]->scr_x ) ] = ( char ) ( 9 * 16 );
                 x += sini[aplayer[0]->rangle2];
                 y += cosi[aplayer[0]->rangle2];
             }
@@ -924,7 +924,7 @@ void draw_targets()
             for ( a = 0; a < dist &&x - aplayer[1]->scr_x > 0 &&x - aplayer[1]->scr_x < 160 &&y - aplayer[1]->scr_y >= 0 &&y - aplayer[1]->scr_y < scr_y_size &&level[( int ) ( y / 20 ) *level_x_size + ( int ) ( x / 20 ) ].type == FLOOR; a ++  )
             {
                 if ( ( a - ( int ) ( plot_count / 2 )  )  % 6 == 0 )
-                virbuff[( int ) ( y - aplayer[1]->scr_y ) *320 + ( int ) ( x - aplayer[1]->scr_x )  + 160] = 9*16;
+                virbuff[( int ) ( y - aplayer[1]->scr_y ) *320 + ( int ) ( x - aplayer[1]->scr_x )  + 160] = ( char ) ( 9 * 16 );
                 x += sini[aplayer[1]->rangle2];
                 y += cosi[aplayer[1]->rangle2];
             }

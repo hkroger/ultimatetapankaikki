@@ -38,7 +38,7 @@ void load_efp( const char *name, char *kuva, int offs )
     h = ((unsigned short *) data_p)[1];
     data_p += 4;
 
-    for ( p = 0; p < w * h; )
+    for ( p = 0; p < (unsigned int) (w * h); )
     {
         tavu = *data_p++;
         if ( tavu > 192 )

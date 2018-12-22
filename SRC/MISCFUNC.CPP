@@ -385,7 +385,7 @@ void define_bullet_types()
     bullet_type[8].type = INCENDIARY;
     bullet_type[8].stop = 1;
     bullet_type[8].speed = 5;
-    bullet_type[8].power = 0.4;
+    bullet_type[8].power = 0.4f;
     bullet_type[8].push_power = 0;
     bullet_type[8].time = ( 5*18 )  / 5;
     bullet_type[8].explos = 0;
@@ -393,7 +393,7 @@ void define_bullet_types()
     bullet_type[8].light = &explo_l;
     bullet_type[8].lsize = 2;
     bullet_type[8].llum =  - 10;
-    bullet_type[8].ladd = 0.7;
+    bullet_type[8].ladd = 0.7f;
     bullet_type[8].effect = 0;
     bullet_type[8].cost = 6;
     bullet_type[8].amount_in_crate = 500;// div mul = 50
