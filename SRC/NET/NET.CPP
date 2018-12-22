@@ -15,10 +15,14 @@
 
 namespace
 {
+// Add few extra sockets in case clients try to join when server is full. Game
+// logic rejects such join attempts
+static const int NUMBER_OF_SOCKETS = MAX_PLAYERS + 3;
+
 static TCPsocket server_socket;
 static SDLNet_SocketSet set;
-static std::vector<TCPsocket> sockets(MAX_PLAYERS, nullptr);
-static std::vector<std::vector<char>> socket_storages(MAX_PLAYERS);
+static std::vector<TCPsocket> sockets(NUMBER_OF_SOCKETS, nullptr);
+static std::vector<std::vector<char>> socket_storages(NUMBER_OF_SOCKETS);
 
 static const int PACKET_HEADER_SIZE = 2; // 2 length bytes (16-bit) at the beginning
 static const int PACKET_CHECKSUM_SIZE = 1; // 1 checksum byte at the and
@@ -36,7 +40,7 @@ bool init()
         return false;
     }
 
-    set = SDLNet_AllocSocketSet(MAX_PLAYERS);
+    set = SDLNet_AllocSocketSet(NUMBER_OF_SOCKETS);
 
     if (!set)
     {
@@ -145,7 +149,7 @@ void accept_connections()
         else
         {
             SDLNet_TCP_Close(newClient);
-            printf("Server is full\n");
+            printf("Out of sockets\n");
         }
     }
 }
@@ -201,7 +205,7 @@ static void receive_to_storage(const unsigned int index)
             char data[MAXDATASIZE + PACKET_OVERHEAD_SIZE];
             const int len = SDLNet_TCP_Recv(sockets[index], data, MAXDATASIZE);
 
-            if (len)
+            if (len > 0)
             {
                 auto& buffer = socket_storages[index];
                 for (int i = 0; i < len; ++i)
@@ -266,8 +270,8 @@ static unsigned int get_next_socket_to_receive()
     if (server_socket)
     {
         static unsigned int socket_index = 0;
-        // Loops 0 to MAX_PLAYERS - 1
-        return socket_index++ % MAX_PLAYERS;
+        // Loops 0 to NUMBER_OF_SOCKETS - 1
+        return socket_index++ % NUMBER_OF_SOCKETS;
     }
     else
     {
@@ -304,7 +308,7 @@ void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len)
             auto& socket = sockets[i];
             if (socket != nullptr)
             {
-                if (SDLNet_TCP_Send(socket, packet.data(), packet.size()) != packet.size())
+                if (SDLNet_TCP_Send(socket, packet.data(), (int)packet.size()) != packet.size())
                 {
                     disconnect(i);
                 }
@@ -313,7 +317,7 @@ void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len)
     }
     else if (sockets[destnode.node] != nullptr)
     {
-        if (SDLNet_TCP_Send(sockets[destnode.node], packet.data(), packet.size()) != packet.size())
+        if (SDLNet_TCP_Send(sockets[destnode.node], packet.data(), (int)packet.size()) != packet.size())
         {
             disconnect(destnode.node);
         }

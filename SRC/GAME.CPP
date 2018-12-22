@@ -1630,10 +1630,7 @@ void do_server_shit()
                 case IPX_JOINREQUEST:
                 pcom[pcoms++]=data;
                 n.node=rec[a]->header.src.node;
-                if (player_amount()<MAX_PLAYERS)
-                // &&(!gamelock))
-                    sendipxnow(&n, IPX_JOINACCEPT,1);
-                //else sendipxnow(&n, IPX_JOINACCEPT,0);
+                sendipxnow(&n, IPX_JOINACCEPT, player_amount() < MAX_PLAYERS ? 1 : 0);
                 break;
 
                 case IPX_SENDLEVELINFO:
@@ -2055,7 +2052,7 @@ int waitfor(int msg,int secs)
 
     s=framecount;
 
-    while ((!timeout)&&(yes!=0))
+    while ((!timeout)&&(yes==0))
     {
         for ( a = 0; a < RECEIVERS; a ++  )
         if ( Net::receive(rec[a]) )
