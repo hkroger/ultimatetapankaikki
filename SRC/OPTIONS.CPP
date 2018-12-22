@@ -693,15 +693,31 @@ void multiplayer_options()
             {
                 if (GAME_MODE==SPLIT_SCREEN)
                 {
-                    if (net_avail) GAME_MODE=NETWORK;
+                    if (net_avail)
+                    {
+                        GAME_MODE = NETWORK;
+
+                        // Only deathmatch is supported over network
+                        KILLING_MODE = DEATHMATCH;
+                        saved_killing_mode = KILLING_MODE;
+                    }
                 }
                 else GAME_MODE=SPLIT_SCREEN;
              saved_game_mode=GAME_MODE;
             }
             if ( selected == 5 )
             {
-                KILLING_MODE ++;if ( KILLING_MODE > 1 ) KILLING_MODE = 0;
-                saved_killing_mode=KILLING_MODE;
+                if ( GAME_MODE != NETWORK )
+                {
+                    if ( ++KILLING_MODE > 1 ) KILLING_MODE = 0;
+                }
+                else
+                {
+                    // Only deathmatch is supported over network
+                    KILLING_MODE = DEATHMATCH;
+                }
+
+                saved_killing_mode = KILLING_MODE;
             }
             if ( selected == 6 )
             {
