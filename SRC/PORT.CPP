@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include "PORT.H"
 #include "GLOBVAR.H"
+#include "ERROR/ERROR.H"
 
 static SDL_Window *window;
 static SDL_Renderer *renderer;
@@ -15,10 +16,12 @@ static SDL_Rect render_dest_rect;
 static bool window_resized;
 bool tk_port_quit_flag = false;
 uint32_t tk_port_debug = 0;
+extern int scr_y_size;
 
 static uint64_t timer_zero;
 #define TK_PORT_NSEC_PER_SEC 1000000000L
 #define TK_PORT_NSEC_PER_MSEC 1000000L
+#define TK_PORT_GRAPHICS_SCALE 3
 
 #ifdef TK_PORT_MAC
 #include <mach/mach_time.h>
@@ -52,7 +55,7 @@ static void read_tk_port_debug()
 static void get_render_rect( SDL_Rect *rect )
 {
     int window_w, window_h;
-    const double aspect = 320.0 / 200;
+    const double aspect = 320.0 / scr_y_size;
 
     SDL_GetRendererOutputSize( renderer, &window_w, &window_h );
     if ( 1.0 * window_w / window_h <= aspect )
@@ -73,11 +76,43 @@ static void get_render_rect( SDL_Rect *rect )
     }
 }
 
+static int create_surface()
+{
+    surface = SDL_CreateRGBSurface( 0, 320, scr_y_size, 8, 0, 0, 0, 0 );
+
+    if ( !surface )
+    {
+        SDL_Log( "SDL_CreateRGBSurfaceWithFormat() failed: %s", SDL_GetError() );
+        return 4;
+    }
+
+    if ( surface->pitch != 320 )
+    {
+        SDL_Log( "Was unable to get a surface with the correct linear pitch 320" );
+        return 5;
+    }
+
+    return 0;
+}
+
+static void init_screen()
+{
+    // Now that we have a linear 320x240x8 or 320x200x8 surface, assign it as our "VGA 0xA0000"
+    // all other code can write into.
+    screen = (char *) surface->pixels;
+    memset( screen, 0, 320 * scr_y_size );
+
+    // I mean, the first 768 bytes of `screen` are zero...
+    tk_port_set_palette( screen, 0 );
+}
+
 static int tk_port_init_graphics()
 {
     window = SDL_CreateWindow(
         "TK",
-        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 960, 600,
+        SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        320 * TK_PORT_GRAPHICS_SCALE,
+        240 * TK_PORT_GRAPHICS_SCALE,
         SDL_WINDOW_RESIZABLE
     );
     if ( !window )
@@ -94,26 +129,12 @@ static int tk_port_init_graphics()
     get_render_rect(&render_dest_rect);
     window_resized = false;
 
-    surface = SDL_CreateRGBSurface( 0, 320, 200, 8, 0, 0, 0, 0 );
-    if ( surface == NULL )
-    {
-        SDL_Log( "SDL_CreateRGBSurfaceWithFormat() failed: %s", SDL_GetError());
-        return 4;
-    }
-    if ( surface->pitch != 320 )
-    {
-        // TODO: Support this mode maybe?
-        SDL_Log( "Was unable to get a surface with the correct linear pitch 320" );
-        return 5;
-    }
+    const int s_ret = create_surface();
+    if ( s_ret ) return s_ret;
+
     palette = SDL_AllocPalette( 256 );
 
-    // Now that we have a linear 320x200x8 surface, assign it as our "VGA 0xA0000"
-    // all other code can write into.
-    screen = (char *) surface->pixels;
-    memset( screen, 0, 320 * 200 );
-    // I mean, the first 768 bytes of `screen` are zero...
-    tk_port_set_palette( screen, 0 );
+    init_screen();
 
     return 0;
 }
@@ -132,6 +153,19 @@ static void tk_port_init_time()
     mach_timebase_info( &timer_timebase_info );
     timer_zero = mach_absolute_time();
 #endif
+}
+
+void tk_port_resolution_changed( void )
+{
+    SDL_RenderClear( renderer );
+    get_render_rect( &render_dest_rect );
+
+    SDL_FreeSurface( surface );
+
+    const int s_ret = create_surface();
+    if (s_ret) error( "Failed to create new surface" );
+
+    init_screen();
 }
 
 int tk_port_init()
@@ -153,6 +187,11 @@ int tk_port_init()
 
 void tk_port_exit()
 {
+    if ( surface ) SDL_FreeSurface( surface );
+    if ( palette ) SDL_FreePalette( palette );
+    if ( renderer ) SDL_DestroyRenderer( renderer );
+    if ( window ) SDL_DestroyWindow( window );
+
     SDL_Quit();
 }
 

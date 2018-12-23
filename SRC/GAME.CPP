@@ -2340,6 +2340,9 @@ void game()
                  for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) aplayer[a]->shop();
             }
 
+            scr_y_size = 240;
+            tk_port_resolution_changed();
+
             peli_biisi();
 
             load_efp_pal( "EFPS/WALLS1.EFP", pal );
@@ -2451,6 +2454,9 @@ void game()
         }
         fadeout( virbuff, pal );
         menu_biisi();
+
+        scr_y_size = 200;
+        tk_port_resolution_changed();
 
         if ( KILLING_MODE!= DEATHMATCH )
         {
