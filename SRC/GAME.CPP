@@ -2157,8 +2157,9 @@ int select_server()
              else draw_ball(70,45+select*10,cnt);
             cnt ++;
             if ( cnt > 23 ) cnt = 0;
+
+            sendipxnow(&bc, IPX_SERVERSEARCH);
         }
-        sendipxnow(&bc,IPX_SERVERSEARCH);
 
         for ( a = 0; a < RECEIVERS; a ++  )
         if ( Net::receive(rec[a]) )
