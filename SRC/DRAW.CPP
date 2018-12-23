@@ -759,18 +759,27 @@ void draw_infos()
 {
     char text[20];
     int x;
-    writefonts( 3, scr_y_size - 15, weapon[aplayer[0]->curr_weapon].name, 1 );
-    x = aplayer[0]->bullets[weapon[aplayer[0]->curr_weapon].btype - 1] / bullet_type[weapon[aplayer[0]->curr_weapon].btype].mul;
-    if ( x < 0 ) x = 1;
-    sprintf( text, "%d", x );
-    if ( aplayer[0]->curr_weapon > 0 ) writefonts( 3, scr_y_size - 23, text, 7*16 );
-    if ( GAME_MODE == SPLIT_SCREEN )
+
+    // Only render bullet count if weapon has bullets, i.e. btype > 0
+    if ( weapon[aplayer[0]->curr_weapon].btype )
     {
-        writefonts( 3 + 160, scr_y_size - 15, weapon[aplayer[1]->curr_weapon].name, 1 );
-        x = aplayer[1]->bullets[weapon[aplayer[1]->curr_weapon].btype - 1] / bullet_type[weapon[aplayer[1]->curr_weapon].btype].mul;
+        writefonts( 3, scr_y_size - 15, weapon[aplayer[0]->curr_weapon].name, 1 );
+        x = aplayer[0]->bullets[weapon[aplayer[0]->curr_weapon].btype - 1] / bullet_type[weapon[aplayer[0]->curr_weapon].btype].mul;
         if ( x < 0 ) x = 1;
         sprintf( text, "%d", x );
-        if ( aplayer[1]->curr_weapon > 0 ) writefonts( 3 + 160, scr_y_size - 23, text, 7*16 );
+        writefonts( 3, scr_y_size - 23, text, 7*16 );
+    }
+
+    if ( GAME_MODE == SPLIT_SCREEN )
+    {
+        if ( weapon[aplayer[1]->curr_weapon].btype )
+        {
+            writefonts( 3 + 160, scr_y_size - 15, weapon[aplayer[1]->curr_weapon].name, 1 );
+            x = aplayer[1]->bullets[weapon[aplayer[1]->curr_weapon].btype - 1] / bullet_type[weapon[aplayer[1]->curr_weapon].btype].mul;
+            if ( x < 0 ) x = 1;
+            sprintf( text, "%d", x );
+            writefonts( 3 + 160, scr_y_size - 23, text, 7*16 );
+        }
     }
 }
 
