@@ -1,4 +1,5 @@
 *.cbp
+.idea/
 /*.CFG
 /tk3
 cmake-modules/
