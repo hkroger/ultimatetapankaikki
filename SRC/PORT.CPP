@@ -8,10 +8,10 @@
 #include "GLOBVAR.H"
 #include "ERROR/ERROR.H"
 
-static SDL_Window *window;
-static SDL_Renderer *renderer;
-static SDL_Surface *surface;
-static SDL_Palette *palette;
+static SDL_Window *window = NULL;
+static SDL_Renderer *renderer = NULL;
+static SDL_Surface *surface = NULL;
+static SDL_Palette *palette = NULL;
 static SDL_Rect render_dest_rect;
 static bool window_resized;
 bool tk_port_quit_flag = false;
@@ -78,6 +78,11 @@ static void get_render_rect( SDL_Rect *rect )
 
 static int create_surface()
 {
+    if ( surface )
+    {
+        SDL_FreeSurface(surface);
+    }
+
     surface = SDL_CreateRGBSurface( 0, 320, scr_y_size, 8, 0, 0, 0, 0 );
 
     if ( !surface )
@@ -155,15 +160,20 @@ static void tk_port_init_time()
 #endif
 }
 
-void tk_port_resolution_changed( void )
+static void refresh_rendering()
 {
     SDL_RenderClear( renderer );
     get_render_rect( &render_dest_rect );
+}
 
-    SDL_FreeSurface( surface );
+void tk_port_change_resolution( const unsigned int y )
+{
+    scr_y_size = y;
+
+    refresh_rendering();
 
     const int s_ret = create_surface();
-    if (s_ret) error( "Failed to create new surface" );
+    if ( s_ret ) error( "Failed to create new surface\n" );
 
     init_screen();
 }
@@ -317,8 +327,7 @@ void tk_port_present_screen( void )
 {
     if ( window_resized )
     {
-        SDL_RenderClear( renderer );
-        get_render_rect( &render_dest_rect );
+        refresh_rendering();
         window_resized = false;
     }
 

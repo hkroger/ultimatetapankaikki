@@ -2340,8 +2340,7 @@ void game()
                  for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) aplayer[a]->shop();
             }
 
-            scr_y_size = 240;
-            tk_port_resolution_changed();
+            tk_port_change_resolution( 240 );
 
             peli_biisi();
 
@@ -2455,8 +2454,7 @@ void game()
         fadeout( virbuff, pal );
         menu_biisi();
 
-        scr_y_size = 200;
-        tk_port_resolution_changed();
+        tk_port_change_resolution( 200 );
 
         if ( KILLING_MODE!= DEATHMATCH )
         {

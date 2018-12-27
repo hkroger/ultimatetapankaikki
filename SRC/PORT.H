@@ -25,7 +25,7 @@ void tk_port_event_tick( void );
 
 void tk_port_present_screen( void );
 
-void tk_port_resolution_changed( void );
+void tk_port_change_resolution( const unsigned int y );
 
 void tk_port_save_screenshot( const char* path );
 
