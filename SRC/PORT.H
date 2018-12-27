@@ -17,33 +17,31 @@
 #define TK_PORT_MSVC
 #endif
 
-int tk_port_init( void );
+namespace tk_port
+{
+int init( void );
 
-void tk_port_exit( void );
+void deinit( void );
 
-void tk_port_event_tick( void );
+void event_tick( void );
 
-void tk_port_present_screen( void );
+void change_resolution( const unsigned int y );
 
-void tk_port_change_resolution( const unsigned int y );
+void save_screenshot( const char* path );
 
-void tk_port_save_screenshot( const char* path );
+void set_palette( char palette_entries[768], int brightness );
 
-void tk_port_set_palette( char palette_entries[768], int brightness );
+void sleep( const int msec );
 
-void tk_port_sleep(int msec);
+int vintage_clock();
 
-int tk_port_vintage_clock();
-
-double tk_port_debug_wallclock();
-
-extern bool tk_port_quit_flag;
-extern uint32_t tk_port_debug;
-
+extern bool quit_flag;
+extern uint32_t debug;
+}
 
 #ifndef _PORT_IMPL
 // Override `clock` everywhere with our vintage clock
-#define clock tk_port_vintage_clock
+#define clock tk_port::vintage_clock
 #undef CLOCKS_PER_SEC
 #define CLOCKS_PER_SEC VINTAGE_CLOCKS_PER_SEC
 #endif

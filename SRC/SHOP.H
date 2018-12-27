@@ -144,7 +144,7 @@ void Player::shop()
         !k.state[K_SHOOT]&&
         !k.state[K_SHIFT])
         {
-            tk_port_event_tick();
+            tk_port::event_tick();
         }
         if ( k.state[K_UP] ) if ( sel1 > 0 ) sel1 --;
         if ( k.state[K_DOWN] ) if ( sel1 < 2 ) sel1 ++;
@@ -235,7 +235,7 @@ void Player::shop()
             k.clear_stack();
             while ( !k.kbhit() )
             {
-                tk_port_event_tick();
+                tk_port::event_tick();
             }
             if ( k.state[K_SHOOT] ) quit = 1;
             k.state[1] = 0;

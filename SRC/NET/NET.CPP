@@ -29,7 +29,9 @@ static const int PACKET_CHECKSUM_SIZE = 1; // 1 checksum byte at the and
 static const int PACKET_OVERHEAD_SIZE = PACKET_HEADER_SIZE + PACKET_CHECKSUM_SIZE;
 }
 
-namespace Net
+namespace tk_port
+{
+namespace net
 {
 
 bool init()
@@ -322,5 +324,6 @@ void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len)
             disconnect(destnode.node);
         }
     }
+}
 }
 }

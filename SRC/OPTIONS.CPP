@@ -100,7 +100,7 @@ int choose_load_file( char *name, int episode )
                 cnt++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         }
         if ( k.state[94] )
         {
@@ -171,7 +171,7 @@ int choose_episode()
                 cnt++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         }
         if ( k.state[94] )
         {
@@ -250,7 +250,7 @@ void player_options()
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
         if ( k.state[94] )
@@ -335,7 +335,7 @@ void game_options()
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
         if ( k.state[94] )
@@ -411,7 +411,7 @@ void sound_options()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        tk_port_event_tick();  // reset keystates before loop
+        tk_port::event_tick();  // reset keystates before loop
         while ( !k.state[1]&&!k.state[94]&&!k.state[99]&&!k.state[96]&&!k.state[97]&&!k.state[28] )
         {
             if ( clock() != oclock )
@@ -422,7 +422,7 @@ void sound_options()
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         }
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
         if ( k.state[94] )
@@ -507,7 +507,7 @@ int deathmatch_options()
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
         if ( k.state[94] )
@@ -602,7 +602,7 @@ void multiplayer_options()
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
         if ( k.state[94] )
@@ -770,7 +770,7 @@ void options()
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
             }
-            tk_port_event_tick();
+            tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
         if ( k.state[94] )

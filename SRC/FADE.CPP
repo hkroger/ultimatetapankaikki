@@ -41,7 +41,7 @@ void fadein( char *image, char *pal )
     }
     setpal( pal, 256 );
     memcpy( screen, image, 320*scr_y_size );
-    tk_port_event_tick();
+    tk_port::event_tick();
 }
 
 void fadeout( char *image, char *pal )
@@ -57,7 +57,7 @@ void fadeout( char *image, char *pal )
     }
     setpal( pal, 0 );
     memset( screen, 0, 320*scr_y_size );
-    tk_port_event_tick();
+    tk_port::event_tick();
 }
 
 void CalCuLaTE_Sine_Table_AND_Be_Happy()

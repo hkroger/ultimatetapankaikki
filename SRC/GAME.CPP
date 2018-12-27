@@ -132,7 +132,7 @@ void do_all()
     int a;
     char text[30];
     std::cout << "\n                ================== Starting TK =================\n\n";
-    if ( Net::init()  )
+    if ( tk_port::net::init()  )
     {
         std::cout << "TCP/IP stack initialized\n";
         net_avail = 1;
@@ -241,7 +241,7 @@ void free_all()
 {
     MIDASclose();
     free_net_mem();
-    Net::deinit();
+    tk_port::net::deinit();
     k.deinit();
 }
 
@@ -584,7 +584,7 @@ void screen_capture()
         if ( ( sci = fopen( text1, "rb" )  )  == NULL ) free = 1;else fclose( sci );
         num ++;
     }
-    tk_port_save_screenshot( text1 );
+    tk_port::save_screenshot( text1 );
     strncat( text1, " saved" , sizeof( text1 ) - strlen( text1 ) - 1 );
     message_board.add_message(text1);
 }
@@ -1009,7 +1009,7 @@ void victory()
             setpal( pal, a );
         }
     k.state[1] = 0;
-    while (! k.state[1]) tk_port_event_tick();
+    while (! k.state[1]) tk_port::event_tick();
     while (a > 0)
         if ( oclock != clock())
         {
@@ -1033,7 +1033,7 @@ void flushipx()
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
          snd->data[b]=ipxstream[a][b];
-        Net::sendpacket( player[a].node, snd, (word)(ipxofs[a]+1) );
+        tk_port::net::sendpacket( player[a].node, snd, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
       }
@@ -1056,7 +1056,7 @@ void docheckflush()
         ipxstream[a][ ipxofs[a]++ ] = IPX_END;
         for (b=0;b<ipxofs[a];b++)
          snd->data[b]=ipxstream[a][b];
-        Net::sendpacket( player[a].node, snd, (word)(ipxofs[a]+1) );
+        tk_port::net::sendpacket( player[a].node, snd, (word)(ipxofs[a]+1) );
  //         RESET
         ipxofs[a] = 0;
     }
@@ -1174,7 +1174,7 @@ void sendipxnow( struct nodeaddr *node, int type, ... )
         default:error("sendipxnow: message %d not yet implemented\n", type );
     }
     snd->data[a++] = IPX_END;
-    Net::sendpacket( *node, snd, (word)(a+1) );
+    tk_port::net::sendpacket( *node, snd, (word)(a+1) );
     va_end( ap );
 }
 
@@ -1361,7 +1361,7 @@ void setup_ipx()
     {
         strcpy( servername, name1 );
         serveraddr.node = 0;
-        if ( Net::create_server(port) )
+        if ( tk_port::net::create_server(port) )
         {
             error("opensocket: Couldn't open socket (%u)\n", port);
         }
@@ -1371,7 +1371,7 @@ void setup_ipx()
         // Connection to nonexisting server has long timeout within
         // SDL net for which time it blocks. It's not great UX but
         // will do for now.
-        if ( Net::connect_server(prompt_server_address(), port) )
+        if ( tk_port::net::connect_server(prompt_server_address(), port) )
         {
             warn("opensocket: Couldn't open socket (%u)\n", port);
         }
@@ -1382,14 +1382,14 @@ void desetup_ipx()
 {
     struct nodeaddr n;
 
-    n=Net::BROADCAST();
+    n=tk_port::net::BROADCAST();
     flushipx();
     if ((GAME_MODE==NETWORK)&&(NETWORK_MODE==SERVER))
         sendipxnow(&n,IPX_SERVERSHUTDOWN);
     // Wait a while before closing sockets so that
     // clients have time to react to SERVERSHUTDOWN
-    tk_port_sleep(50);
-    Net::close_connections();
+    tk_port::sleep(50);
+    tk_port::net::close_connections();
 }
 
 void server_add_player(char *name,struct nodeaddr *n)
@@ -1431,10 +1431,10 @@ void do_server_shit()
     char *str;
     int pl;
 
-    Net::accept_connections();
+    tk_port::net::accept_connections();
 
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( Net::receive(rec[a]) )
+    if ( tk_port::net::receive(rec[a]) )
     {
         data =  - 1;
         ofs = 0;
@@ -1705,7 +1705,7 @@ void do_client_shit()
     int pl;
 
     for ( a = 0; a < RECEIVERS; a ++  )
-    if ( Net::receive(rec[a]) )
+    if ( tk_port::net::receive(rec[a]) )
     {
         data =  - 1;
         ofs = 0;
@@ -1880,7 +1880,7 @@ int realjoin()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if ( Net::receive(rec[a]) )
+            if ( tk_port::net::receive(rec[a]) )
             {
                 data =  - 1;
                 ofs = 0;
@@ -1938,7 +1938,7 @@ int getlevel()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if ( Net::receive(rec[a]) )
+            if ( tk_port::net::receive(rec[a]) )
             {
                 data =  - 1;
                 ofs = 0;
@@ -1984,7 +1984,7 @@ int getlevelinfo()
         {
             if (k.state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
-            if ( Net::receive(rec[a]) )
+            if ( tk_port::net::receive(rec[a]) )
             {
                 data =  - 1;
                 ofs = 0;
@@ -2055,7 +2055,7 @@ int waitfor(int msg,int secs)
     while ((!timeout)&&(yes==0))
     {
         for ( a = 0; a < RECEIVERS; a ++  )
-        if ( Net::receive(rec[a]) )
+        if ( tk_port::net::receive(rec[a]) )
         {
             data =  - 1;
             ofs = 0;
@@ -2102,7 +2102,7 @@ int select_server()
 
     k.state[1] = 0;
     k.state[28] = 0;
-    bc=Net::BROADCAST();
+    bc=tk_port::net::BROADCAST();
 
     while ( !done )
     {
@@ -2148,7 +2148,7 @@ int select_server()
                     fadein(virbuff,pal);
                     first=0;
                 }
-        tk_port_event_tick();
+        tk_port::event_tick();
         if ( clock() != oclock )
         {
             oclock = clock();
@@ -2162,7 +2162,7 @@ int select_server()
         }
 
         for ( a = 0; a < RECEIVERS; a ++  )
-        if ( Net::receive(rec[a]) )
+        if ( tk_port::net::receive(rec[a]) )
         {
             data =  - 1;
             ofs = 0;
@@ -2340,7 +2340,7 @@ void game()
                  for ( a = 0; a < ACTIVE_PLAYERS; a ++  ) aplayer[a]->shop();
             }
 
-            tk_port_change_resolution( 240 );
+            tk_port::change_resolution( 240 );
 
             peli_biisi();
 
@@ -2444,7 +2444,7 @@ void game()
                     Spot_count%= 360;
                     frame_count ++;
                 }
-                tk_port_event_tick();
+                tk_port::event_tick();
             }  // game loop end
 
             if ( DARK_MODE )
@@ -2454,7 +2454,7 @@ void game()
         fadeout( virbuff, pal );
         menu_biisi();
 
-        tk_port_change_resolution( 200 );
+        tk_port::change_resolution( 200 );
 
         if ( KILLING_MODE!= DEATHMATCH )
         {
@@ -2521,7 +2521,7 @@ void menu()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        tk_port_event_tick();
+        tk_port::event_tick();
         oclock = clock();
         while (!(quit || k.state[94] || k.state[99] || k.state[28]))
         {
@@ -2532,9 +2532,9 @@ void menu()
                 draw_ball( 320 - 75, 100 - starty + ( selected*15 )  - 2, cnt );
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
-                tk_port_event_tick();
+                tk_port::event_tick();
             }
-            if (tk_port_quit_flag) {
+            if (tk_port::quit_flag) {
                 quit = 1;
             }
         };
@@ -2608,7 +2608,7 @@ void logo()
     load_efp_pal( "EFPS/EFLOGO.EFP", pal );
     setpal( pal, 0 );
     memcpy( screen, picture, 64000 );
-    tk_port_event_tick();
+    tk_port::event_tick();
     oclock = clock();
     while (a < 255)
         if ( oclock != clock())
@@ -2619,7 +2619,7 @@ void logo()
         }
     while (! k.kbhit() && abs((int) (oclock - clock())) < 500)
     {
-        tk_port_event_tick();
+        tk_port::event_tick();
     }
     while (a > 0)
         if ( oclock != clock())
@@ -2628,7 +2628,7 @@ void logo()
             a -= 10;
             setpal( pal, a );
         }
-    tk_port_event_tick();
+    tk_port::event_tick();
 }
 
 int main( int argc, char *argv[] )
@@ -2667,7 +2667,7 @@ int main( int argc, char *argv[] )
                      break;
         }
     }
-    if(tk_port_init() != 0) {
+    if(tk_port::init() != 0) {
         return 1;
     }
     srand( (unsigned) time( NULL ) );
@@ -2678,6 +2678,6 @@ int main( int argc, char *argv[] )
     menu();
     if ( ph ) MIDASstopModule( ph );
     free_all();
-    tk_port_exit();
+    tk_port::deinit();
 //  credits();
 }

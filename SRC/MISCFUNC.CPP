@@ -87,7 +87,7 @@ int get_key( int x, int y )
                     pressed = 1;
                 }
         }
-        tk_port_event_tick();
+        tk_port::event_tick();
     }
     for ( a = 0; a < 0x80; a ++  )
     k.state[a] = 0;

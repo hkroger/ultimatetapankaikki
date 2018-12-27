@@ -42,7 +42,7 @@ struct KeyboardHandler
     {
         while (!kbhit())
         {
-            tk_port_event_tick();
+            tk_port::event_tick();
         }
         return _last_getch;
     }

@@ -8,27 +8,30 @@
 #include "GLOBVAR.H"
 #include "ERROR/ERROR.H"
 
-static SDL_Window *window = NULL;
-static SDL_Renderer *renderer = NULL;
-static SDL_Surface *surface = NULL;
-static SDL_Palette *palette = NULL;
-static SDL_Rect render_dest_rect;
-static bool window_resized;
-bool tk_port_quit_flag = false;
-uint32_t tk_port_debug = 0;
 extern int scr_y_size;
 
-static uint64_t timer_zero;
+namespace tk_port
+{
+SDL_Window *window = NULL;
+SDL_Renderer *renderer = NULL;
+SDL_Surface *surface = NULL;
+SDL_Palette *palette = NULL;
+SDL_Rect render_dest_rect;
+bool window_resized;
+bool quit_flag = false;
+uint32_t debug = 0;
+uint64_t timer_zero;
+
 #define TK_PORT_NSEC_PER_SEC 1000000000L
 #define TK_PORT_NSEC_PER_MSEC 1000000L
 #define TK_PORT_GRAPHICS_SCALE 3
 
 #ifdef TK_PORT_MAC
 #include <mach/mach_time.h>
-static mach_timebase_info_data_t timer_timebase_info;
+mach_timebase_info_data_t timer_timebase_info;
 #endif
 
-static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
+Uint32 update_framecount( Uint32 interval, void *param )
 {
     framecount++;
     // Return the next interval to be used. This technically allows
@@ -37,7 +40,6 @@ static Uint32 tk_port_update_framecount( Uint32 interval, void *param )
     return 1000 / target_frames;
 }
 
-
 static void read_tk_port_debug()
 {
     const char *tk_port_debug_s = getenv( "TK_PORT_DEBUG" );
@@ -45,10 +47,10 @@ static void read_tk_port_debug()
     {
         return;
     }
-    tk_port_debug = strtoul( tk_port_debug_s, NULL, 10 );
-    if ( tk_port_debug != 0 )
+    debug = strtoul( tk_port_debug_s, NULL, 10 );
+    if ( debug != 0 )
     {
-        SDL_Log( "tk_port_debug = %d (%08x)", tk_port_debug, tk_port_debug );
+        SDL_Log( "tk_port_debug = %d (%08x)", debug, debug );
     }
 }
 
@@ -108,10 +110,10 @@ static void init_screen()
     memset( screen, 0, 320 * scr_y_size );
 
     // I mean, the first 768 bytes of `screen` are zero...
-    tk_port_set_palette( screen, 0 );
+    set_palette( screen, 0 );
 }
 
-static int tk_port_init_graphics()
+int init_graphics()
 {
     window = SDL_CreateWindow(
         "TK",
@@ -144,10 +146,10 @@ static int tk_port_init_graphics()
     return 0;
 }
 
-static void tk_port_init_time()
+void init_time()
 {
     // Set up the timer to update the framecount global.
-    SDL_AddTimer( 1000 / target_frames, tk_port_update_framecount, NULL );
+    SDL_AddTimer( 1000 / target_frames, update_framecount, NULL );
 
 #ifdef TK_PORT_POSIX
     struct timespec tv;
@@ -166,7 +168,7 @@ static void refresh_rendering()
     get_render_rect( &render_dest_rect );
 }
 
-void tk_port_change_resolution( const unsigned int y )
+void change_resolution( const unsigned int y )
 {
     scr_y_size = y;
 
@@ -178,7 +180,7 @@ void tk_port_change_resolution( const unsigned int y )
     init_screen();
 }
 
-int tk_port_init()
+int init()
 {
     int ret;
     read_tk_port_debug();
@@ -187,15 +189,15 @@ int tk_port_init()
         SDL_Log( "Error initializing SDL:  %s", SDL_GetError());
         return 1;
     }
-    if((ret = tk_port_init_graphics()) != 0) {
+    if((ret = init_graphics()) != 0) {
         return ret;
     }
-    tk_port_init_time();
-    tk_port_event_tick();  // Tick once so we get the window up at this point
+    init_time();
+    event_tick();  // Tick once so we get the window up at this point
     return 0;
 }
 
-void tk_port_exit()
+void deinit()
 {
     if ( surface ) SDL_FreeSurface( surface );
     if ( palette ) SDL_FreePalette( palette );
@@ -205,12 +207,12 @@ void tk_port_exit()
     SDL_Quit();
 }
 
-static uint8_t tk_port_remap_key( SDL_Keycode keycode )
+uint8_t remap_key( SDL_Keycode keycode )
 {
     return keycode & 0xFF;
 }
 
-static uint8_t tk_port_get_scancode_index( SDL_Keycode keycode, SDL_Scancode scancode )
+uint8_t get_scancode_index( SDL_Keycode keycode, SDL_Scancode scancode )
 {
     switch (scancode)
     {
@@ -274,7 +276,21 @@ static uint8_t tk_port_get_scancode_index( SDL_Keycode keycode, SDL_Scancode sca
     }
 }
 
-void tk_port_event_tick( void )
+void present_screen( void )
+{
+    if ( window_resized )
+    {
+        refresh_rendering();
+        window_resized = false;
+    }
+
+    SDL_Texture *surface_texture = SDL_CreateTextureFromSurface( renderer, surface );
+    SDL_RenderCopy( renderer, surface_texture, NULL, &render_dest_rect );
+    SDL_RenderPresent( renderer );
+    SDL_DestroyTexture( surface_texture );
+}
+
+void event_tick( void )
 {
     SDL_Event e;
     while (SDL_PollEvent( &e ))
@@ -282,7 +298,7 @@ void tk_port_event_tick( void )
         switch (e.type)
         {
             case SDL_QUIT:
-                tk_port_quit_flag = true;
+                quit_flag = true;
                 break;
             case SDL_KEYUP:
             case SDL_KEYDOWN:
@@ -292,17 +308,17 @@ void tk_port_event_tick( void )
                 // Shift+ESC hard-kills the game, for development.
                 if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE && e.key.keysym.mod & KMOD_LSHIFT )
                 {
-                    tk_port_quit_flag = true;
+                    quit_flag = true;
                     exit( 42 );
                 }
 
-                k.state[tk_port_get_scancode_index( e.key.keysym.sym, e.key.keysym.scancode )] = down;
+                k.state[get_scancode_index( e.key.keysym.sym, e.key.keysym.scancode )] = down;
 
                 if ( down )
                 {
-                    const uint8_t tk_key = tk_port_remap_key( e.key.keysym.sym );
+                    const uint8_t tk_key = remap_key( e.key.keysym.sym );
 
-                    if ( tk_port_debug )
+                    if ( debug )
                     {
                         printf( "key down: %04x (tk = %d)\n", e.key.keysym.scancode, tk_key );
                     }
@@ -320,24 +336,10 @@ void tk_port_event_tick( void )
                 break;
         }
     }
-    tk_port_present_screen();
+    present_screen();
 }
 
-void tk_port_present_screen( void )
-{
-    if ( window_resized )
-    {
-        refresh_rendering();
-        window_resized = false;
-    }
-
-    SDL_Texture *surface_texture = SDL_CreateTextureFromSurface( renderer, surface );
-    SDL_RenderCopy( renderer, surface_texture, NULL, &render_dest_rect );
-    SDL_RenderPresent( renderer );
-    SDL_DestroyTexture( surface_texture );
-}
-
-void tk_port_save_screenshot( const char* path )
+void save_screenshot( const char* path )
 {
     SDL_SaveBMP( surface, path );
 }
@@ -349,7 +351,7 @@ static int clamp( int val, int min, int max )
     return val;
 }
 
-void tk_port_set_palette( char palette_entries[768], int brightness )
+void set_palette( char palette_entries[768], int brightness )
 {
     char *palette_ptr = palette_entries;
 
@@ -369,9 +371,9 @@ void tk_port_set_palette( char palette_entries[768], int brightness )
     SDL_SetSurfacePalette( surface, palette );
 }
 
-void tk_port_sleep( int msec )
+void sleep( const int msec )
 {
-    tk_port_event_tick();
+    event_tick();
     SDL_Delay( msec );
 }
 
@@ -379,7 +381,7 @@ void tk_port_sleep( int msec )
  * A clock that returns wallclock values in "vintage time", which are arbitrary ticks.
  * @return integer describing the current time.
  */
-static uint64_t tk_port_nanoclock()
+static uint64_t nanoclock()
 {
 #if defined(TK_PORT_MAC)
     uint64_t now = mach_absolute_time();
@@ -396,18 +398,19 @@ static uint64_t tk_port_nanoclock()
 #endif
 }
 
-int tk_port_vintage_clock()
+int vintage_clock()
 {
-    uint64_t nsec_time = tk_port_nanoclock();
+    uint64_t nsec_time = nanoclock();
     return (int) (nsec_time * VINTAGE_CLOCKS_PER_SEC / TK_PORT_NSEC_PER_SEC);
 }
 
 /**
- * Return the wallclock time tk_port_vintage_clock() is derived off.
+ * Return the wallclock time vintage_clock() is derived off.
  * @return
  */
-double tk_port_debug_wallclock()
+double debug_wallclock()
 {
-    uint64_t nsec_time = tk_port_nanoclock();
+    uint64_t nsec_time = nanoclock();
     return nsec_time / (double) TK_PORT_NSEC_PER_SEC;
+}
 }

@@ -24,7 +24,9 @@ struct packet
   char data[MAXDATASIZE];
 };
 
-namespace Net
+namespace tk_port
+{
+namespace net
 {
 bool init();
 void deinit();
@@ -40,6 +42,7 @@ bool receive(struct packet *buffer);
 void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len);
 
 struct nodeaddr BROADCAST();
+}
 }
 
 #endif
