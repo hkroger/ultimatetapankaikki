@@ -38,6 +38,8 @@ void close_connections();
 
 void accept_connections();
 
+bool active_connections_exist();
+
 bool receive(struct packet *buffer);
 void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len);
 

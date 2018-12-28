@@ -1704,6 +1704,14 @@ void do_client_shit()
     char *str;
     int pl;
 
+    // Check that server connection is still alive
+    if ( !tk_port::net::active_connections_exist() )
+    {
+        warn("Lost connection to server\n");
+        quit = 1;
+        return;
+    }
+
     for ( a = 0; a < RECEIVERS; a ++  )
     if ( tk_port::net::receive(rec[a]) )
     {

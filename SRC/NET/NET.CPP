@@ -156,6 +156,16 @@ void accept_connections()
     }
 }
 
+bool active_connections_exist()
+{
+    const auto doesSocketExist = [](const TCPsocket& socket) {
+        return socket != nullptr;
+    };
+
+    // Find if there exists one or more active sockets
+    return std::find_if(sockets.begin(), sockets.end(), doesSocketExist) != sockets.end();
+}
+
 static void disconnect(const unsigned int index)
 {
     // Disconnect is not propagated up but server
