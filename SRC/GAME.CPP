@@ -2453,6 +2453,12 @@ void game()
                     frame_count ++;
                 }
                 tk_port::event_tick();
+
+                if ( tk_port::quit_flag )
+                {
+                    quit = 1;
+                    BACK_TO_MENU = 1;
+                }
             }  // game loop end
 
             if ( DARK_MODE )

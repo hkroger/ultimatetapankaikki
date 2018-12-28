@@ -298,6 +298,12 @@ void event_tick( void )
         switch (e.type)
         {
             case SDL_QUIT:
+                if ( quit_flag )
+                {
+                    // Exit with force if app didn't quit with first press. App doesn't
+                    // poll for quit_flag in many places.
+                    exit( 1 );
+                }
                 quit_flag = true;
                 break;
             case SDL_KEYUP:
