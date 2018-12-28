@@ -133,6 +133,10 @@ int init_graphics()
         SDL_Log( "Error initializing SDL renderer:  %s", SDL_GetError());
         return 3;
     }
+
+    // Set screen clearing color
+    SDL_SetRenderDrawColor( renderer, 0, 0, 0, SDL_ALPHA_OPAQUE );
+
     get_render_rect(&render_dest_rect);
     window_resized = false;
 
