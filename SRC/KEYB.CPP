@@ -1,5 +1,6 @@
-#include <SDL.h>
+#include <map>
 #include <cstdint>
+#include <SDL.h>
 #include "KEYB.H"
 
 namespace tk_port
@@ -7,9 +8,21 @@ namespace tk_port
 namespace keyb
 {
 
+const uint32_t KEY_REPEAT_TIMER_CODE = 43615681;  // Random number heh heh
+const uint32_t SYMBOL_KEY_REPEAT_START = 500;     // ms
+const uint32_t SYMBOL_KEY_REPEAT_INTERVAL = 25;   // ms
+
 char state[256];
 int _kbhit_flag;
 int _last_getch;
+
+struct key_repeat
+{
+    uint32_t pressed_time;
+    int repeats;
+};
+
+std::map<uint8_t, key_repeat> pressed_keys;
 
 uint8_t remap_key( SDL_Keycode keycode )
 {
@@ -80,8 +93,26 @@ uint8_t get_scancode_index( SDL_Keycode keycode, SDL_Scancode scancode )
     }
 }
 
+uint32_t timer_callback( Uint32 interval, void * )
+{
+    SDL_Event event;
+    SDL_UserEvent userevent;
+
+    userevent.type = SDL_USEREVENT;
+    userevent.code = KEY_REPEAT_TIMER_CODE;
+    userevent.data1 = NULL;
+    userevent.data2 = NULL;
+
+    event.type = SDL_USEREVENT;
+    event.user = userevent;
+
+    SDL_PushEvent(&event);
+    return interval;
+}
+
 void init( int )
 {
+    SDL_AddTimer( 5, timer_callback, NULL );
     clear_stack();
 }
 
@@ -118,34 +149,70 @@ int getch()
 
 void handle_event( const SDL_Event *e )
 {
-    if (e->type != SDL_KEYDOWN && e->type != SDL_KEYUP)
-        return;
-
-    // We handle repeating separately
-    if (e->key.repeat)
-        return;
-
-    bool down = (e->key.type == SDL_KEYDOWN);
-
-    // Shift+ESC hard-kills the game, for development.
-    if ( down && e->key.keysym.scancode == SDL_SCANCODE_ESCAPE && e->key.keysym.mod & KMOD_LSHIFT )
+    switch (e->type)
     {
-        quit_flag = true;
-        exit( 42 );
-    }
-
-    state[get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode )] = down;
-
-    if ( down )
-    {
-        const uint8_t tk_key = remap_key( e->key.keysym.sym );
-
-        if ( debug )
+        case SDL_KEYDOWN:
         {
-            printf( "key down: %04x (tk = %d)\n", e->key.keysym.scancode, tk_key );
+            // Key repeating is done manually with timer and SDL_USEREVENT
+            if (e->key.repeat)
+                break;
+
+            // Shift+ESC hard-kills the game, for development.
+            if ( e->key.keysym.scancode == SDL_SCANCODE_ESCAPE && e->key.keysym.mod & KMOD_LSHIFT )
+            {
+                quit_flag = true;
+                exit( 42 );
+            }
+
+            uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
+            state[scancode_index] = 1;
+
+            if ( pressed_keys.find( scancode_index ) == pressed_keys.end() )
+            {
+                pressed_keys.insert( { scancode_index, { e->key.timestamp, 0 } } );
+            }
+
+            const uint8_t tk_key = remap_key( e->key.keysym.sym );
+            if ( debug )
+            {
+                printf( "key down: %04x (tk = %d)\n", e->key.keysym.scancode, tk_key );
+            }
+            _last_getch = tk_key;
+            _kbhit_flag = true;
+            break;
         }
-        _last_getch = tk_key;
-        _kbhit_flag = true;
+
+        case SDL_KEYUP:
+        {
+            uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
+            state[scancode_index] = 0;
+            pressed_keys.erase( scancode_index );
+            break;
+        }
+
+        case SDL_USEREVENT:
+        {
+            if (e->user.code != KEY_REPEAT_TIMER_CODE)
+                break;
+
+            uint32_t now = e->user.timestamp;
+            for ( auto &it : pressed_keys )
+            {
+                uint8_t scancode_index = it.first;
+                key_repeat &rep = it.second;
+
+                uint32_t elapsed = now - rep.pressed_time;
+                if ( elapsed >= SYMBOL_KEY_REPEAT_START + rep.repeats * SYMBOL_KEY_REPEAT_INTERVAL )
+                {
+                    state[scancode_index] = 1;
+                    _last_getch = scancode_index;
+                    _kbhit_flag = true;
+                    rep.repeats++;
+                }
+            }
+
+            break;
+        }
     }
 }
 

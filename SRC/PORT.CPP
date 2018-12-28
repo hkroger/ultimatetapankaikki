@@ -323,6 +323,8 @@ void event_tick( void )
     SDL_Event e;
     while (SDL_PollEvent( &e ))
     {
+        tk_port::keyb::handle_event(&e);
+
         switch (e.type)
         {
             case SDL_QUIT:
@@ -333,10 +335,6 @@ void event_tick( void )
                     exit( 1 );
                 }
                 quit_flag = true;
-                break;
-            case SDL_KEYUP:
-            case SDL_KEYDOWN:
-                keyb::handle_event(&e);
                 break;
 
             case SDL_WINDOWEVENT:
