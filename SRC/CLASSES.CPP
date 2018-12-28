@@ -201,31 +201,31 @@ void Player::chk_keys( int index )
 {
     int walk_chk = 0;
     int speedi = speed;
-    if ( k.state[K_LEFT] ) if ( !k.state[K_STRAFE] ) rotate( 9 );
-    if ( ( k.state[K_STRAFE]&&k.state[K_LEFT] ) ||k.state[K_LSTRAFE] )
+    if ( k::state[K_LEFT] ) if ( !k::state[K_STRAFE] ) rotate( 9 );
+    if ( ( k::state[K_STRAFE]&&k::state[K_LEFT] ) ||k::state[K_LSTRAFE] )
     {
         move( ( rangle2 + 90 )  % 360, speed*0.9, index );
         walk_chk = 1;
         speedi = speed*0.8;
     }
-    if ( k.state[K_RIGHT] ) if ( !k.state[K_STRAFE] ) rotate(  - 9 );
-    if ( ( k.state[K_STRAFE]&&k.state[K_RIGHT] ) ||k.state[K_RSTRAFE] )
+    if ( k::state[K_RIGHT] ) if ( !k::state[K_STRAFE] ) rotate(  - 9 );
+    if ( ( k::state[K_STRAFE]&&k::state[K_RIGHT] ) ||k::state[K_RSTRAFE] )
     {
         move( ( rangle2 + 270 )  % 360, speed*0.9, index );
         walk_chk = 1;
         speedi = speed*0.8;
     }
-    if ( k.state[K_UP] )
+    if ( k::state[K_UP] )
     {
         move( rangle2, speedi, index );walk_chk = 1; if ( rand()  % 20 == 0 ) kick_body_parts();
     }
-    if ( k.state[K_DOWN] )
+    if ( k::state[K_DOWN] )
     {
         move( ( rangle2 + 180 )  % 360, 0.75*speedi, index );walk_chk = 1;
     }
     if ( walk_chk ) if ( WALK == 0 ) WALK = 1;
     if ( !walk_chk ) WALK = 0;
-    if ( k.state[K_SHOOT] ) if ( load_cnt == weapon[curr_weapon].loading_time ){
+    if ( k::state[K_SHOOT] ) if ( load_cnt == weapon[curr_weapon].loading_time ){
      if (curr_weapon!=0){
      if ( bullets[weapon[curr_weapon].btype - 1] > 0 )
         shoot(); else {
@@ -234,47 +234,47 @@ void Player::chk_keys( int index )
      }
      if ( curr_weapon == 0 ) { shoot();kick_body_parts();}
      }
-    if ( !k.state[K_SHOOT] ) shoot_cnt = 0;else shoot_cnt ++;
-    if ( k.state[K_SHIFT] )
+    if ( !k::state[K_SHOOT] ) shoot_cnt = 0;else shoot_cnt ++;
+    if ( k::state[K_SHIFT] )
     {
-        change_weapon();k.state[K_SHIFT] = 0;
+        change_weapon();k::state[K_SHIFT] = 0;
     }
     if ( GAME_MODE!= SPLIT_SCREEN )
     {
-        if ( k.state[41] ) {
+        if ( k::state[41] ) {
             curr_weapon = 0; load_cnt=0;
         }
-        if ( k.state[2] ) if ( weapons[1] ){
+        if ( k::state[2] ) if ( weapons[1] ){
             curr_weapon = 1; load_cnt = 0;
         }
-        if ( k.state[3] ) if ( weapons[2] ){
+        if ( k::state[3] ) if ( weapons[2] ){
             curr_weapon = 2; load_cnt = 0;
         }
-        if ( k.state[4] ) if ( weapons[3] ){
+        if ( k::state[4] ) if ( weapons[3] ){
             curr_weapon = 3; load_cnt = 0;
         }
-        if ( k.state[5] ) if ( weapons[4] ){
+        if ( k::state[5] ) if ( weapons[4] ){
             curr_weapon = 4; load_cnt = 0;
         }
-        if ( k.state[6] ) if ( weapons[5] ){
+        if ( k::state[6] ) if ( weapons[5] ){
             curr_weapon = 5; load_cnt = 0;
         }
-        if ( k.state[7] ) if ( weapons[6] ){
+        if ( k::state[7] ) if ( weapons[6] ){
             curr_weapon = 6; load_cnt = 0;
         }
-        if ( k.state[8] ) if ( weapons[7] ){
+        if ( k::state[8] ) if ( weapons[7] ){
             curr_weapon = 7; load_cnt = 0;
         }
-        if ( k.state[9] ) if ( weapons[8] ){
+        if ( k::state[9] ) if ( weapons[8] ){
             curr_weapon = 8; load_cnt = 0;
         }
-        if ( k.state[10] ) if ( weapons[9] ){
+        if ( k::state[10] ) if ( weapons[9] ){
             curr_weapon = 9; load_cnt = 0;
         }
-        if ( k.state[11] ) if ( weapons[10] ){
+        if ( k::state[11] ) if ( weapons[10] ){
             curr_weapon = 10; load_cnt = 0;
         }
-        if ( k.state[12] ) if ( weapons[11] ){
+        if ( k::state[12] ) if ( weapons[11] ){
             curr_weapon = 11; load_cnt = 0;
         }
     }
@@ -1361,7 +1361,7 @@ void Keys::change()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while ( !k.state[1]&&!k.state[94]&&!k.state[99]&&!k.state[28] )
+        while ( !k::state[1]&&!k::state[94]&&!k::state[99]&&!k::state[28] )
         {
             if ( clock() != oclock )
             {
@@ -1373,18 +1373,18 @@ void Keys::change()
             tk_port::event_tick();
         }
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k.state[94] )
+        if ( k::state[94] )
         {
-            selected --;if ( selected < 0 ) selected = DIFF_K - 1; k.state[94] = 0;
+            selected --;if ( selected < 0 ) selected = DIFF_K - 1; k::state[94] = 0;
         }
-        if ( k.state[99] )
+        if ( k::state[99] )
         {
-            selected ++;if ( selected >= DIFF_K ) selected = 0; k.state[99] = 0;
+            selected ++;if ( selected >= DIFF_K ) selected = 0; k::state[99] = 0;
         }
-        if ( k.state[28] )
+        if ( k::state[28] )
         {
-            k.state[28] = 0;
-            k.clear_stack();
+            k::state[28] = 0;
+            k::clear_stack();
             if ( selected == 0 )
             {
                 clear_shit( 47 ); K_UP = get_key( 160, 45 );
@@ -1426,9 +1426,9 @@ void Keys::change()
                 quit = 1;
             }
         }
-        if ( k.state[1] )
+        if ( k::state[1] )
         {
-            quit = 1; k.state[1] = 0;
+            quit = 1; k::state[1] = 0;
         }
     }
     fadeout( virbuff, pal );

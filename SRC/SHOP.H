@@ -136,25 +136,25 @@ void Player::shop()
             fadein( virbuff, pal );
             first = 0;
         }
-        while ( !k.state[1]&&
-        !k.state[K_LEFT]&&
-        !k.state[K_RIGHT]&&
-        !k.state[K_UP]&&
-        !k.state[K_DOWN]&&
-        !k.state[K_SHOOT]&&
-        !k.state[K_SHIFT])
+        while ( !k::state[1]&&
+        !k::state[K_LEFT]&&
+        !k::state[K_RIGHT]&&
+        !k::state[K_UP]&&
+        !k::state[K_DOWN]&&
+        !k::state[K_SHOOT]&&
+        !k::state[K_SHIFT])
         {
             tk_port::event_tick();
         }
-        if ( k.state[K_UP] ) if ( sel1 > 0 ) sel1 --;
-        if ( k.state[K_DOWN] ) if ( sel1 < 2 ) sel1 ++;
-        if ( k.state[K_LEFT] ) sel2 --;
-        if ( k.state[K_RIGHT] ) sel2 ++;
+        if ( k::state[K_UP] ) if ( sel1 > 0 ) sel1 --;
+        if ( k::state[K_DOWN] ) if ( sel1 < 2 ) sel1 ++;
+        if ( k::state[K_LEFT] ) sel2 --;
+        if ( k::state[K_RIGHT] ) sel2 ++;
         if ( sel2 < 0 ) sel2 = 0;
         if ( sel1 == 0 ) if ( sel2 >= DIFF_WEAPONS ) sel2 = DIFF_WEAPONS - 1;
         if ( sel1 == 1 ) if ( sel2 >= DIFF_BULLETS ) sel2 = DIFF_BULLETS - 1;
         if ( sel1 == 2 ) if ( sel2 >= OTHER_STUFF ) sel2 = OTHER_STUFF - 1;
-        if ( k.state[K_SHOOT] )
+        if ( k::state[K_SHOOT] )
         {
             if ( sel1 == 0 )
             if ( weapons[sel2 + 1] == 0 )
@@ -188,7 +188,7 @@ void Player::shop()
                 }
             }
         }
-        if ( k.state[K_SHIFT] )
+        if ( k::state[K_SHIFT] )
         {
             if ( sel1 == 0 )
             if ( weapons[sel2 + 1] > 0 )
@@ -220,25 +220,25 @@ void Player::shop()
                 }
             }
         }
-        k.state[K_UP] = 0;
-        k.state[K_DOWN] = 0;
-        k.state[K_LEFT] = 0;
-        k.state[K_RIGHT] = 0;
-        k.state[K_SHOOT] = 0;
-        k.state[K_SHIFT] = 0;
+        k::state[K_UP] = 0;
+        k::state[K_DOWN] = 0;
+        k::state[K_LEFT] = 0;
+        k::state[K_RIGHT] = 0;
+        k::state[K_SHOOT] = 0;
+        k::state[K_SHIFT] = 0;
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22000, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k.state[1] )
+        if ( k::state[1] )
         {
             FONT_NUM = 0;
             writefonts2( 10, 115, "press fire to confirm", 1 );
             memcpy( screen, virbuff, 64000 );
-            k.clear_stack();
-            while ( !k.kbhit() )
+            k::clear_stack();
+            while ( !k::kbhit() )
             {
                 tk_port::event_tick();
             }
-            if ( k.state[K_SHOOT] ) quit = 1;
-            k.state[1] = 0;
+            if ( k::state[K_SHOOT] ) quit = 1;
+            k::state[1] = 0;
         }
     }
     fadeout( virbuff, pal );

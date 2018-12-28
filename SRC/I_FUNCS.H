@@ -29,8 +29,8 @@ void level_info()
     writefonts( 16, 173, "Your action time is:", M_RED );
     writefonts( 16 + 95, 173, c_2_c( general_level_info.time_limit*TIME_ADD ), M_YELLOW );
     fadein( virbuff, pal );
-    k.clear_stack();
-    if ( k.getch()  == 27 ) if ( wanna_quit()  ) BACK_TO_MENU = 1;
+    k::clear_stack();
+    if ( k::getch()  == 27 ) if ( wanna_quit()  ) BACK_TO_MENU = 1;
     if ( !BACK_TO_MENU ) fadeout( virbuff, pal );
 }
 
@@ -157,8 +157,8 @@ void statics()
     snprintf( text, sizeof( text ), "%d", timebonus );
     writefonts( 16 + 80 + 55 + 80, 170, text, M_YELLOW );
     fadein( virbuff, pal );
-    k.clear_stack();
-    if ( k.getch()  == 27 ) if ( !quit )
+    k::clear_stack();
+    if ( k::getch()  == 27 ) if ( !quit )
     {
         if ( wanna_quit()  ) BACK_TO_MENU = 1;
     }

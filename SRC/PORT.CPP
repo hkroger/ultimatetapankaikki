@@ -336,30 +336,7 @@ void event_tick( void )
                 break;
             case SDL_KEYUP:
             case SDL_KEYDOWN:
-            {
-                bool down = (e.key.type == SDL_KEYDOWN);
-
-                // Shift+ESC hard-kills the game, for development.
-                if ( down && e.key.keysym.scancode == SDL_SCANCODE_ESCAPE && e.key.keysym.mod & KMOD_LSHIFT )
-                {
-                    quit_flag = true;
-                    exit( 42 );
-                }
-
-                k.state[get_scancode_index( e.key.keysym.sym, e.key.keysym.scancode )] = down;
-
-                if ( down )
-                {
-                    const uint8_t tk_key = remap_key( e.key.keysym.sym );
-
-                    if ( debug )
-                    {
-                        printf( "key down: %04x (tk = %d)\n", e.key.keysym.scancode, tk_key );
-                    }
-                    k._last_getch = tk_key;
-                    k._kbhit_flag = true;
-                }
-            }
+                keyb::handle_event(&e);
                 break;
 
             case SDL_WINDOWEVENT:

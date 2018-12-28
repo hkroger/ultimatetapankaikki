@@ -146,7 +146,6 @@ float sini[360], cosi[360];
 char *thefonts[10];
 int f_x_size[10], f_y_size[10];
 int FONT_NUM;
-KeyboardHandler k;
 Keys keys1, keys2;
 Message_board message_board;
 Player *aplayer[2];

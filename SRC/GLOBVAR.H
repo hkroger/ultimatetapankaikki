@@ -53,7 +53,6 @@ extern float sini[], cosi[];
 extern char *thefonts[10];
 extern int f_x_size[10], f_y_size[10];
 extern int FONT_NUM;
-extern KeyboardHandler k;
 extern Keys keys1, keys2;
 extern Message_board message_board;
 extern Player player[MAX_PLAYERS];// PLAYERS

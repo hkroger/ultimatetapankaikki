@@ -182,7 +182,7 @@ void do_all()
     {
         warn("Could not start MIDAS, starting without sounds\n");
     }
-    k.init( 0 );
+    k::init( 0 );
     std::cout << "Keyboard handler initialized\n";
     std::cout << "Loading fonts";
     FONT_NUM = 0; loadfonts( "FNTS/BLOODY.FNT" );   putchar('.');
@@ -242,7 +242,7 @@ void free_all()
     MIDASclose();
     free_net_mem();
     tk_port::net::deinit();
-    k.deinit();
+    k::deinit();
 }
 
 int check_place( int x, int y, int size )
@@ -563,9 +563,9 @@ void quiti()
         memset( virbuff + (a + (scr_y_size / 2) - 6) * 320 + x - 2, 0, 320 - (x * 2) + 4 );
     writefonts( x, (scr_y_size / 2) - 4, quitstr, 1 );
     memcpy( screen, virbuff, 64000 );
-    k.clear_stack();
+    k::clear_stack();
     time = clock();
-    if ( k.getch() == 'y' ) quit = 1;
+    if ( k::getch() == 'y' ) quit = 1;
 
     st += clock()  - time;
 }
@@ -593,26 +593,26 @@ void chkeys()
 {
     int a;
 
-    if ( k.state[1] ) quiti();
+    if ( k::state[1] ) quiti();
 
     for ( a = 0; a < ACTIVE_PLAYERS; a++ )
         if ( !aplayer[a]->DEAD )
             aplayer[a]->chk_keys( a );
 
-    if ( k.state[static_cast<int>('M')] )
+    if ( k::state[static_cast<int>('M')] )
     {
         MAP_ON = !MAP_ON ? 1 : 0;
-        k.state[static_cast<int>('M')] = 0;
+        k::state[static_cast<int>('M')] = 0;
     }
-    if ( k.state[static_cast<int>('F')] )
+    if ( k::state[static_cast<int>('F')] )
     {
         FRAMES_ON = FRAMES_ON == 0 ? 1 : 0;
-        k.state[static_cast<int>('F')] = 0;
+        k::state[static_cast<int>('F')] = 0;
     }
-    if ( k.state[69] )
+    if ( k::state[69] )
     {
         screen_capture();
-        k.state[69] = 0;
+        k::state[69] = 0;
     }
 }
 
@@ -1008,8 +1008,8 @@ void victory()
             a += 10;
             setpal( pal, a );
         }
-    k.state[1] = 0;
-    while (! k.state[1]) tk_port::event_tick();
+    k::state[1] = 0;
+    while (! k::state[1]) tk_port::event_tick();
     while (a > 0)
         if ( oclock != clock())
         {
@@ -1346,7 +1346,7 @@ static const char* prompt_server_address()
     memcpy(virbuff, picture, 64000);
     writefonts2(x, 85, title, 1);
     fadein(virbuff, pal);
-    k.clear_stack();
+    k::clear_stack();
     readline(x, 100, sizeof(server_address), server_address, screen);
     return server_address;
 }
@@ -1886,7 +1886,7 @@ int realjoin()
 
         while((!received)&&(!timeout))
         {
-            if (k.state[1]) return 0;
+            if (k::state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
             if ( tk_port::net::receive(rec[a]) )
             {
@@ -1944,7 +1944,7 @@ int getlevel()
 
         while((!received)&&(!timeout))
         {
-            if (k.state[1]) return 0;
+            if (k::state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
             if ( tk_port::net::receive(rec[a]) )
             {
@@ -1990,7 +1990,7 @@ int getlevelinfo()
 
         while((!received)&&(!timeout))
         {
-            if (k.state[1]) return 0;
+            if (k::state[1]) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
             if ( tk_port::net::receive(rec[a]) )
             {
@@ -2048,8 +2048,8 @@ int join_game(struct nodeaddr n)
     writefonts( 80, 90,buf, M_BLUE );
     writefonts( 80, 100,"done!", M_BLUE );
     memcpy(screen,virbuff,64000);
-    k.clear_stack();
-    k.getch();
+    k::clear_stack();
+    k::getch();
 
     return 1;
 }
@@ -2108,13 +2108,13 @@ int select_server()
     draw_box1( 60, 10, 320 - 60, 190, 15 );
     fadeout( virbuff, pal );
 
-    k.state[1] = 0;
-    k.state[28] = 0;
+    k::state[1] = 0;
+    k::state[28] = 0;
     bc=tk_port::net::BROADCAST();
 
     while ( !done )
     {
-        if (k.state[28] && servers>0)
+        if (k::state[28] && servers>0)
         {
             if (join_server(nodez[select])) done=1;
             else
@@ -2127,11 +2127,11 @@ int select_server()
                     strcpy(servernames[c],servernames[c+1]);
                 }
             }
-            k.state[28]=0;
+            k::state[28]=0;
         }
         if (servers>0){
-         if (k.state[94] && select>0) {select--;k.state[94]=0;}
-         if (k.state[99] && select<servers-1) {select++;k.state[99]=0;}
+         if (k::state[94] && select>0) {select--;k::state[94]=0;}
+         if (k::state[99] && select<servers-1) {select++;k::state[99]=0;}
         }
         memcpy( virbuff, picture, 64000 );
         FONT_NUM = 0;
@@ -2221,7 +2221,7 @@ int select_server()
                 };
             }
         }
-        if (k.state[1]) return 0;
+        if (k::state[1]) return 0;
     }
 
     if (join_game(nodez[select])) return 1;
@@ -2501,7 +2501,7 @@ void menu_scr()
     load_efp( "EFPS/TK.EFP", picture, 0 );
     load_efp_pal( "EFPS/WARE.EFP", pal );
     draw_box1( 55, 90 - ( ( Menu_texts*15 )  / 2 ), 320 - 55, 110 + ( ( Menu_texts*15 )  / 2 ), 10 );
-    k.state[28] = 0;
+    k::state[28] = 0;
     first = 1;
 }
 
@@ -2537,7 +2537,7 @@ void menu()
         memcpy( screen, virbuff, 64000 );
         tk_port::event_tick();
         oclock = clock();
-        while (!(quit || k.state[94] || k.state[99] || k.state[28]))
+        while (!(quit || k::state[94] || k::state[99] || k::state[28]))
         {
             if ( clock() != oclock )
             {
@@ -2553,15 +2553,15 @@ void menu()
             }
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k.state[94] )
+        if ( k::state[94] )
         {
-            selected --;if ( selected < 0 ) selected = Menu_texts - 1; k.state[94] = 0;
+            selected --;if ( selected < 0 ) selected = Menu_texts - 1; k::state[94] = 0;
         }
-        if ( k.state[99] )
+        if ( k::state[99] )
         {
-            selected ++;if ( selected > Menu_texts - 1 ) selected = 0; k.state[99] = 0;
+            selected ++;if ( selected > Menu_texts - 1 ) selected = 0; k::state[99] = 0;
         }
-        if ( k.state[28] )
+        if ( k::state[28] )
         {
             if ( selected == 0 )
             {
@@ -2631,7 +2631,7 @@ void logo()
             a += 10;
             setpal( pal, a );
         }
-    while (! k.kbhit() && abs((int) (oclock - clock())) < 500)
+    while (! k::kbhit() && abs((int) (oclock - clock())) < 500)
     {
         tk_port::event_tick();
     }
@@ -2686,8 +2686,8 @@ int main( int argc, char *argv[] )
     }
     srand( (unsigned) time( NULL ) );
     do_all();
-    k.clear_stack();
-    if ( pause ) k.getch();
+    k::clear_stack();
+    if ( pause ) k::getch();
     logo();
     menu();
     if ( ph ) MIDASstopModule( ph );

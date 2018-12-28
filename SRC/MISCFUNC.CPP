@@ -34,7 +34,7 @@ void change_name( int num )
     memcpy( virbuff, picture, 64000 );
     writefonts2( x, 85, "enter your name", 1 );
     fadein( virbuff, pal );
-    k.clear_stack();
+    k::clear_stack();
     if ( num == 1 )
     readline( x, 100, 10, name1, screen );
     if ( num == 2 )
@@ -81,7 +81,7 @@ int get_key( int x, int y )
         for ( a = 0; a < 0x80 &&!pressed; a ++  )
         {
             if ( a != 42 )
-                if ( k.state[a] )
+                if ( k::state[a] )
                 {
                     key = a;
                     pressed = 1;
@@ -90,7 +90,7 @@ int get_key( int x, int y )
         tk_port::event_tick();
     }
     for ( a = 0; a < 0x80; a ++  )
-    k.state[a] = 0;
+    k::state[a] = 0;
     return( key );
 }
 

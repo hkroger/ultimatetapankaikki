@@ -184,7 +184,7 @@ void readline( int x, int y, int len, char *str, char *screen )
         writefonts2( x, y, str, 1 );
         for ( dy = 0; dy < f_y_size[FONT_NUM]; dy++ )
             memcpy( screen + x + ((dy + y) * 320), virbuff + x + ((dy + y) * 320), len * f_x_size[FONT_NUM] );
-        key = k.getch();
+        key = k::getch();
         if ( key != 27 && key != 8 && key != 13 )
             if ( strlen( str ) < (len - 1))
             {
