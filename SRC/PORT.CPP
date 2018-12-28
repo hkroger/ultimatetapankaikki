@@ -113,6 +113,12 @@ static void init_screen()
     set_palette( screen, 0 );
 }
 
+void refresh_rendering()
+{
+    SDL_RenderClear( renderer );
+    get_render_rect( &render_dest_rect );
+}
+
 int init_graphics()
 {
     window = SDL_CreateWindow(
@@ -137,7 +143,8 @@ int init_graphics()
     // Set screen clearing color
     SDL_SetRenderDrawColor( renderer, 0, 0, 0, SDL_ALPHA_OPAQUE );
 
-    get_render_rect(&render_dest_rect);
+    refresh_rendering();
+
     window_resized = false;
 
     const int s_ret = create_surface();
@@ -164,12 +171,6 @@ void init_time()
     mach_timebase_info( &timer_timebase_info );
     timer_zero = mach_absolute_time();
 #endif
-}
-
-static void refresh_rendering()
-{
-    SDL_RenderClear( renderer );
-    get_render_rect( &render_dest_rect );
 }
 
 void change_resolution( const unsigned int y )
