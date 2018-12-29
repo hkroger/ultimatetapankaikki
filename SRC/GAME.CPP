@@ -2546,8 +2546,8 @@ void menu()
                 draw_ball( 320 - 75, 100 - starty + ( selected*15 )  - 2, cnt );
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
-                tk_port::event_tick();
             }
+            tk_port::event_tick();
             if (tk_port::quit_flag) {
                 quit = 1;
             }

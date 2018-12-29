@@ -189,7 +189,7 @@ int init()
 {
     int ret;
     read_tk_port_debug();
-    if ( SDL_Init(SDL_INIT_EVERYTHING) != 0 )
+    if ( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS ) != 0 )
     {
         SDL_Log( "Error initializing SDL:  %s", SDL_GetError());
         return 1;
@@ -295,6 +295,29 @@ void present_screen( void )
     SDL_DestroyTexture( surface_texture );
 }
 
+int clamp( int val, int min, int max )
+{
+    if ( val < min ) return min;
+    if ( val > max ) return max;
+    return val;
+}
+
+void frame_rate_limiter( const unsigned int max_fps )
+{
+    static unsigned int frame_start_time = SDL_GetTicks();
+
+    const unsigned int max_delay = 1000 / max_fps;
+    const unsigned int since_last_frame = SDL_GetTicks() - frame_start_time;
+    const unsigned int delay = clamp( max_delay - since_last_frame, 0, max_delay );
+
+    if ( delay > 0 )
+    {
+        SDL_Delay( delay );
+    }
+
+    frame_start_time = SDL_GetTicks();
+}
+
 void event_tick( void )
 {
     SDL_Event e;
@@ -348,18 +371,15 @@ void event_tick( void )
         }
     }
     present_screen();
+
+    // To avoid running in busy loop taking all the CPU time,
+    // limit the speed to nice multiple of target frame rate
+    frame_rate_limiter( target_frames * 4 );
 }
 
 void save_screenshot( const char* path )
 {
     SDL_SaveBMP( surface, path );
-}
-
-static int clamp( int val, int min, int max )
-{
-    if ( val < min ) return min;
-    if ( val > max ) return max;
-    return val;
 }
 
 void set_palette( char palette_entries[768], int brightness )

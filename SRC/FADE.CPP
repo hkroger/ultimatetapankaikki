@@ -35,7 +35,8 @@ void fadein( char *image, char *pal )
     alku = framecount;
     while( alku + ( 256 / FADE_SPEED )  > framecount )
     {
-        while ( framecount == old_c );
+        while ( framecount == old_c )
+            tk_port::event_tick();
         old_c = framecount;
         Draw_Phase( 256 - ( framecount - alku ) *FADE_SPEED, image, pal );
     }
@@ -51,7 +52,8 @@ void fadeout( char *image, char *pal )
     alku = old_c = framecount;
     while( alku + ( 256 / FADE_SPEED )  > framecount )
     {
-        while ( framecount == old_c );
+        while ( framecount == old_c )
+            tk_port::event_tick();
         old_c = framecount;
         Draw_Phase( ( framecount - alku ) *FADE_SPEED, image, pal );
     }
