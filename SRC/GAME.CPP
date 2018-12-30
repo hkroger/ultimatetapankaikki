@@ -2516,7 +2516,7 @@ void menu()
     {
         memcpy( virbuff, picture, 64000 );
         FONT_NUM = 1;
-        writefonts( 320 - str_length( Version ), 190, Version, M_BLUE );
+        writefonts( 320 - str_length( Version ) - 2, 190, Version, M_BLUE );
         for ( a = 0; a < Menu_texts; a ++  )
         {
             if ( a == selected )
