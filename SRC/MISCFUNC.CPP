@@ -64,7 +64,7 @@ char *k_2_c( SDL_Scancode scancode )
 
 SDL_Scancode get_key( int x, int y )
 {
-    SDL_Scancode key = SDL_SCANCODE_UNKNOWN;
+    SDL_Scancode key = k::NOTHING;
     int oclock = 0, cnt = 0, pressed = 0;
     while ( !pressed )
     {
@@ -79,7 +79,7 @@ SDL_Scancode get_key( int x, int y )
         SDL_Scancode scancode = k::get_last_key();
 
         // Left shift is blacklisted in the original code. Dunno why.
-        if ( scancode != SDL_SCANCODE_UNKNOWN && scancode != k::LEFT_SHIFT )
+        if ( scancode != k::NOTHING && scancode != k::LEFT_SHIFT )
         {
             key = scancode;
             pressed = 1;

@@ -2636,7 +2636,7 @@ void logo()
             a += 10;
             setpal( pal, a );
         }
-    while (! k::kbhit() && abs((int) (oclock - clock())) < 500)
+    while (k::get_last_key() == k::NOTHING && abs((int) (oclock - clock())) < 500)
     {
         tk_port::event_tick();
     }

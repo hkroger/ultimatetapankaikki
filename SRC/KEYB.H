@@ -8,6 +8,7 @@ namespace tk_port
 {
 namespace keyb
 {
+    const SDL_Scancode NOTHING = SDL_SCANCODE_UNKNOWN;
     const SDL_Scancode ESC = SDL_SCANCODE_ESCAPE;
     const SDL_Scancode ARROW_UP = SDL_SCANCODE_UP;
     const SDL_Scancode ARROW_DOWN = SDL_SCANCODE_DOWN;
@@ -39,8 +40,8 @@ namespace keyb
     void clear( SDL_Scancode );
     void clear_stack();
 
-    // Return scancode of the key that was pressed last, or
-    // SDL_SCANCODE_UNKNOWN if no key is currently pressed.
+    // Return scancode of the key that was pressed last, or NOTHING if
+    // no key is currently pressed.
     SDL_Scancode get_last_key();
 
     // Wait until a key is pressed and return its scancode
@@ -49,7 +50,6 @@ namespace keyb
     // Return a character corresponding the given scancode
     char scancode_to_char( SDL_Scancode scancode );
 
-    int kbhit();
     void handle_event( const SDL_Event * );
 }
 }
