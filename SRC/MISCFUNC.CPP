@@ -81,7 +81,7 @@ int get_key( int x, int y )
         for ( a = 0; a < 0x80 &&!pressed; a ++  )
         {
             if ( a != k::LEFT_SHIFT )
-                if ( k::state[a] )
+                if ( k::state(a) )
                 {
                     key = a;
                     pressed = 1;
@@ -90,7 +90,7 @@ int get_key( int x, int y )
         tk_port::event_tick();
     }
     for ( a = 0; a < 0x80; a ++  )
-    k::state[a] = 0;
+    k::clear(a);
     return( key );
 }
 

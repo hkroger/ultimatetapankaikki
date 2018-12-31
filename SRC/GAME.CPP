@@ -593,26 +593,26 @@ void chkeys()
 {
     int a;
 
-    if ( k::state[k::ESC] ) quiti();
+    if ( k::state(k::ESC) ) quiti();
 
     for ( a = 0; a < ACTIVE_PLAYERS; a++ )
         if ( !aplayer[a]->DEAD )
             aplayer[a]->chk_keys( a );
 
-    if ( k::state[k::CHR_M] )
+    if ( k::state(k::CHR_M) )
     {
         MAP_ON = !MAP_ON ? 1 : 0;
-        k::state[k::CHR_M] = 0;
+        k::clear(k::CHR_M);
     }
-    if ( k::state[k::CHR_F] )
+    if ( k::state(k::CHR_F) )
     {
         FRAMES_ON = FRAMES_ON == 0 ? 1 : 0;
-        k::state[k::CHR_F] = 0;
+        k::clear(k::CHR_F);
     }
-    if ( k::state[k::F12] )
+    if ( k::state(k::F12) )
     {
         screen_capture();
-        k::state[k::F12] = 0;
+        k::clear(k::F12);
     }
 }
 
@@ -1008,8 +1008,8 @@ void victory()
             a += 10;
             setpal( pal, a );
         }
-    k::state[k::ESC] = 0;
-    while (! k::state[k::ESC]) tk_port::event_tick();
+    k::clear(k::ESC);
+    while (! k::state(k::ESC)) tk_port::event_tick();
     while (a > 0)
         if ( oclock != clock())
         {
@@ -1886,7 +1886,7 @@ int realjoin()
 
         while((!received)&&(!timeout))
         {
-            if (k::state[k::ESC]) return 0;
+            if (k::state(k::ESC)) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
             if ( tk_port::net::receive(rec[a]) )
             {
@@ -1944,7 +1944,7 @@ int getlevel()
 
         while((!received)&&(!timeout))
         {
-            if (k::state[k::ESC]) return 0;
+            if (k::state(k::ESC)) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
             if ( tk_port::net::receive(rec[a]) )
             {
@@ -1990,7 +1990,7 @@ int getlevelinfo()
 
         while((!received)&&(!timeout))
         {
-            if (k::state[k::ESC]) return 0;
+            if (k::state(k::ESC)) return 0;
             for ( a = 0; a < RECEIVERS; a ++  )
             if ( tk_port::net::receive(rec[a]) )
             {
@@ -2108,13 +2108,13 @@ int select_server()
     draw_box1( 60, 10, 320 - 60, 190, 15 );
     fadeout( virbuff, pal );
 
-    k::state[k::ESC] = 0;
-    k::state[k::ENTER] = 0;
+    k::clear(k::ESC);
+    k::clear(k::ENTER);
     bc=tk_port::net::BROADCAST();
 
     while ( !done )
     {
-        if (k::state[k::ENTER] && servers>0)
+        if (k::state(k::ENTER) && servers>0)
         {
             if (join_server(nodez[select])) done=1;
             else
@@ -2127,11 +2127,11 @@ int select_server()
                     strcpy(servernames[c],servernames[c+1]);
                 }
             }
-            k::state[k::ENTER]=0;
+            k::clear(k::ENTER);
         }
         if (servers>0){
-         if (k::state[k::ARROW_UP] && select>0) {select--;k::state[k::ARROW_UP]=0;}
-         if (k::state[k::ARROW_DOWN] && select<servers-1) {select++;k::state[k::ARROW_DOWN]=0;}
+         if (k::state(k::ARROW_UP) && select>0) {select--;k::clear(k::ARROW_UP);}
+         if (k::state(k::ARROW_DOWN) && select<servers-1) {select++;k::clear(k::ARROW_DOWN);}
         }
         memcpy( virbuff, picture, 64000 );
         FONT_NUM = 0;
@@ -2221,7 +2221,7 @@ int select_server()
                 };
             }
         }
-        if (k::state[k::ESC]) return 0;
+        if (k::state(k::ESC)) return 0;
     }
 
     if (join_game(nodez[select])) return 1;
@@ -2501,7 +2501,7 @@ void menu_scr()
     load_efp( "EFPS/TK.EFP", picture, 0 );
     load_efp_pal( "EFPS/WARE.EFP", pal );
     draw_box1( 55, 90 - ( ( Menu_texts*15 )  / 2 ), 320 - 55, 110 + ( ( Menu_texts*15 )  / 2 ), 10 );
-    k::state[k::ENTER] = 0;
+    k::clear(k::ENTER);
     first = 1;
 }
 
@@ -2537,7 +2537,7 @@ void menu()
         memcpy( screen, virbuff, 64000 );
         tk_port::event_tick();
         oclock = clock();
-        while (!(quit || k::state[k::ARROW_UP] || k::state[k::ARROW_DOWN] || k::state[k::ENTER]))
+        while (!(quit || k::state(k::ARROW_UP) || k::state(k::ARROW_DOWN) || k::state(k::ENTER)))
         {
             if ( clock() != oclock )
             {
@@ -2553,15 +2553,15 @@ void menu()
             }
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[k::ARROW_UP] )
+        if ( k::state(k::ARROW_UP) )
         {
-            selected --;if ( selected < 0 ) selected = Menu_texts - 1; k::state[k::ARROW_UP] = 0;
+            selected --;if ( selected < 0 ) selected = Menu_texts - 1; k::clear(k::ARROW_UP);
         }
-        if ( k::state[k::ARROW_DOWN] )
+        if ( k::state(k::ARROW_DOWN) )
         {
-            selected ++;if ( selected > Menu_texts - 1 ) selected = 0; k::state[k::ARROW_DOWN] = 0;
+            selected ++;if ( selected > Menu_texts - 1 ) selected = 0; k::clear(k::ARROW_DOWN);
         }
-        if ( k::state[k::ENTER] )
+        if ( k::state(k::ENTER) )
         {
             if ( selected == 0 )
             {

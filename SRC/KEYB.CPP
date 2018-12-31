@@ -12,7 +12,7 @@ const uint32_t KEY_REPEAT_TIMER_CODE = 43615681;  // Random number heh heh
 const uint32_t SYMBOL_KEY_REPEAT_START = 500;     // ms
 const uint32_t SYMBOL_KEY_REPEAT_INTERVAL = 25;   // ms
 
-char state[256];
+bool _state[256];
 int _kbhit_flag;
 int _last_getch;
 
@@ -118,11 +118,21 @@ void init( int )
 
 void deinit() {}
 
+bool state( int scancode_index )
+{
+    return _state[ scancode_index ];
+}
+
+void clear( int scancode_index )
+{
+    _state[ scancode_index ] = false;
+}
+
 void clear_stack()
 {
     for ( int i = 0; i < 256; i++ )
     {
-        state[i] = 0;
+        _state[i] = false;
     }
     _kbhit_flag = 0;
     _last_getch = 0;
@@ -165,7 +175,7 @@ void handle_event( const SDL_Event *e )
             }
 
             uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
-            state[scancode_index] = 1;
+            _state[scancode_index] = true;
 
             pressed_key.key = scancode_index;
             pressed_key.pressed_time = e->key.timestamp;
@@ -184,7 +194,7 @@ void handle_event( const SDL_Event *e )
         case SDL_KEYUP:
         {
             uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
-            state[scancode_index] = 0;
+            _state[scancode_index] = false;
             pressed_key.key = -1;
             break;
         }
@@ -200,7 +210,7 @@ void handle_event( const SDL_Event *e )
             uint32_t elapsed = e->user.timestamp - pressed_key.pressed_time;
             if ( elapsed >= SYMBOL_KEY_REPEAT_START + pressed_key.repeats * SYMBOL_KEY_REPEAT_INTERVAL )
             {
-                state[pressed_key.key] = 1;
+                _state[pressed_key.key] = true;
                 _last_getch = pressed_key.key;
                 _kbhit_flag = true;
                 pressed_key.repeats++;

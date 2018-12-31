@@ -31,10 +31,10 @@ namespace keyb
     const int CHR_F = 70;
     const int F12 = 69;
 
-    extern char state[256];
-
     void init( int );
     void deinit();
+    bool state( int );
+    void clear( int );
     void clear_stack();
     int kbhit();
     int getch();
