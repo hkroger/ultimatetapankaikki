@@ -274,7 +274,7 @@ void Player::chk_keys( int index )
         if ( k::state(k::CHR_0) ) if ( weapons[10] ){
             curr_weapon = 10; load_cnt = 0;
         }
-        if ( k::state(k::DASH) ) if ( weapons[11] ){
+        if ( k::state(k::MINUS) ) if ( weapons[11] ){
             curr_weapon = 11; load_cnt = 0;
         }
     }
@@ -1307,7 +1307,8 @@ void Level::load( char name[13] )
 
 void Keys::change()
 {
-    int a = 0, quit = 0, cnt = 0, oclock = 0, selected = 0, b = 0;
+    int a = 0, quit = 0, cnt = 0, oclock = 0, selected = 0;
+    SDL_Scancode b = SDL_SCANCODE_UNKNOWN;
     first = 1;
     fadeout( virbuff, pal );
     load_efp( "EFPS/COOL.EFP", picture, 0 );

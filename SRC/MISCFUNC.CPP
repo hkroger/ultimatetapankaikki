@@ -43,7 +43,7 @@ void change_name( int num )
 }
 
 /**
- * Convert a TK keycode into a string representing it.
+ * Convert an SDL scancode into a string representing it.
  *
  * The caller is responsible for freeing the returned buffer.
  *
@@ -52,23 +52,15 @@ void change_name( int num )
  * @param key Keycode.
  * @return String for the keycode.
  */
-char *k_2_c( int key )
+char *k_2_c( SDL_Scancode scancode )
 {
-    for ( int a = 0; a < SPEC_K; a++ )
-    {
-        if ( key == spec[a].num )
-        {
-            return strdup(spec[a].text);
-        }
-    }
-    char text[15];
-    sprintf(text, "%c", key);
-    return strdup(text);
+    return strdup( SDL_GetScancodeName( scancode ) );
 }
 
-int get_key( int x, int y )
+SDL_Scancode get_key( int x, int y )
 {
-    int a = 0, key = 0, oclock = 0, cnt = 0, pressed = 0;
+    SDL_Scancode key = SDL_SCANCODE_UNKNOWN;
+    int oclock = 0, cnt = 0, pressed = 0;
     while ( !pressed )
     {
         if ( clock() != oclock )
@@ -78,19 +70,18 @@ int get_key( int x, int y )
             cnt ++;
             if ( cnt > 23 ) cnt = 0;
         }
-        for ( a = 0; a < 0x80 &&!pressed; a ++  )
+
+        SDL_Scancode scancode = k::get_last_key();
+
+        // Left shift is blacklisted in the original code. Dunno why.
+        if ( scancode != SDL_SCANCODE_UNKNOWN && scancode != k::LEFT_SHIFT )
         {
-            if ( a != k::LEFT_SHIFT )
-                if ( k::state(a) )
-                {
-                    key = a;
-                    pressed = 1;
-                }
+            key = scancode;
+            pressed = 1;
         }
         tk_port::event_tick();
     }
-    for ( a = 0; a < 0x80; a ++  )
-    k::clear(a);
+    k::clear_stack();
     return( key );
 }
 

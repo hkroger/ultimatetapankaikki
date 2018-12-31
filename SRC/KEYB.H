@@ -8,34 +8,39 @@ namespace tk_port
 {
 namespace keyb
 {
-    const int ESC = 1;
-    const int ARROW_UP = 94;
-    const int ARROW_DOWN = 99;
-    const int ARROW_LEFT = 96;
-    const int ARROW_RIGHT = 97;
-    const int ENTER = 28;
-    const int LEFT_SHIFT = 42;
-    const int GRAVE = 41;  // Left of 1
-    const int CHR_1 = 2;
-    const int CHR_2 = 3;
-    const int CHR_3 = 4;
-    const int CHR_4 = 5;
-    const int CHR_5 = 6;
-    const int CHR_6 = 7;
-    const int CHR_7 = 8;
-    const int CHR_8 = 9;
-    const int CHR_9 = 10;
-    const int CHR_0 = 11;
-    const int DASH = 12;  // Right of 0
-    const int CHR_M = 77;
-    const int CHR_F = 70;
-    const int F12 = 69;
+    const SDL_Scancode ESC = SDL_SCANCODE_ESCAPE;
+    const SDL_Scancode ARROW_UP = SDL_SCANCODE_UP;
+    const SDL_Scancode ARROW_DOWN = SDL_SCANCODE_DOWN;
+    const SDL_Scancode ARROW_LEFT = SDL_SCANCODE_LEFT;
+    const SDL_Scancode ARROW_RIGHT = SDL_SCANCODE_RIGHT;
+    const SDL_Scancode ENTER = SDL_SCANCODE_RETURN;
+    const SDL_Scancode LEFT_SHIFT = SDL_SCANCODE_LSHIFT;
+    const SDL_Scancode GRAVE = SDL_SCANCODE_GRAVE;  // Left of 1
+    const SDL_Scancode CHR_1 = SDL_SCANCODE_1;
+    const SDL_Scancode CHR_2 = SDL_SCANCODE_2;
+    const SDL_Scancode CHR_3 = SDL_SCANCODE_3;
+    const SDL_Scancode CHR_4 = SDL_SCANCODE_4;
+    const SDL_Scancode CHR_5 = SDL_SCANCODE_5;
+    const SDL_Scancode CHR_6 = SDL_SCANCODE_6;
+    const SDL_Scancode CHR_7 = SDL_SCANCODE_7;
+    const SDL_Scancode CHR_8 = SDL_SCANCODE_8;
+    const SDL_Scancode CHR_9 = SDL_SCANCODE_9;
+    const SDL_Scancode CHR_0 = SDL_SCANCODE_0;
+    const SDL_Scancode MINUS = SDL_SCANCODE_MINUS;  // Right of 0
+    const SDL_Scancode CHR_M = SDL_SCANCODE_M;
+    const SDL_Scancode CHR_F = SDL_SCANCODE_F;
+    const SDL_Scancode F12 = SDL_SCANCODE_F12;
 
     void init( int );
     void deinit();
-    bool state( int );
-    void clear( int );
+    bool state( SDL_Scancode );
+    void clear( SDL_Scancode );
     void clear_stack();
+
+    // Return scancode of the key that was pressed last, or
+    // SDL_SCANCODE_UNKNOWN if no key is currently pressed.
+    SDL_Scancode get_last_key();
+
     int kbhit();
     int getch();
     void handle_event( const SDL_Event * );

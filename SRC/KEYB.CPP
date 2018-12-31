@@ -1,4 +1,4 @@
-#include <map>
+#include <set>
 #include <cstdint>
 #include <SDL.h>
 #include "KEYB.H"
@@ -12,85 +12,22 @@ const uint32_t KEY_REPEAT_TIMER_CODE = 43615681;  // Random number heh heh
 const uint32_t SYMBOL_KEY_REPEAT_START = 500;     // ms
 const uint32_t SYMBOL_KEY_REPEAT_INTERVAL = 25;   // ms
 
-bool _state[256];
 int _kbhit_flag;
 int _last_getch;
 
 struct key_repeat
 {
-    int key;
+    SDL_Scancode scancode;
     uint32_t pressed_time;
     int repeats;
 };
-key_repeat pressed_key = { -1, 0, 0 };
+
+std::set<SDL_Scancode> pressed_keys;
+key_repeat last_pressed_key = { SDL_SCANCODE_UNKNOWN, 0, 0 };
 
 uint8_t remap_key( SDL_Keycode keycode )
 {
     return keycode & 0xFF;
-}
-
-uint8_t get_scancode_index( SDL_Keycode keycode, SDL_Scancode scancode )
-{
-    switch (scancode)
-    {
-        case SDL_SCANCODE_LCTRL:
-            return 29;
-        case SDL_SCANCODE_RCTRL:
-            return 90;
-        case SDL_SCANCODE_LSHIFT:
-            return 42;
-        case SDL_SCANCODE_RSHIFT:
-            return 54;
-        case SDL_SCANCODE_CAPSLOCK:
-            return 58;
-        case SDL_SCANCODE_LALT:
-            return 56;
-        case SDL_SCANCODE_RALT:
-            return 92;
-        default:
-            break;
-    }
-
-    if ( keycode >= 'a' && keycode <= 'z' )
-    {
-        return keycode & 0xDF;
-    }
-
-    switch (keycode)
-    {
-        case SDLK_ESCAPE:
-            return 1;
-        case SDLK_TAB:
-            return 15;
-        case SDLK_SPACE:
-            return 57;
-        case SDLK_PAGEDOWN:
-            return 100;
-        case SDLK_PAGEUP:
-            return 95;
-        case SDLK_HOME:
-            return 93;
-        case SDLK_END:
-            return 98;
-        case SDLK_INSERT:
-            return 101;
-        case SDLK_DELETE:
-            return 102;
-        case SDLK_UP:
-            return 94;
-        case SDLK_DOWN:
-            return 99;
-        case SDLK_LEFT:
-            return 96;
-        case SDLK_RIGHT:
-            return 97;
-        case SDLK_RETURN:
-        case SDLK_KP_ENTER:
-        case SDLK_RETURN2:
-            return 28;
-        default:
-            return keycode & 0xFF;
-    }
 }
 
 uint32_t timer_callback( Uint32 interval, void * )
@@ -118,24 +55,28 @@ void init( int )
 
 void deinit() {}
 
-bool state( int scancode_index )
+bool state( SDL_Scancode scancode )
 {
-    return _state[ scancode_index ];
+    return pressed_keys.find( scancode ) != pressed_keys.end();
 }
 
-void clear( int scancode_index )
+void clear( SDL_Scancode scancode )
 {
-    _state[ scancode_index ] = false;
+    pressed_keys.erase( scancode );
 }
 
 void clear_stack()
 {
-    for ( int i = 0; i < 256; i++ )
-    {
-        _state[i] = false;
-    }
+    pressed_keys.clear();
     _kbhit_flag = 0;
     _last_getch = 0;
+}
+
+SDL_Scancode get_last_key()
+{
+    return state( last_pressed_key.scancode ) ?
+        last_pressed_key.scancode :
+        SDL_SCANCODE_UNKNOWN;
 }
 
 int kbhit()
@@ -174,12 +115,11 @@ void handle_event( const SDL_Event *e )
                 exit( 42 );
             }
 
-            uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
-            _state[scancode_index] = true;
+            pressed_keys.insert( e->key.keysym.scancode );
 
-            pressed_key.key = scancode_index;
-            pressed_key.pressed_time = e->key.timestamp;
-            pressed_key.repeats = 0;
+            last_pressed_key.scancode = e->key.keysym.scancode;
+            last_pressed_key.pressed_time = e->key.timestamp;
+            last_pressed_key.repeats = 0;
 
             const uint8_t tk_key = remap_key( e->key.keysym.sym );
             if ( debug )
@@ -193,9 +133,10 @@ void handle_event( const SDL_Event *e )
 
         case SDL_KEYUP:
         {
-            uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
-            _state[scancode_index] = false;
-            pressed_key.key = -1;
+            clear( e->key.keysym.scancode );
+            if ( e->key.keysym.scancode == last_pressed_key.scancode ) {
+                last_pressed_key.scancode = SDL_SCANCODE_UNKNOWN;
+            }
             break;
         }
 
@@ -204,16 +145,17 @@ void handle_event( const SDL_Event *e )
             if (e->user.code != KEY_REPEAT_TIMER_CODE)
                 break;
 
-            if (pressed_key.key == -1)
+            if (last_pressed_key.scancode == SDL_SCANCODE_UNKNOWN)
                 break;
 
-            uint32_t elapsed = e->user.timestamp - pressed_key.pressed_time;
-            if ( elapsed >= SYMBOL_KEY_REPEAT_START + pressed_key.repeats * SYMBOL_KEY_REPEAT_INTERVAL )
+            uint32_t elapsed = e->user.timestamp - last_pressed_key.pressed_time;
+            if ( elapsed >= SYMBOL_KEY_REPEAT_START +
+                 last_pressed_key.repeats * SYMBOL_KEY_REPEAT_INTERVAL )
             {
-                _state[pressed_key.key] = true;
-                _last_getch = pressed_key.key;
+                pressed_keys.insert( last_pressed_key.scancode );
+                _last_getch = remap_key( SDL_GetKeyFromScancode( last_pressed_key.scancode ) );
                 _kbhit_flag = true;
-                pressed_key.repeats++;
+                last_pressed_key.repeats++;
             }
 
             break;

@@ -1,8 +1,11 @@
 #ifndef __TK__MISCFUNC__
 #define __TK__MISCFUNC__
+
+#include <SDL.h>
+
 void change_name( int num );
-char *k_2_c( int key );
-int get_key( int x, int y );
+char *k_2_c( SDL_Scancode scancode );
+SDL_Scancode get_key( int x, int y );
 void clear_shit( int y );
 void set_keys();
 void alusta_client();
