@@ -17,6 +17,8 @@ namespace keyb
     const SDL_Scancode BACKSPACE = SDL_SCANCODE_BACKSPACE;
     const SDL_Scancode LEFT_SHIFT = SDL_SCANCODE_LSHIFT;
     const SDL_Scancode GRAVE = SDL_SCANCODE_GRAVE;  // Left of 1
+    const SDL_Scancode MINUS = SDL_SCANCODE_MINUS;  // Right of 0
+    const SDL_Scancode SPACE = SDL_SCANCODE_SPACE;
     const SDL_Scancode CHR_1 = SDL_SCANCODE_1;
     const SDL_Scancode CHR_2 = SDL_SCANCODE_2;
     const SDL_Scancode CHR_3 = SDL_SCANCODE_3;
@@ -27,8 +29,6 @@ namespace keyb
     const SDL_Scancode CHR_8 = SDL_SCANCODE_8;
     const SDL_Scancode CHR_9 = SDL_SCANCODE_9;
     const SDL_Scancode CHR_0 = SDL_SCANCODE_0;
-    const SDL_Scancode MINUS = SDL_SCANCODE_MINUS;  // Right of 0
-    const SDL_Scancode CHR_M = SDL_SCANCODE_M;
     const SDL_Scancode CHR_F = SDL_SCANCODE_F;
     const SDL_Scancode CHR_Y = SDL_SCANCODE_Y;
     const SDL_Scancode F12 = SDL_SCANCODE_F12;

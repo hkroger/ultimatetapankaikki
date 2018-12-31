@@ -599,10 +599,10 @@ void chkeys()
         if ( !aplayer[a]->DEAD )
             aplayer[a]->chk_keys( a );
 
-    if ( k::state(k::CHR_M) )
+    if ( k::state(k::SPACE) )
     {
         MAP_ON = !MAP_ON ? 1 : 0;
-        k::clear(k::CHR_M);
+        k::clear(k::SPACE);
     }
     if ( k::state(k::CHR_F) )
     {
