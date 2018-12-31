@@ -30,7 +30,7 @@ void level_info()
     writefonts( 16 + 95, 173, c_2_c( general_level_info.time_limit*TIME_ADD ), M_YELLOW );
     fadein( virbuff, pal );
     k::clear_stack();
-    if ( k::getch()  == 27 ) if ( wanna_quit()  ) BACK_TO_MENU = 1;
+    if ( k::wait_for_keypress()  == k::ESC ) if ( wanna_quit()  ) BACK_TO_MENU = 1;
     if ( !BACK_TO_MENU ) fadeout( virbuff, pal );
 }
 
@@ -158,7 +158,7 @@ void statics()
     writefonts( 16 + 80 + 55 + 80, 170, text, M_YELLOW );
     fadein( virbuff, pal );
     k::clear_stack();
-    if ( k::getch()  == 27 ) if ( !quit )
+    if ( k::wait_for_keypress()  == k::ESC ) if ( !quit )
     {
         if ( wanna_quit()  ) BACK_TO_MENU = 1;
     }

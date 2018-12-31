@@ -176,7 +176,7 @@ void readline( int x, int y, int len, char *str, char *screen )
 {
     int done = 0, a, dy;
     char *bg;
-    int key;
+    SDL_Scancode scancode;
     bg = (char *) malloc( 320 * f_y_size[FONT_NUM] );
     memcpy( bg, screen + x + (y * 320), 320 * f_y_size[FONT_NUM] );
     while (!done)
@@ -184,23 +184,23 @@ void readline( int x, int y, int len, char *str, char *screen )
         writefonts2( x, y, str, 1 );
         for ( dy = 0; dy < f_y_size[FONT_NUM]; dy++ )
             memcpy( screen + x + ((dy + y) * 320), virbuff + x + ((dy + y) * 320), len * f_x_size[FONT_NUM] );
-        key = k::getch();
-        if ( key != 27 && key != 8 && key != 13 )
+        scancode = k::wait_for_keypress();
+        if ( scancode != k::ESC && scancode != k::BACKSPACE && scancode != k::ENTER )
             if ( strlen( str ) < (len - 1))
             {
                 str[strlen( str ) + 1] = 0;
-                str[strlen( str )] = (char) key;
+                str[strlen( str )] = k::scancode_to_char( scancode );
             }
-        if ( key == 27 )
+        if ( scancode == k::ESC )
         {
             str[0] = 0;
             done = 1;
         }
-        if ( key == 13 )
+        if ( scancode == k::ENTER )
         {
             done = 1;
         }
-        if ( key == 8 )
+        if ( scancode == k::BACKSPACE )
         {
             if ( strlen( str ) > 0 )
                 str[strlen( str ) - 1] = 0;

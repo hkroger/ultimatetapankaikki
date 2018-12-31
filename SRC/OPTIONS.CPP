@@ -670,8 +670,6 @@ void multiplayer_options()
                 GAME_MODE = NETWORK;
                 NETWORK_MODE = CLIENT;
 
-                k::getch();
-
                 setup_ipx();
                 save_options();
                 if (select_server()) game();

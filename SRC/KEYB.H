@@ -14,6 +14,7 @@ namespace keyb
     const SDL_Scancode ARROW_LEFT = SDL_SCANCODE_LEFT;
     const SDL_Scancode ARROW_RIGHT = SDL_SCANCODE_RIGHT;
     const SDL_Scancode ENTER = SDL_SCANCODE_RETURN;
+    const SDL_Scancode BACKSPACE = SDL_SCANCODE_BACKSPACE;
     const SDL_Scancode LEFT_SHIFT = SDL_SCANCODE_LSHIFT;
     const SDL_Scancode GRAVE = SDL_SCANCODE_GRAVE;  // Left of 1
     const SDL_Scancode CHR_1 = SDL_SCANCODE_1;
@@ -29,6 +30,7 @@ namespace keyb
     const SDL_Scancode MINUS = SDL_SCANCODE_MINUS;  // Right of 0
     const SDL_Scancode CHR_M = SDL_SCANCODE_M;
     const SDL_Scancode CHR_F = SDL_SCANCODE_F;
+    const SDL_Scancode CHR_Y = SDL_SCANCODE_Y;
     const SDL_Scancode F12 = SDL_SCANCODE_F12;
 
     void init( int );
@@ -41,8 +43,13 @@ namespace keyb
     // SDL_SCANCODE_UNKNOWN if no key is currently pressed.
     SDL_Scancode get_last_key();
 
+    // Wait until a key is pressed and return its scancode
+    SDL_Scancode wait_for_keypress();
+
+    // Return a character corresponding the given scancode
+    char scancode_to_char( SDL_Scancode scancode );
+
     int kbhit();
-    int getch();
     void handle_event( const SDL_Event * );
 }
 }

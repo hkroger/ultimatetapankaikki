@@ -13,7 +13,6 @@ const uint32_t SYMBOL_KEY_REPEAT_START = 500;     // ms
 const uint32_t SYMBOL_KEY_REPEAT_INTERVAL = 25;   // ms
 
 int _kbhit_flag;
-int _last_getch;
 
 struct key_repeat
 {
@@ -25,9 +24,9 @@ struct key_repeat
 std::set<SDL_Scancode> pressed_keys;
 key_repeat last_pressed_key = { SDL_SCANCODE_UNKNOWN, 0, 0 };
 
-uint8_t remap_key( SDL_Keycode keycode )
+char scancode_to_char( SDL_Scancode scancode )
 {
-    return keycode & 0xFF;
+    return SDL_GetKeyFromScancode( scancode ) & 0xFF;
 }
 
 uint32_t timer_callback( Uint32 interval, void * )
@@ -69,7 +68,6 @@ void clear_stack()
 {
     pressed_keys.clear();
     _kbhit_flag = 0;
-    _last_getch = 0;
 }
 
 SDL_Scancode get_last_key()
@@ -89,13 +87,15 @@ int kbhit()
     return 0;
 }
 
-int getch()
+SDL_Scancode wait_for_keypress()
 {
-    while (!kbhit())
+    SDL_Scancode scancode;
+    while ( (scancode = get_last_key()) == SDL_SCANCODE_UNKNOWN )
     {
         event_tick();
     }
-    return _last_getch;
+    clear( scancode );
+    return scancode;
 }
 
 void handle_event( const SDL_Event *e )
@@ -120,13 +120,6 @@ void handle_event( const SDL_Event *e )
             last_pressed_key.scancode = e->key.keysym.scancode;
             last_pressed_key.pressed_time = e->key.timestamp;
             last_pressed_key.repeats = 0;
-
-            const uint8_t tk_key = remap_key( e->key.keysym.sym );
-            if ( debug )
-            {
-                printf( "key down: %04x (tk = %d)\n", e->key.keysym.scancode, tk_key );
-            }
-            _last_getch = tk_key;
             _kbhit_flag = true;
             break;
         }
@@ -153,7 +146,6 @@ void handle_event( const SDL_Event *e )
                  last_pressed_key.repeats * SYMBOL_KEY_REPEAT_INTERVAL )
             {
                 pressed_keys.insert( last_pressed_key.scancode );
-                _last_getch = remap_key( SDL_GetKeyFromScancode( last_pressed_key.scancode ) );
                 _kbhit_flag = true;
                 last_pressed_key.repeats++;
             }

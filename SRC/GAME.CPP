@@ -565,7 +565,7 @@ void quiti()
     memcpy( screen, virbuff, 64000 );
     k::clear_stack();
     time = clock();
-    if ( k::getch() == 'y' ) quit = 1;
+    if ( k::wait_for_keypress() == k::CHR_Y ) quit = 1;
 
     st += clock()  - time;
 }
@@ -2049,7 +2049,7 @@ int join_game(struct nodeaddr n)
     writefonts( 80, 100,"done!", M_BLUE );
     memcpy(screen,virbuff,64000);
     k::clear_stack();
-    k::getch();
+    k::wait_for_keypress();
 
     return 1;
 }
@@ -2687,7 +2687,7 @@ int main( int argc, char *argv[] )
     srand( (unsigned) time( NULL ) );
     do_all();
     k::clear_stack();
-    if ( pause ) k::getch();
+    if ( pause ) k::wait_for_keypress();
     logo();
     menu();
     if ( ph ) MIDASstopModule( ph );
