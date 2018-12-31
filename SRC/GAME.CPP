@@ -1331,6 +1331,11 @@ void sendipx( int dest, int type, ... )
     va_end( ap );
 }
 
+bool filter_address_char( char c )
+{
+    return ( '0' <= c && c <= '9' ) || ('a' <= c && c <= 'z') || c == '.';
+}
+
 static const char* prompt_server_address()
 {
     // Allocate space for 123.123.123.123 at max. Static so
@@ -1347,7 +1352,7 @@ static const char* prompt_server_address()
     writefonts2(x, 85, title, 1);
     fadein(virbuff, pal);
     k::clear_stack();
-    readline(x, 100, sizeof(server_address), server_address, screen);
+    readline(x, 100, sizeof(server_address), server_address, screen, filter_address_char);
     return server_address;
 }
 

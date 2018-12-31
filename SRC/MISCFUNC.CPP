@@ -23,6 +23,11 @@
 #include "MSVC/MISCFUNC_MSVC.H"
 #endif
 
+bool filter_name_char( char c )
+{
+    return ( 'a' <= c && c <= 'z' ) || ( '0' <= c && c <= '9' ) || c == ' ' || c == '.';
+}
+
 void change_name( int num )
 {
     int x;
@@ -36,9 +41,9 @@ void change_name( int num )
     fadein( virbuff, pal );
     k::clear_stack();
     if ( num == 1 )
-    readline( x, 100, 10, name1, screen );
+        readline( x, 100, 10, name1, screen, filter_name_char );
     if ( num == 2 )
-    readline( x, 100, 10, name2, screen );
+        readline( x, 100, 10, name2, screen, filter_name_char );
     fadeout( virbuff, pal );
 }
 

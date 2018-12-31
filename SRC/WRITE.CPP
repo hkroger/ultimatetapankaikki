@@ -172,7 +172,7 @@ int str_length( const char *str )
     return (length);
 }
 
-void readline( int x, int y, int len, char *str, char *screen )
+void readline( int x, int y, int len, char *str, char *screen, bool (*filter_char)( char ))
 {
     int done = 0, a, dy;
     char *bg;
@@ -188,8 +188,12 @@ void readline( int x, int y, int len, char *str, char *screen )
         if ( scancode != k::ESC && scancode != k::BACKSPACE && scancode != k::ENTER )
             if ( strlen( str ) < (len - 1))
             {
-                str[strlen( str ) + 1] = 0;
-                str[strlen( str )] = k::scancode_to_char( scancode );
+                char key = k::scancode_to_char( scancode );
+                if ( filter_char( key ) )
+                {
+                    str[strlen( str ) + 1] = 0;
+                    str[strlen( str )] = key;
+                }
             }
         if ( scancode == k::ESC )
         {
