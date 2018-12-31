@@ -233,8 +233,9 @@ void Player::shop()
             writefonts2( 10, 115, "press fire to confirm", 1 );
             memcpy( screen, virbuff, 64000 );
             k::clear_stack();
-            k::wait_for_keypress();
-            if ( k::state(K_SHOOT) ) quit = 1;
+            if ( k::wait_for_keypress() == K_SHOOT  ) {
+                quit = 1;
+            }
             k::clear(k::ESC);
         }
     }
