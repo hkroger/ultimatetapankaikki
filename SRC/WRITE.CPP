@@ -186,7 +186,7 @@ void readline( int x, int y, int len, char *str, char *screen, bool (*filter_cha
             memcpy( screen + x + ((dy + y) * 320), virbuff + x + ((dy + y) * 320), len * f_x_size[FONT_NUM] );
         scancode = k::wait_for_keypress();
         if ( scancode != k::ESC && scancode != k::BACKSPACE && scancode != k::ENTER )
-            if ( strlen( str ) < (len - 1))
+            if ( (int)strlen( str ) < (len - 1))
             {
                 char key = k::scancode_to_char( scancode );
                 if ( filter_char( key ) )

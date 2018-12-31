@@ -2699,4 +2699,5 @@ int main( int argc, char *argv[] )
     free_all();
     tk_port::deinit();
 //  credits();
+    return 0;
 }
