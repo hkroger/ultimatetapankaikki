@@ -18,11 +18,11 @@ int _last_getch;
 
 struct key_repeat
 {
+    int key;
     uint32_t pressed_time;
     int repeats;
 };
-
-std::map<uint8_t, key_repeat> pressed_keys;
+key_repeat pressed_key = { -1, 0, 0 };
 
 uint8_t remap_key( SDL_Keycode keycode )
 {
@@ -167,10 +167,9 @@ void handle_event( const SDL_Event *e )
             uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
             state[scancode_index] = 1;
 
-            if ( pressed_keys.find( scancode_index ) == pressed_keys.end() )
-            {
-                pressed_keys.insert( { scancode_index, { e->key.timestamp, 0 } } );
-            }
+            pressed_key.key = scancode_index;
+            pressed_key.pressed_time = e->key.timestamp;
+            pressed_key.repeats = 0;
 
             const uint8_t tk_key = remap_key( e->key.keysym.sym );
             if ( debug )
@@ -186,7 +185,7 @@ void handle_event( const SDL_Event *e )
         {
             uint8_t scancode_index = get_scancode_index( e->key.keysym.sym, e->key.keysym.scancode );
             state[scancode_index] = 0;
-            pressed_keys.erase( scancode_index );
+            pressed_key.key = -1;
             break;
         }
 
@@ -195,20 +194,16 @@ void handle_event( const SDL_Event *e )
             if (e->user.code != KEY_REPEAT_TIMER_CODE)
                 break;
 
-            uint32_t now = e->user.timestamp;
-            for ( auto &it : pressed_keys )
-            {
-                uint8_t scancode_index = it.first;
-                key_repeat &rep = it.second;
+            if (pressed_key.key == -1)
+                break;
 
-                uint32_t elapsed = now - rep.pressed_time;
-                if ( elapsed >= SYMBOL_KEY_REPEAT_START + rep.repeats * SYMBOL_KEY_REPEAT_INTERVAL )
-                {
-                    state[scancode_index] = 1;
-                    _last_getch = scancode_index;
-                    _kbhit_flag = true;
-                    rep.repeats++;
-                }
+            uint32_t elapsed = e->user.timestamp - pressed_key.pressed_time;
+            if ( elapsed >= SYMBOL_KEY_REPEAT_START + pressed_key.repeats * SYMBOL_KEY_REPEAT_INTERVAL )
+            {
+                state[pressed_key.key] = 1;
+                _last_getch = pressed_key.key;
+                _kbhit_flag = true;
+                pressed_key.repeats++;
             }
 
             break;

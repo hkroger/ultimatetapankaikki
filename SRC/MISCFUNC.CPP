@@ -80,7 +80,7 @@ int get_key( int x, int y )
         }
         for ( a = 0; a < 0x80 &&!pressed; a ++  )
         {
-            if ( a != 42 )
+            if ( a != k::LEFT_SHIFT )
                 if ( k::state[a] )
                 {
                     key = a;

@@ -31,7 +31,7 @@ int wanna_quit()
         }
         memcpy( screen, virbuff, 64000 );
         oclock = clock();
-        while ( !k::state[94]&&!k::state[99]&&!k::state[28] )
+        while ( !k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ENTER] )
         {
             if ( clock() != oclock )
             {
@@ -44,15 +44,15 @@ int wanna_quit()
             tk_port::event_tick();
         }
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
-            selected --;if ( selected < 0 ) selected = 1; k::state[94] = 0;
+            selected --;if ( selected < 0 ) selected = 1; k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
-            selected ++;if ( selected > 1 ) selected = 0; k::state[99] = 0;
+            selected ++;if ( selected > 1 ) selected = 0; k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[28] )
+        if ( k::state[k::ENTER] )
         {
             if ( selected == 0 ) quit = 0;
             if ( selected == 1 ) quit = 1;

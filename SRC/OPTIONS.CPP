@@ -70,7 +70,7 @@ int choose_load_file( char *name, int episode )
     load_efp( "EFPS/COOL.EFP", picture, 0 );
     draw_box1( 60, 10, 320 - 60, 190, 15 );
     first = 1;
-    while ( !k::state[1]&&!k::state[28] )
+    while ( !k::state[k::ESC]&&!k::state[k::ENTER] )
     {
         memcpy( virbuff, picture, 64000 );
         FONT_NUM = 0;
@@ -90,7 +90,7 @@ int choose_load_file( char *name, int episode )
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while( !k::state[94]&&!k::state[99]&&!k::state[28] )
+        while( !k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ENTER] )
         {
             if ( clock() != oclock )
             {
@@ -102,15 +102,15 @@ int choose_load_file( char *name, int episode )
             }
             tk_port::event_tick();
         }
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
             if ( sel > 0 ) sel --;
-            k::state[94] = 0;
+            k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
             if ( sel < files - 1 ) sel ++;
-            k::state[99] = 0;
+            k::state[k::ARROW_DOWN] = 0;
         }
         pos = sel - 8;
         if ( pos < 0 ) pos = 0;
@@ -118,7 +118,7 @@ int choose_load_file( char *name, int episode )
         if ( files <= 15 ) if ( pos > 0 ) pos = 0;
     }
     a = 0;
-    strcpy( name, filelist[episode][sel].name ); a = 1; k::state[28] = 0;
+    strcpy( name, filelist[episode][sel].name ); a = 1; k::state[k::ENTER] = 0;
     return( a );
 }
 
@@ -129,10 +129,10 @@ int choose_episode()
     load_efp( "EFPS/COOL.EFP", picture, 0 );
     draw_box1( 60, 10, 320 - 60, 190, 15 );
     first = 1;
-    k::state[1] = 0;
-    k::state[28] = 0;
+    k::state[k::ESC] = 0;
+    k::state[k::ENTER] = 0;
     fadeout( virbuff, pal );
-    while ( !k::state[1]&&!k::state[28] )
+    while ( !k::state[k::ESC]&&!k::state[k::ENTER] )
     {
         memcpy( virbuff, picture, 64000 );
         FONT_NUM = 0;
@@ -161,7 +161,7 @@ int choose_episode()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while( !k::state[94]&&!k::state[99]&&!k::state[28]&&!k::state[1] )
+        while( !k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ENTER]&&!k::state[k::ESC] )
         {
             if ( clock() != oclock )
             {
@@ -173,17 +173,17 @@ int choose_episode()
             }
             tk_port::event_tick();
         }
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
             if ( sel > 0 ) sel --;
-            k::state[94] = 0;
+            k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
             if ( sel < dirs - 1 ) sel ++;
-            k::state[99] = 0;
+            k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[1] )
+        if ( k::state[k::ESC] )
         {
             fadeout( virbuff, pal );
             return INVALID_EPISODE;
@@ -193,7 +193,7 @@ int choose_episode()
         if ( dirs > 7 ) if ( pos > dirs - 7 ) pos = dirs - 7;
         if ( dirs <= 7 ) if ( pos > 0 ) pos = 0;
     }
-    k::state[28] = 0;
+    k::state[k::ENTER] = 0;
     return( sel );
 }
 
@@ -218,7 +218,7 @@ void player_options()
     int yoffs = ( 15*num_player_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_player_options, "EFPS/COOL.EFP" );
-    k::state[28] = 0;
+    k::state[k::ENTER] = 0;
     while( !quit )
     {
         memcpy( virbuff, picture, 64000 );
@@ -240,7 +240,7 @@ void player_options()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while ( !k::state[1]&&!k::state[94]&&!k::state[99]&&!k::state[28] )
+        while ( !k::state[k::ESC]&&!k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ENTER] )
         {
             if ( clock() != oclock )
             {
@@ -253,15 +253,15 @@ void player_options()
             tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
-            selected --;if ( selected < 0 ) selected = num_player_options - 1; k::state[94] = 0;
+            selected --;if ( selected < 0 ) selected = num_player_options - 1; k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
-            selected ++;if ( selected >= num_player_options ) selected = 0; k::state[99] = 0;
+            selected ++;if ( selected >= num_player_options ) selected = 0; k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[28] )
+        if ( k::state[k::ENTER] )
         {
             if ( selected == 0 )
             {
@@ -284,9 +284,9 @@ void player_options()
                 quit = 1;
             }
         }
-        if ( k::state[1] )
+        if ( k::state[k::ESC] )
         {
-            quit = 1;k::state[1] = 0;
+            quit = 1;k::state[k::ESC] = 0;
         }
     }
     fadeout( virbuff, pal );
@@ -297,7 +297,7 @@ void game_options()
     int yoffs = ( 15*num_game_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_game_options, "EFPS/COOL.EFP" );
-    k::state[28] = 0;
+    k::state[k::ENTER] = 0;
     while( !quit )
     {
         memcpy( virbuff, picture, 64000 );
@@ -325,7 +325,7 @@ void game_options()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while ( !k::state[1]&&!k::state[94]&&!k::state[99]&&!k::state[28] )
+        while ( !k::state[k::ESC]&&!k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ENTER] )
         {
             if ( clock() != oclock )
             {
@@ -338,36 +338,36 @@ void game_options()
             tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
-            selected --;if ( selected < 0 ) selected = num_game_options - 1; k::state[94] = 0;
+            selected --;if ( selected < 0 ) selected = num_game_options - 1; k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
-            selected ++;if ( selected >= num_game_options ) selected = 0; k::state[99] = 0;
+            selected ++;if ( selected >= num_game_options ) selected = 0; k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[28] )
+        if ( k::state[k::ENTER] )
         {
             if ( selected == 0 )
             {
-                if ( !DARK_MODE ) DARK_MODE = 1;else DARK_MODE = 0;k::state[28] = 0;
+                if ( !DARK_MODE ) DARK_MODE = 1;else DARK_MODE = 0;k::state[k::ENTER] = 0;
             }
             if ( selected == 1 )
             {
-                if ( !LIGHT_EFFECTS ) LIGHT_EFFECTS = 1;else LIGHT_EFFECTS = 0;k::state[28] = 0;
+                if ( !LIGHT_EFFECTS ) LIGHT_EFFECTS = 1;else LIGHT_EFFECTS = 0;k::state[k::ENTER] = 0;
             }
             if ( selected == 2 )
             {
-                if ( !SHADOWS ) SHADOWS = 1;else SHADOWS = 0;k::state[28] = 0;
+                if ( !SHADOWS ) SHADOWS = 1;else SHADOWS = 0;k::state[k::ENTER] = 0;
             }
             if ( selected == 3 )
             {
                 quit = 1;
             }
         }
-        if ( k::state[1] )
+        if ( k::state[k::ESC] )
         {
-            quit = 1;k::state[1] = 0;
+            quit = 1;k::state[k::ESC] = 0;
         }
     }
     fadeout( virbuff, pal );
@@ -379,7 +379,7 @@ void sound_options()
     char text[30], text2[30];
     fadeout( virbuff, pal );
     options_scr( num_sound_options, "EFPS/SUBBARI.EFP" );
-    k::state[28] = 0;
+    k::state[k::ENTER] = 0;
     while( !quit )
     {
         memcpy( virbuff, picture, 64000 );
@@ -412,7 +412,7 @@ void sound_options()
         }
         memcpy( screen, virbuff, 64000 );
         tk_port::event_tick();  // reset keystates before loop
-        while ( !k::state[1]&&!k::state[94]&&!k::state[99]&&!k::state[96]&&!k::state[97]&&!k::state[28] )
+        while ( !k::state[k::ESC]&&!k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ARROW_LEFT]&&!k::state[k::ARROW_RIGHT]&&!k::state[k::ENTER] )
         {
             if ( clock() != oclock )
             {
@@ -425,39 +425,39 @@ void sound_options()
             tk_port::event_tick();
         }
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
-            selected --;if ( selected < 0 ) selected = num_sound_options - 1; k::state[94] = 0;
+            selected --;if ( selected < 0 ) selected = num_sound_options - 1; k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
-            selected ++;if ( selected >= num_sound_options ) selected = 0; k::state[99] = 0;
+            selected ++;if ( selected >= num_sound_options ) selected = 0; k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[96] )
+        if ( k::state[k::ARROW_LEFT] )
         {
             if ( selected == 0 ) MUSIC_VOLUME -= 5;
             if ( selected == 1 ) EFFECT_VOLUME -= 5;
             if ( MUSIC_VOLUME < 0 ) MUSIC_VOLUME = 0;
             if ( EFFECT_VOLUME < 0 ) EFFECT_VOLUME = 0;
             if ( selected == 0 ) MIDASsetMusicVolume( ph, MUSIC_VOLUME );
-            k::state[96] = 0;
+            k::state[k::ARROW_LEFT] = 0;
         }
-        if ( k::state[97] )
+        if ( k::state[k::ARROW_RIGHT] )
         {
             if ( selected == 0 ) MUSIC_VOLUME += 5;
             if ( selected == 1 ) EFFECT_VOLUME += 5;
             if ( MUSIC_VOLUME > 63 ) MUSIC_VOLUME = 63;
             if ( EFFECT_VOLUME > 63 ) EFFECT_VOLUME = 63;
             if ( selected == 0 ) MIDASsetMusicVolume( ph, MUSIC_VOLUME );
-            k::state[97] = 0;
+            k::state[k::ARROW_RIGHT] = 0;
         }
-        if ( k::state[28] ) if ( selected == 2 )
+        if ( k::state[k::ENTER] ) if ( selected == 2 )
         {
             quit = 1;
         }
-        if ( k::state[1] )
+        if ( k::state[k::ESC] )
         {
-            quit = 1;k::state[1] = 0;
+            quit = 1;k::state[k::ESC] = 0;
         }
     }
     fadeout( virbuff, pal );
@@ -469,7 +469,7 @@ int deathmatch_options()
     int yoffs = ( 15*num_deathmatch_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_deathmatch_options, "EFPS/COOL.EFP" );
-    k::state[28] = 0;
+    k::state[k::ENTER] = 0;
     while( !quit )
     {
         memcpy( virbuff, picture, 64000 );
@@ -497,7 +497,7 @@ int deathmatch_options()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while ( !k::state[1]&&!k::state[94]&&!k::state[99]&&!k::state[28] )
+        while ( !k::state[k::ESC]&&!k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ENTER] )
         {
             if ( clock() != oclock )
             {
@@ -510,26 +510,26 @@ int deathmatch_options()
             tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
-            selected --;if ( selected < 0 ) selected = num_deathmatch_options - 1; k::state[94] = 0;
+            selected --;if ( selected < 0 ) selected = num_deathmatch_options - 1; k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
-            selected ++;if ( selected >= num_deathmatch_options ) selected = 0; k::state[99] = 0;
+            selected ++;if ( selected >= num_deathmatch_options ) selected = 0; k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[28] )
+        if ( k::state[k::ENTER] )
         {
-            k::state[28] = 0;
+            k::state[k::ENTER] = 0;
             if ( selected == 0 ) { quit = 1;start = 1;}
             if ( selected == 1 ) DEATH_MATCH_SPEED = DEATH_MATCH_SPEED == 2 ? 3 : 2;
             if ( selected == 2 ) ENEMIES_ON_GAME = ENEMIES_ON_GAME ? 0 : 1;
             if ( selected == 3 ) quit = 1;
 
         }
-        if ( k::state[1] )
+        if ( k::state[k::ESC] )
         {
-            quit = 1;k::state[1] = 0;
+            quit = 1;k::state[k::ESC] = 0;
         }
     }
     if (! start) fadeout( virbuff, pal );
@@ -544,7 +544,7 @@ void multiplayer_options()
     char text[50];
     fadeout( virbuff, pal );
     multip_options_scr( num_multip_options, "EFPS/COOL.EFP" );
-    k::state[28] = 0;
+    k::state[k::ENTER] = 0;
     GAME_MODE = saved_game_mode;
     KILLING_MODE = saved_killing_mode;
     while( !quit )
@@ -593,7 +593,7 @@ void multiplayer_options()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while ( !k::state[1]&&!k::state[94]&&!k::state[99]&&!k::state[28] )
+        while ( !k::state[k::ESC]&&!k::state[k::ARROW_UP]&&!k::state[k::ARROW_DOWN]&&!k::state[k::ENTER] )
         {
             if ( clock() != oclock )
             {
@@ -605,17 +605,17 @@ void multiplayer_options()
             tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
-            selected --;if ( selected < 0 ) selected = num_multip_options - 1; k::state[94] = 0;
+            selected --;if ( selected < 0 ) selected = num_multip_options - 1; k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
-            selected ++;if ( selected >= num_multip_options ) selected = 0; k::state[99] = 0;
+            selected ++;if ( selected >= num_multip_options ) selected = 0; k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[28] )
+        if ( k::state[k::ENTER] )
         {
-            k::state[28] = 0;
+            k::state[k::ENTER] = 0;
             if ( selected == 0 )
             {
                 if ( KILLING_MODE == DEATHMATCH )
@@ -724,9 +724,9 @@ void multiplayer_options()
                 quit = 1;
             }
         }
-        if ( k::state[1] )
+        if ( k::state[k::ESC] )
         {
-            quit = 1;k::state[1] = 0;
+            quit = 1;k::state[k::ESC] = 0;
         }
     }
     if ( !dontfade ) fadeout( virbuff, pal );
@@ -738,7 +738,7 @@ void options()
     int yoffs = ( 15*num_options )  / 2, a, cnt = 0, selected = 0, quit = 0, oclock = 0;
     fadeout( virbuff, pal );
     options_scr( num_options, "EFPS/COOL.EFP" );
-    k::state[28] = 0;
+    k::state[k::ENTER] = 0;
     while( !quit )
     {
         memcpy( virbuff, picture, 64000 );
@@ -760,7 +760,7 @@ void options()
             fadein( virbuff, pal ); first = 0;
         }
         memcpy( screen, virbuff, 64000 );
-        while (!(quit || k::state[1] || k::state[94] || k::state[99] || k::state[28]))
+        while (!(quit || k::state[k::ESC] || k::state[k::ARROW_UP] || k::state[k::ARROW_DOWN] || k::state[k::ENTER]))
         {
             if ( clock() != oclock )
             {
@@ -773,15 +773,15 @@ void options()
             tk_port::event_tick();
         };
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22500, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state[94] )
+        if ( k::state[k::ARROW_UP] )
         {
-            selected --;if ( selected < 0 ) selected = num_options - 1; k::state[94] = 0;
+            selected --;if ( selected < 0 ) selected = num_options - 1; k::state[k::ARROW_UP] = 0;
         }
-        if ( k::state[99] )
+        if ( k::state[k::ARROW_DOWN] )
         {
-            selected ++;if ( selected >= num_options ) selected = 0; k::state[99] = 0;
+            selected ++;if ( selected >= num_options ) selected = 0; k::state[k::ARROW_DOWN] = 0;
         }
-        if ( k::state[28] )
+        if ( k::state[k::ENTER] )
         {
             if ( selected == 0 )
             {
@@ -800,9 +800,9 @@ void options()
                 quit = 1;
             }
         }
-        if ( k::state[1] )
+        if ( k::state[k::ESC] )
         {
-            quit = 1;k::state[1] = 0;
+            quit = 1;k::state[k::ESC] = 0;
         }
     }
     save_options();
