@@ -152,9 +152,16 @@ MIDASplaySample( MIDASsample sample, unsigned channel, int priority, unsigned ra
     {
         printf( "Mix_PlayChannel: %s\n", Mix_GetError());
     }
-    int left_vol = panning * -4;  // -64 (leftmost panning) -> 256
-    if ( left_vol >= 255 ) left_vol = 255;
-    Mix_SetPanning( mix_chan, left_vol, 255 - left_vol );
+    const int max_pan = 255;
+
+    // -64..+64 -> 0..128 -> 0..256
+    int right_vol = ( panning + MIDAS_PAN_RIGHT ) * 2;
+
+    // Might cut 256 to 255 but effect is neglible and can't do much better
+    // as Mix_SetPanning expects 0..255
+    if ( right_vol > max_pan ) right_vol = max_pan;
+
+    Mix_SetPanning( mix_chan, max_pan - right_vol, right_vol );
     int mix_vol = volume * 2;  // original volume is from 0..63, SDL_mixer wants 0..127
     if ( mix_vol >= 127 ) mix_vol = 127;
     Mix_Volume( mix_chan, mix_vol );
@@ -183,6 +190,8 @@ int MIDASstopModule( MIDASmodulePlayHandle playHandle )
 int MIDASsetMusicVolume( MIDASmodulePlayHandle playHandle, unsigned volume )
 {
     if (!started) return true;
-    Mix_VolumeMusic( volume );  // TODO: is the range of MIDAS' volume 0..127?
+
+    // original volume is presumably from 0..64 and SDL_mixer wants 0..128
+    Mix_VolumeMusic( volume * 2 );
     return true;
 }
