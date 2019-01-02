@@ -31,13 +31,27 @@ uint64_t timer_zero;
 mach_timebase_info_data_t timer_timebase_info;
 #endif
 
+const unsigned int timer_interval_ms = 1;
+unsigned int sub_framecount = 0;
+unsigned int last_frame_tick = 0;
+
 Uint32 update_framecount( Uint32 interval, void *param )
 {
-    framecount++;
-    // Return the next interval to be used. This technically allows
+    // Set the target interval to be used. This technically allows
     // for dynamic speed changes during the game by mutating the `target_frames`
     // global...
-    return 1000 / target_frames;
+    const unsigned int frame_interval_ms = 1000 / target_frames;
+    const unsigned int now = SDL_GetTicks();
+    sub_framecount += now - last_frame_tick;
+    last_frame_tick = now;
+
+    while ( sub_framecount >= frame_interval_ms )
+    {
+        sub_framecount -= frame_interval_ms;
+        framecount++;
+    }
+
+    return interval;
 }
 
 static void read_tk_port_debug()
@@ -160,7 +174,8 @@ int init_graphics()
 void init_time()
 {
     // Set up the timer to update the framecount global.
-    SDL_AddTimer( 1000 / target_frames, update_framecount, NULL );
+    last_frame_tick = SDL_GetTicks();
+    SDL_AddTimer( timer_interval_ms, update_framecount, NULL );
 
 #ifdef TK_PORT_POSIX
     struct timespec tv;
