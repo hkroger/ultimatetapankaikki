@@ -32,6 +32,7 @@ namespace keyb
     const SDL_Scancode CHR_0 = SDL_SCANCODE_0;
     const SDL_Scancode CHR_F = SDL_SCANCODE_F;
     const SDL_Scancode CHR_Y = SDL_SCANCODE_Y;
+    const SDL_Scancode F5 = SDL_SCANCODE_F5;
     const SDL_Scancode F12 = SDL_SCANCODE_F12;
 
     void init( int );

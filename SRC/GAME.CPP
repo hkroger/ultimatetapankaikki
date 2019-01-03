@@ -604,10 +604,10 @@ void chkeys()
         MAP_ON = !MAP_ON ? 1 : 0;
         k::clear(k::SPACE);
     }
-    if ( k::state(k::CHR_F) )
+    if ( k::state(k::F5) )
     {
         FRAMES_ON = FRAMES_ON == 0 ? 1 : 0;
-        k::clear(k::CHR_F);
+        k::clear(k::F5);
     }
     if ( k::state(k::F12) )
     {
