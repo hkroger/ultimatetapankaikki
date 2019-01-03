@@ -33,7 +33,9 @@ void set_palette( char palette_entries[768], int brightness );
 
 void sleep( const int msec );
 
-int vintage_clock();
+int vintage_clock( void );
+
+void toggle_fullscreen( void );
 
 extern bool quit_flag;
 extern uint32_t debug;

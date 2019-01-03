@@ -102,6 +102,12 @@ void handle_event( const SDL_Event *e )
                 exit( 42 );
             }
 
+            if ( e->key.keysym.scancode == SDL_SCANCODE_RETURN && e->key.keysym.mod & KMOD_LALT )
+            {
+                toggle_fullscreen();
+                return;
+            }
+
             pressed_keys.insert( e->key.keysym.scancode );
 
             last_pressed_key.scancode = e->key.keysym.scancode;

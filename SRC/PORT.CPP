@@ -21,6 +21,7 @@ bool window_resized;
 bool quit_flag = false;
 uint32_t debug = 0;
 uint64_t timer_zero;
+bool full_screen = false;
 
 #define TK_PORT_NSEC_PER_SEC 1000000000L
 #define TK_PORT_NSEC_PER_MSEC 1000000L
@@ -423,6 +424,17 @@ int vintage_clock()
 {
     uint64_t nsec_time = nanoclock();
     return (int) (nsec_time * VINTAGE_CLOCKS_PER_SEC / TK_PORT_NSEC_PER_SEC);
+}
+
+void toggle_fullscreen()
+{
+    full_screen = !full_screen;
+
+    // Borderless is used as it is very quick compared to real fullscreen. Latter
+    // has very slow and ugly transition (away from fullscreen) at least on some
+    // Windows 10 setups
+    SDL_SetWindowFullscreen( window, full_screen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0 );
+    window_resized = true;
 }
 
 /**
