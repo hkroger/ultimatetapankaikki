@@ -128,9 +128,8 @@ static void init_screen()
     set_palette( screen, 0 );
 }
 
-void refresh_rendering()
+inline void refresh_rendering()
 {
-    SDL_RenderClear( renderer );
     get_render_rect( &render_dest_rect );
 }
 
@@ -304,6 +303,8 @@ void present_screen( void )
         refresh_rendering();
         window_resized = false;
     }
+
+    SDL_RenderClear( renderer );
 
     SDL_Texture *surface_texture = SDL_CreateTextureFromSurface( renderer, surface );
     SDL_RenderCopy( renderer, surface_texture, NULL, &render_dest_rect );
