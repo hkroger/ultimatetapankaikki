@@ -4,6 +4,7 @@
 #include "DEFINES.H"
 #include "TYPES.H"
 #include "NET/NET.H"
+#include "INPUT.H"
 
 class Crate_info
 {
@@ -173,7 +174,7 @@ class Player
     nodeaddr node;
     char name[10];
     int HIT, WALK, FIRE, DEAD, KICK, ANIM;
-    SDL_Scancode K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
+    tk_port::Input K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
     int TARGET;
     float PUSH_POWER;
     int PUSH_ANGLE;
@@ -215,7 +216,7 @@ class Bullet
 class Keys
 {
     public:
-    SDL_Scancode K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
+    tk_port::Input K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
     void change();
 };
 

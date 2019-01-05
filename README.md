@@ -15,8 +15,15 @@ too!
 Key bindings
 ------------
 
-Player 1 and 2 game controls be customized under `OPTIONS -> PLAYER
-OPTIONS -> DEFINE KEYS 1/2`. Other keys are hard-coded.
+Player 1 and 2 game controls can be customized under `OPTIONS ->
+PLAYER OPTIONS -> DEFINE KEYS 1/2`.
+
+Game controllers are also supported but buttons need to be configured
+in options before playing. No more than two controllers are recognized
+at the same time. Analog inputs or navigating in menus is not
+currently supported.
+
+Other than player keys are hard-coded.
 
 **Note:** Some Apple keyboards don't have a right ctrl key. If you
 have such a keyboard, you have to change the player 1 shoot key before
@@ -149,7 +156,7 @@ On Windows, you may need to explicitly specify paths to your SDL libraries, like
 ```shell
 cmake -DSDL2_PATH="C:\\<path>\\SDL2-2.0.9" -DSDL2_MIXER_PATH="C:\\<path>\\SDL2_mixer-2.0.4" -DSDL2_NET_PATH="C:\\<path>\\SDL2_net-2.0.1" .
 ```
-which produced project files for 32-bit target. For 64-bit target, use e.g. `cmake -G "Visual Studio 15 2017 Win64"`.
+which produces project files for 32-bit target. For 64-bit target, use e.g. `cmake -G "Visual Studio 15 2017 Win64"`.
 
 
 [suomipelit-gh]: https://github.com/suomipelit

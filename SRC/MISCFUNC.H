@@ -2,10 +2,11 @@
 #define __TK__MISCFUNC__
 
 #include <SDL.h>
+#include "INPUT.H"
 
 void change_name( int num );
-char *k_2_c( SDL_Scancode scancode );
-SDL_Scancode get_key( int x, int y );
+char *k_2_c( const tk_port::Input& scancode );
+tk_port::Input get_key( int x, int y );
 void clear_shit( int y );
 void set_keys();
 void alusta_client();

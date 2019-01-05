@@ -114,31 +114,6 @@ const char *k_text[DIFF_K] =
     "back to menu"
 };
 
-struct special spec[SPEC_K] =
-{
-    {1, "esc"},
-    {15, "tab"},
-    {28, "enter"},
-    {29, "left ctrl"},
-    {90, "right ctrl"},
-    {42, "left shift"},
-    {54, "right shift"},
-    {57, "space"},
-    {58, "caps lock"},
-    {56, "alt"},
-    {92, "alt gr"},
-    {93, "home"},
-    {94, "arrow up"},
-    {100, "page down"},
-    {95, "page up"},
-    {96, "arrow left"},
-    {97, "arrow right"},
-    {98, "end"},
-    {99, "arrow down"},
-    {101, "insert"},
-    {102, "delete"},
-};
-
 Effect_type effect_type[10];
 char *screen = NULL;
 char virbuff[320*240];

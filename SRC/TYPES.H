@@ -1,12 +1,6 @@
 #ifndef __TK__TYPES__
 #define __TK__TYPES__
 
-struct special
-{
-    int num;
-    char text[15];
-};
-
 struct BLOCK
 {
     int type;

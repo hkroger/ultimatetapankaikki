@@ -45,7 +45,6 @@ extern int pl_start_x[MAX_PLAYERS], pl_start_y[MAX_PLAYERS];
 extern int ACTIVE_PLAYERS, ENEMIES, LEVEL, DEAD_ENEMIES, ENEMIES_ON_GAME;
 extern int FRAMES_ON, target_frames, delau;
 extern const char *k_text[DIFF_K];
-extern struct special spec[SPEC_K];
 extern Effect_type effect_type[10];
 extern char *screen;
 extern char virbuff[];

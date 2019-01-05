@@ -47,7 +47,6 @@
 #define num_deathmatch_options 4
 #define num_multip_options 7
 #define DIFF_K 10
-#define SPEC_K 21
 #define INVALID_EPISODE -1
  // Effects...
 #define BLOOD 0

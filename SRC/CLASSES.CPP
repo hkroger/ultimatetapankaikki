@@ -1308,7 +1308,7 @@ void Level::load( char name[13] )
 void Keys::change()
 {
     int a = 0, quit = 0, cnt = 0, oclock = 0, selected = 0;
-    SDL_Scancode b = k::NOTHING;
+    tk_port::Input b = k::NOTHING;
     first = 1;
     fadeout( virbuff, pal );
     load_efp( "EFPS/COOL.EFP", picture, 0 );
