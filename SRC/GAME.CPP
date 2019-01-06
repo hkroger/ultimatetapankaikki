@@ -2053,8 +2053,6 @@ int join_game(struct nodeaddr n)
     writefonts( 80, 90,buf, M_BLUE );
     writefonts( 80, 100,"done!", M_BLUE );
     memcpy(screen,virbuff,64000);
-    k::clear_stack();
-    k::wait_for_keypress();
 
     return 1;
 }
