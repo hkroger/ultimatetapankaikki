@@ -16,7 +16,7 @@ Build requirements
 
 - CMake
 - C++ compiler: At least gcc, clang and Visual Studio are supported
-- Libraries: SDL2, SDL2_mixer, SDL2_net 
+- Libraries: SDL2, SDL2_mixer, SDL2_net
   - On macOS, you can install these with Homebrew. `brew install sdl2 sdl2_mixer sdl2_net`
   - On Windows you can download these from SDL website
 
