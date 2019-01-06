@@ -476,6 +476,13 @@ int deathmatch_options()
         if ( DEATH_MATCH_SPEED == 2 )
              strcpy(deathmatch_opt_text[1],"normal moving");
         else strcpy(deathmatch_opt_text[1],"fast moving");
+
+        // Enemies are not supported over network
+        if ( GAME_MODE == NETWORK )
+        {
+            ENEMIES_ON_GAME = 0;
+        }
+
         if ( ENEMIES_ON_GAME )
              strcpy(deathmatch_opt_text[2],"enemies on" );
         else strcpy(deathmatch_opt_text[2],"enemies off" );
@@ -523,7 +530,7 @@ int deathmatch_options()
             k::clear(k::ENTER);
             if ( selected == 0 ) { quit = 1;start = 1;}
             if ( selected == 1 ) DEATH_MATCH_SPEED = DEATH_MATCH_SPEED == 2 ? 3 : 2;
-            if ( selected == 2 ) ENEMIES_ON_GAME = ENEMIES_ON_GAME ? 0 : 1;
+            if ( selected == 2 ) ENEMIES_ON_GAME = GAME_MODE == NETWORK || ENEMIES_ON_GAME ? 0 : 1;
             if ( selected == 3 ) quit = 1;
 
         }
