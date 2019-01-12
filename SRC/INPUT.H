@@ -70,7 +70,9 @@ struct key_map_s
     SDL_GameControllerButton controller;
 };
 
-const std::vector<key_map_s> s_key_map_p1
+using KeyMapVector = std::vector<key_map_s>;
+
+const KeyMapVector s_key_map_p1
 {
     { DPAD_UP_1, SDL_CONTROLLER_BUTTON_DPAD_UP, },
     { DPAD_DOWN_1, SDL_CONTROLLER_BUTTON_DPAD_DOWN },
@@ -88,7 +90,7 @@ const std::vector<key_map_s> s_key_map_p1
     { BUTTON_START_1, SDL_CONTROLLER_BUTTON_START }
 };
 
-const std::vector<key_map_s> s_key_map_p2
+const KeyMapVector s_key_map_p2
 {
     { DPAD_UP_2, SDL_CONTROLLER_BUTTON_DPAD_UP, },
     { DPAD_DOWN_2, SDL_CONTROLLER_BUTTON_DPAD_DOWN },
@@ -112,7 +114,9 @@ struct key_name_map_s
     const char* name;
 };
 
-const std::vector<key_name_map_s> s_key_name_map
+using KeyNameMapVector = std::vector<key_name_map_s>;
+
+const KeyNameMapVector s_key_name_map
 {
     { DPAD_UP_1, CONTROLLER_ONE_NAME " " CONTROLLER_UP },
     { DPAD_DOWN_1, CONTROLLER_ONE_NAME " " CONTROLLER_DOWN },

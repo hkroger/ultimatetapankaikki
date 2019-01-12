@@ -4,57 +4,46 @@
 
 namespace tk_port
 {
-Controller::Controller(const unsigned int index) :
-    m_sdl_controller(SDL_GameControllerOpen(index))
+Controller::Controller(const unsigned int index, const KeyMapVector* key_map) :
+    m_sdl_controller(SDL_GameControllerOpen(index)), m_id(-1), m_key_map(key_map)
 {
+    if (m_sdl_controller)
+    {
+        m_id = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(m_sdl_controller));
+    }
 }
 
 Controller::~Controller()
 {
-    if (m_sdl_controller) SDL_GameControllerClose(m_sdl_controller);
-}
-
-bool Controller::isConnected()
-{
-    return m_sdl_controller && SDL_GameControllerGetAttached(m_sdl_controller) == SDL_TRUE;
-}
-
-bool Controller::isButtonPressed(const SDL_GameControllerButton controller_button)
-{
-    const auto it = std::find(m_pressed.begin(), m_pressed.end(), controller_button);
-
-    if (it != m_pressed.end())
+    if (m_sdl_controller)
     {
-        return false;
-    }
-    else
-    {
-        const auto is_down = SDL_GameControllerGetButton(m_sdl_controller, controller_button) == 1;
-
-        if (is_down)
-        {
-            m_pressed.push_back(controller_button);
-        }
-
-        return is_down;
+        SDL_GameControllerClose(m_sdl_controller);
     }
 }
 
-bool Controller::isButtonReleased(const SDL_GameControllerButton controller_button)
+bool Controller::getControllerInput(const SDL_GameControllerButton sdl_button, ControllerInput& r_input) const
 {
-    const auto it = std::find(m_pressed.begin(), m_pressed.end(), controller_button);
+    const auto inputFinder = [&sdl_button](const key_map_s& map) {
+        return sdl_button == map.controller;
+    };
 
-    if (it != m_pressed.end())
+    const auto it = std::find_if(m_key_map->begin(), m_key_map->end(), inputFinder);
+
+    if (it != m_key_map->end())
     {
-        const auto is_down = SDL_GameControllerGetButton(m_sdl_controller, controller_button);
-
-        if (!is_down)
-        {
-            m_pressed.erase(it);
-            return true;
-        }
+        r_input = it->input;
+        return true;
     }
-
     return false;
+}
+
+SDL_JoystickID Controller::getId() const
+{
+    return m_id;
+}
+
+const KeyMapVector* Controller::getKeyMap() const
+{
+    return m_key_map;
 }
 }

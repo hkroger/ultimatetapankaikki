@@ -3,14 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <memory>
-#include <vector>
 #include <SDL.h>
 #include "PORT.H"
 #include "GLOBVAR.H"
 #include "ERROR/ERROR.H"
-#include "CONTROLLER.H"
-#include "INPUT.H"
+#include "CONTROLLERS.H"
 
 extern int scr_y_size;
 
@@ -26,8 +23,7 @@ bool quit_flag = false;
 uint32_t debug = 0;
 uint64_t timer_zero;
 bool full_screen = false;
-std::vector< std::unique_ptr<Controller> > controllers;
-const unsigned int max_number_of_controllers = 2;
+Controllers *controllers = NULL;
 
 #define TK_PORT_NSEC_PER_SEC 1000000000L
 #define TK_PORT_NSEC_PER_MSEC 1000000L
@@ -205,20 +201,6 @@ void change_resolution( const unsigned int y )
 
     init_screen();
 }
-
-void init_controllers( void )
-{
-    for ( int i = 0; i < SDL_NumJoysticks(); ++i )
-    {
-        if ( SDL_IsGameController( i ) )
-        {
-            controllers.emplace_back( new Controller(i) );
-            if ( controllers.size() == max_number_of_controllers )
-                break;
-        }
-    }
-}
-
 int init()
 {
     int ret;
@@ -232,7 +214,7 @@ int init()
         return ret;
     }
     init_time();
-    init_controllers();
+    controllers = new Controllers();
     event_tick();  // Tick once so we get the window up at this point
     return 0;
 }
@@ -240,7 +222,7 @@ int init()
 void deinit()
 {
     // Uninitialize SDL controllers before main SDL
-    controllers.clear();
+    delete controllers;
 
     if ( surface ) SDL_FreeSurface( surface );
     if ( palette ) SDL_FreePalette( palette );
@@ -358,47 +340,13 @@ void frame_rate_limiter( const unsigned int max_fps )
     frame_start_time = SDL_GetTicks();
 }
 
-void handle_controller_input( void )
-{
-    for ( unsigned int i = 0; i < controllers.size(); ++i )
-    {
-        const auto& controller = controllers[i];
-
-        if ( !controller->isConnected() )
-        {
-            // Logic could be improved so that disconnected controllers are reconnected. For now
-            // just ignore such controllers until end of the session.
-            continue;
-        }
-
-        const auto set_key_if = [&controller]( const SDL_GameControllerButton& controller_button, const ControllerInput& button )
-        {
-            if ( controller->isButtonPressed( controller_button ) )
-            {
-                keyb::pressed( button, SDL_GetTicks() );
-            }
-            else if (controller->isButtonReleased( controller_button ) )
-            {
-                keyb::released( button );
-            }
-        };
-
-        for ( const auto& key_pair : i == 0 ? s_key_map_p1 : s_key_map_p2 )
-        {
-            set_key_if( key_pair.controller, key_pair.input );
-        }
-    }
-}
-
 void event_tick( void )
 {
-    // Controllers emulate keyboard presses so any controller action is actually handled in the
-    // keyboard loop below
-    handle_controller_input();
-
     SDL_Event e;
     while (SDL_PollEvent( &e ))
     {
+        controllers->handle_event(&e);
+
         tk_port::keyb::handle_event(&e);
 
         switch (e.type)
