@@ -115,6 +115,9 @@ void set_keys()
     }
     else
     {
+        // Keys are inverted so that primary player on default arrow keys
+        // and secondary player on WASD keys matches to splitted screen
+        // order
         aplayer[0]->K_LEFT = keys2.K_LEFT;
         aplayer[0]->K_RIGHT = keys2.K_RIGHT;
         aplayer[0]->K_UP = keys2.K_UP;
@@ -165,12 +168,25 @@ void alusta_client()
 void alusta_players1()
 {
     int a, b;
-    strcpy( aplayer[0]->name, name1 );
-    if (ACTIVE_PLAYERS==2)
-    strcpy( aplayer[1]->name, name2 );
-    aplayer[0]->color = 16*3;
-    if (ACTIVE_PLAYERS==2)
-    aplayer[1]->color = 16*9;
+    const int green = 16 * 9;
+    const int red = 16 * 3;
+
+    if (ACTIVE_PLAYERS == 2)
+    {
+        // Match inverted keys
+        strcpy(aplayer[0]->name, name2);
+        strcpy(aplayer[1]->name, name1);
+
+        aplayer[0]->color = green;
+        aplayer[1]->color = red;
+    }
+    else
+    {
+        strcpy(aplayer[0]->name, name1);
+
+        aplayer[0]->color = red;
+    }
+
     for ( b = 0; b < ACTIVE_PLAYERS; b ++  )
     {
         aplayer[b]->enabled=1;
