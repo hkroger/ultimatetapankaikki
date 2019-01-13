@@ -110,11 +110,16 @@ Changes required to port the game:
   joining a network game, there's a new screen that allows typing the
   server address.
 
+- In-game screenshots are saved in BMP format as opposed to original
+  PCX format.
+
 New features:
 
 - Pressing Esc in episode selection menu goes back to main menu.
 
 - Pressing Shift + Esc anywhere in the game quits immediately.
+
+- Game controller support.
 
 Bugfixes:
 
@@ -130,6 +135,7 @@ Bugfixes:
 - Clients now monitor server connection and quit to main menu if the
   server crashes.
 
+- Player names and colors were mixed up in split screen mode.
 
 Building from source
 --------------------
