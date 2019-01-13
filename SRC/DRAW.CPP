@@ -989,9 +989,9 @@ void draw_kills()
     if ( GAME_MODE == SPLIT_SCREEN )
     {
         sprintf( text, "%d", aplayer[0]->player_kills );
-        writefonts( 3, 3, text, 48 );
+        writefonts( 3, 3, text, aplayer[0]->color );
         sprintf( text, "%d", aplayer[1]->player_kills );
-        writefonts( 317 - str_length( text ), 3, text, 144 );
+        writefonts( 317 - str_length( text ), 3, text, aplayer[1]->color );
     }
     else
     for ( a = 0; a < MAX_PLAYERS;a++)
