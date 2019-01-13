@@ -2,7 +2,6 @@
 #define __TK__KEYB__
 
 #include <SDL.h>
-#include "PORT.H"
 #include "INPUT.H"
 
 namespace tk_port

@@ -3,11 +3,10 @@
 #include <set>
 #include <SDL_keyboard.h>
 #include <SDL_timer.h>
+#include "PORT.H"
 
 namespace tk_port
 {
-extern void event_tick(void);
-
 namespace input
 {
 const uint32_t KEY_REPEAT_TIMER_CODE = 43615681;  // Random number heh heh
