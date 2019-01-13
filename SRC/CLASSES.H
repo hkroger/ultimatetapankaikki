@@ -174,7 +174,7 @@ class Player
     nodeaddr node;
     char name[10];
     int HIT, WALK, FIRE, DEAD, KICK, ANIM;
-    tk_port::Input K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
+    tk_port::input::Input K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
     int TARGET;
     float PUSH_POWER;
     int PUSH_ANGLE;
@@ -216,7 +216,7 @@ class Bullet
 class Keys
 {
     public:
-    tk_port::Input K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
+    tk_port::input::Input K_LEFT, K_RIGHT, K_UP, K_DOWN, K_SHOOT, K_SHIFT, K_STRAFE, K_LSTRAFE, K_RSTRAFE;
     void change();
 };
 

@@ -2,6 +2,7 @@
 #define _INPUT_H
 
 #include <vector>
+#include "SDL_events.h"
 #include "SDL_gamecontroller.h"
 #include "SDL_scancode.h"
 
@@ -25,6 +26,8 @@
 #define CONTROLLER_START "Start"
 
 namespace tk_port
+{
+namespace input
 {
 const unsigned int s_controller_input_bit = 0x10000000;
 
@@ -185,6 +188,28 @@ private:
 };
 
 static_assert(sizeof(Input) == 4, "Input size doesn't match to serialized options");
+
+const Input NOTHING;
+
+void init(int);
+void deinit();
+bool state(const input::Input&);
+void clear(const input::Input&);
+void clear_stack();
+void pressed(const input::Input& input, const Uint32 timestamp);
+void released(const input::Input& input);
+
+// Return key/button that was pressed last, or NOTHING if
+// no key is currently pressed.
+Input get_last_key();
+
+// Wait until a key/button is pressed and return it
+Input wait_for_keypress();
+
+void handle_event(const SDL_Event *e);
 }
+}
+
+namespace i = tk_port::input;
 
 #endif

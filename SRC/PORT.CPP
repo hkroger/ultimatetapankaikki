@@ -347,7 +347,9 @@ void event_tick( void )
     {
         controllers->handle_event(&e);
 
-        tk_port::keyb::handle_event(&e);
+        keyb::handle_event(&e);
+
+        input::handle_event(&e);
 
         switch (e.type)
         {

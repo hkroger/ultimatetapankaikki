@@ -39,7 +39,7 @@ void change_name( int num )
     memcpy( virbuff, picture, 64000 );
     writefonts2( x, 85, "enter your name", 1 );
     fadein( virbuff, pal );
-    k::clear_stack();
+    i::clear_stack();
     if ( num == 1 )
         readline( x, 100, 10, name1, screen, filter_name_char );
     if ( num == 2 )
@@ -48,7 +48,7 @@ void change_name( int num )
 }
 
 /**
- * Convert an SDL scancode into a string representing it.
+ * Convert an Input object into a string representing it.
  *
  * The caller is responsible for freeing the returned buffer.
  *
@@ -57,14 +57,14 @@ void change_name( int num )
  * @param key Keycode.
  * @return String for the keycode.
  */
-char *k_2_c( const tk_port::Input& scancode )
+char *k_2_c( const tk_port::input::Input& input )
 {
-    return strdup( scancode.get_name() );
+    return strdup( input.get_name() );
 }
 
-tk_port::Input get_key( int x, int y )
+tk_port::input::Input get_key( int x, int y )
 {
-    tk_port::Input key = k::NOTHING;
+    tk_port::input::Input key = i::NOTHING;
     int oclock = 0, cnt = 0, pressed = 0;
     while ( !pressed )
     {
@@ -76,17 +76,17 @@ tk_port::Input get_key( int x, int y )
             if ( cnt > 23 ) cnt = 0;
         }
 
-        tk_port::Input scancode = k::get_last_key();
+        tk_port::input::Input input = i::get_last_key();
 
         // Left shift is blacklisted in the original code. Dunno why.
-        if ( scancode != k::NOTHING && scancode != k::LEFT_SHIFT )
+        if ( input != i::NOTHING && input != k::LEFT_SHIFT )
         {
-            key = scancode;
+            key = input;
             pressed = 1;
         }
         tk_port::event_tick();
     }
-    k::clear_stack();
+    i::clear_stack();
     return( key );
 }
 

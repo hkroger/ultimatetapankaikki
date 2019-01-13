@@ -136,25 +136,25 @@ void Player::shop()
             fadein( virbuff, pal );
             first = 0;
         }
-        while ( !k::state(k::ESC)&&
-        !k::state(K_LEFT)&&
-        !k::state(K_RIGHT)&&
-        !k::state(K_UP)&&
-        !k::state(K_DOWN)&&
-        !k::state(K_SHOOT)&&
-        !k::state(K_SHIFT))
+        while ( !i::state(k::ESC)&&
+        !i::state(K_LEFT)&&
+        !i::state(K_RIGHT)&&
+        !i::state(K_UP)&&
+        !i::state(K_DOWN)&&
+        !i::state(K_SHOOT)&&
+        !i::state(K_SHIFT))
         {
             tk_port::event_tick();
         }
-        if ( k::state(K_UP) ) if ( sel1 > 0 ) sel1 --;
-        if ( k::state(K_DOWN) ) if ( sel1 < 2 ) sel1 ++;
-        if ( k::state(K_LEFT) ) sel2 --;
-        if ( k::state(K_RIGHT) ) sel2 ++;
+        if ( i::state(K_UP) ) if ( sel1 > 0 ) sel1 --;
+        if ( i::state(K_DOWN) ) if ( sel1 < 2 ) sel1 ++;
+        if ( i::state(K_LEFT) ) sel2 --;
+        if ( i::state(K_RIGHT) ) sel2 ++;
         if ( sel2 < 0 ) sel2 = 0;
         if ( sel1 == 0 ) if ( sel2 >= DIFF_WEAPONS ) sel2 = DIFF_WEAPONS - 1;
         if ( sel1 == 1 ) if ( sel2 >= DIFF_BULLETS ) sel2 = DIFF_BULLETS - 1;
         if ( sel1 == 2 ) if ( sel2 >= OTHER_STUFF ) sel2 = OTHER_STUFF - 1;
-        if ( k::state(K_SHOOT) )
+        if ( i::state(K_SHOOT) )
         {
             if ( sel1 == 0 )
             if ( weapons[sel2 + 1] == 0 )
@@ -188,7 +188,7 @@ void Player::shop()
                 }
             }
         }
-        if ( k::state(K_SHIFT) )
+        if ( i::state(K_SHIFT) )
         {
             if ( sel1 == 0 )
             if ( weapons[sel2 + 1] > 0 )
@@ -220,23 +220,23 @@ void Player::shop()
                 }
             }
         }
-        k::clear(K_UP);
-        k::clear(K_DOWN);
-        k::clear(K_LEFT);
-        k::clear(K_RIGHT);
-        k::clear(K_SHOOT);
-        k::clear(K_SHIFT);
+        i::clear(K_UP);
+        i::clear(K_DOWN);
+        i::clear(K_LEFT);
+        i::clear(K_RIGHT);
+        i::clear(K_SHOOT);
+        i::clear(K_SHIFT);
         MIDASplaySample( samplep[KLIKWAV], MIDAS_CHANNEL_AUTO, 0, 22000, EFFECT_VOLUME, MIDAS_PAN_MIDDLE );
-        if ( k::state(k::ESC) )
+        if ( i::state(k::ESC) )
         {
             FONT_NUM = 0;
             writefonts2( 10, 115, "press fire to confirm", 1 );
             memcpy( screen, virbuff, 64000 );
-            k::clear_stack();
-            if ( k::wait_for_keypress() == K_SHOOT  ) {
+            i::clear_stack();
+            if ( i::wait_for_keypress() == K_SHOOT  ) {
                 quit = 1;
             }
-            k::clear(k::ESC);
+            i::clear(k::ESC);
         }
     }
     fadeout( virbuff, pal );

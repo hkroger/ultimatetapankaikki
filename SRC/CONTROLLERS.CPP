@@ -21,19 +21,18 @@ void Controllers::handle_event(const SDL_Event *e)
             if (id == controller->getId())
             {
                 const SDL_GameControllerButton sdl_button = static_cast<SDL_GameControllerButton>(e->cbutton.button);
-                ControllerInput input;
+                input::ControllerInput input;
 
                 // Check that button is supported
                 if (controller->getControllerInput(sdl_button, input))
                 {
                     if (e->type == SDL_CONTROLLERBUTTONDOWN)
                     {
-                        // "keyb" namespace is to be renamed to e.g. "input"
-                        keyb::pressed(input, SDL_GetTicks());
+                        input::pressed(input, SDL_GetTicks());
                     }
                     else
                     {
-                        keyb::released(input);
+                        input::released(input);
                     }
                 }
                 break;
@@ -47,10 +46,10 @@ void Controllers::handle_event(const SDL_Event *e)
 
         if (SDL_IsGameController(index))
         {
-            std::vector<const KeyMapVector*> available_maps =
+            std::vector<const input::KeyMapVector*> available_maps =
             {
-                &s_key_map_p1, // Player 1
-                &s_key_map_p2  // Player 2
+                &input::s_key_map_p1, // Player 1
+                &input::s_key_map_p2  // Player 2
             };
 
             // Make sure there aren't already two connected controllers

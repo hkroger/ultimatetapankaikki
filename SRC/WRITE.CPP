@@ -177,7 +177,7 @@ void readline( int x, int y, int len, char *str, char *screen, bool (*filter_cha
 {
     int done = 0, a, dy;
     char *bg;
-    tk_port::Input input;
+    i::Input input;
     bg = (char *) malloc( 320 * f_y_size[FONT_NUM] );
     memcpy( bg, screen + x + (y * 320), 320 * f_y_size[FONT_NUM] );
     while (!done)
@@ -185,8 +185,8 @@ void readline( int x, int y, int len, char *str, char *screen, bool (*filter_cha
         writefonts2( x, y, str, 1 );
         for ( dy = 0; dy < f_y_size[FONT_NUM]; dy++ )
             memcpy( screen + x + ((dy + y) * 320), virbuff + x + ((dy + y) * 320), len * f_x_size[FONT_NUM] );
-        input = k::wait_for_keypress();
-        if ( input != k::ESC && input != k::BACKSPACE && input != k::ENTER && input.get_type() == tk_port::Input::Keyboard )
+        input = i::wait_for_keypress();
+        if ( input != k::ESC && input != k::BACKSPACE && input != k::ENTER && input.get_type() == i::Input::Keyboard )
             if ( (int)strlen( str ) < (len - 1))
             {
                 char key = k::scancode_to_char( input.scancode );

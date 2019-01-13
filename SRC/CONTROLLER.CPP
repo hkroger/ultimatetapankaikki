@@ -4,7 +4,7 @@
 
 namespace tk_port
 {
-Controller::Controller(const unsigned int index, const KeyMapVector* key_map) :
+Controller::Controller(const unsigned int index, const input::KeyMapVector* key_map) :
     m_sdl_controller(SDL_GameControllerOpen(index)), m_id(-1), m_key_map(key_map)
 {
     if (m_sdl_controller)
@@ -21,9 +21,9 @@ Controller::~Controller()
     }
 }
 
-bool Controller::getControllerInput(const SDL_GameControllerButton sdl_button, ControllerInput& r_input) const
+bool Controller::getControllerInput(const SDL_GameControllerButton sdl_button, input::ControllerInput& r_input) const
 {
-    const auto inputFinder = [&sdl_button](const key_map_s& map) {
+    const auto inputFinder = [&sdl_button](const input::key_map_s& map) {
         return sdl_button == map.controller;
     };
 
@@ -42,7 +42,7 @@ SDL_JoystickID Controller::getId() const
     return m_id;
 }
 
-const KeyMapVector* Controller::getKeyMap() const
+const input::KeyMapVector* Controller::getKeyMap() const
 {
     return m_key_map;
 }
