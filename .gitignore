@@ -1,7 +1,9 @@
 *.cbp
 .idea/
 /*.CFG
-/tk3
+/ultimatetapankaikki
+/GAME.EXE
+/CONFIG.H
 cmake-modules/
 CMakeCache.txt
 CMakeFiles

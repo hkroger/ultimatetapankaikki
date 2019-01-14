@@ -1,0 +1,6 @@
+#ifndef _TK_CONFIG_H_
+#define _TK_CONFIG_H_
+
+#cmakedefine TK_DATADIR "@TK_DATADIR@"
+
+#endif
