@@ -11,8 +11,6 @@ struct Font {
     unsigned int glyph_width;
     unsigned int glyph_height;
     bool glyph_nonempty[256];  // Whether the glyph is nonempty
-    int glyph_left_zero[256];  // X position of first non-zero pixel
-    int glyph_right_zero[256]; // X position of last non-zero pixel
     int glyph_left_one[256];   // X position of first pixel < 2
     int glyph_right_one[256];  // X position of last pixel < 2
     uint8_t *glyph_data[256];  // Bitmaps of size glyph_width * glyph_height

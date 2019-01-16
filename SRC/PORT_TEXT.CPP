@@ -55,7 +55,7 @@ void load_png_font( Font *font, const char *png_name )
             memcpy( glyph_data + y * glyph_w, buf + src_off, glyph_w );
         }
         bool empty = true;
-        int left0 = glyph_w, right0 = 0, left1 = glyph_w, right1 = 0;
+        int left1 = glyph_w, right1 = 0;
         for ( int x = 0; x < glyph_w; x++ )
         {
             for ( unsigned int y = 0; y < glyph_h; y++ )
@@ -63,16 +63,12 @@ void load_png_font( Font *font, const char *png_name )
                 int ix = glyph_w - 1 - x;
                 uint8_t *scanline = glyph_data + y * glyph_w;
                 if ( scanline[x] ) empty = false;
-                if ( scanline[x] > 0 && x > right0 ) right0 = x;
                 if ( scanline[x] > 1 && x > right1 ) right1 = x;
-                if ( scanline[ix] > 0 && ix < left0 ) left0 = ix;
                 if ( scanline[ix] > 1 && ix < left1 ) left1 = ix;
             }
         }
         font->glyph_nonempty[glyph_index] = !empty;
-        font->glyph_left_zero[glyph_index] = left0;
         font->glyph_left_one[glyph_index] = left1;
-        font->glyph_right_zero[glyph_index] = right0;
         font->glyph_right_one[glyph_index] = right1;
     }
 }
@@ -86,12 +82,11 @@ void load_png_font( Font *font, const char *png_name )
  *
  * @param font Font object.
  * @param chr Glyph index.
- * @param mode Draw mode (from the original code). This is actually rather unused.
  * @param left Pointer to hold the leftmost pixel column to draw.
  * @param right Pointer to hold the rightmost pixel column to draw.
  * @return True if there is something to draw at all.
  */
-static bool get_glyph_metrics( Font *font, uint8_t chr, int mode, int *left, int *right )
+static bool get_glyph_metrics( Font *font, uint8_t chr, int *left, int *right )
 {
     if ( !font->glyph_nonempty[chr] )
     {
@@ -99,10 +94,8 @@ static bool get_glyph_metrics( Font *font, uint8_t chr, int mode, int *left, int
         *right = font->glyph_width / 2;
         return false;
     }
-    auto left_tab = (mode == 2 ? font->glyph_left_one : font->glyph_left_zero);
-    auto right_tab = (mode == 2 ? font->glyph_right_one : font->glyph_right_zero);
-    *left = left_tab[chr];
-    *right = right_tab[chr];
+    *left = font->glyph_left_one[chr];
+    *right = font->glyph_right_one[chr];
     return true;
 }
 
@@ -132,7 +125,7 @@ int draw_text( Font *font, int x0, int y0, const char *str, int cq, TextDrawMode
     {
         uint8_t chr = get_font_chr( str[index] );
         int xpos1, xpos2;
-        bool must_draw = get_glyph_metrics( font, chr, 2, &xpos1, &xpos2 );
+        bool must_draw = get_glyph_metrics( font, chr, &xpos1, &xpos2 );
         if ( !must_draw )
         {
             x0 += xpos2 - xpos1 + SPACE_SPACING;
