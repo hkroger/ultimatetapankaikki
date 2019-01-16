@@ -4,11 +4,17 @@
 #include <cstdint>
 #include "EFP.H"
 #include "../ERROR/ERROR.H"
+#include "PORT_IMAGE.H"
 
 void load_efp( const char *name, char *kuva, int offs )
 {
     unsigned int p;
     unsigned short w, h;
+
+    if ( tk_port::load_efp_replacement_png( name, kuva, nullptr ))
+    {
+        return;  // successfully loaded replacement, so don't bother with efp
+    }
 
     short tavu, tavu2;
     FILE *efp = fopen( name, "rb" );
@@ -59,6 +65,10 @@ void load_efp( const char *name, char *kuva, int offs )
 
 void load_efp_pal( const char *name, char *paletti )
 {
+    if ( tk_port::load_efp_replacement_png( name, nullptr, paletti ))
+    {
+        return;    // successfully loaded replacement, so don't bother with efp
+    }
     FILE *efp = fopen( name, "rb" );
     fseek( efp, -768, SEEK_END );
     fread( paletti, sizeof(char), 768, efp );

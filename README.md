@@ -144,8 +144,8 @@ Building from source
 
 - CMake
 - C++ compiler: At least gcc, clang and Visual Studio are supported
-- Libraries: SDL2, SDL2_mixer, SDL2_net
-  - On macOS, you can install these with Homebrew. `brew install sdl2 sdl2_mixer sdl2_net`
+- Libraries: SDL2, SDL2_mixer, SDL2_image, SDL2_net
+  - On macOS, you can install these with Homebrew. `brew install sdl2 sdl2_mixer sdl2_image sdl2_net`
   - On Windows you can download these from SDL website
 
 **Building:**
@@ -160,7 +160,7 @@ systems, the name of the executable is `tk3`.
 
 On Windows, you may need to explicitly specify paths to your SDL libraries, like
 ```shell
-cmake -DSDL2_PATH="C:\\<path>\\SDL2-2.0.9" -DSDL2_MIXER_PATH="C:\\<path>\\SDL2_mixer-2.0.4" -DSDL2_NET_PATH="C:\\<path>\\SDL2_net-2.0.1" .
+cmake -DSDL2_PATH="C:\\<path>\\SDL2-2.0.9" -DSDL2_MIXER_PATH="C:\\<path>\\SDL2_mixer-2.0.4" -DSDL2_IMAGE_PATH="C:\\<path>\\SDL2_image-2.0.4" -DSDL2_NET_PATH="C:\\<path>\\SDL2_net-2.0.1" .
 ```
 which produces project files for 32-bit target. For 64-bit target, use e.g. `cmake -G "Visual Studio 15 2017 Win64"`.
 

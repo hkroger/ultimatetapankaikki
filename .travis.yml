@@ -15,6 +15,7 @@ matrix:
             - g++-8
             - libsdl2-dev
             - libsdl2-mixer-dev
+            - libsdl2-image-dev
             - libsdl2-net-dev
       before_install:
         - CC=gcc-8 && CXX=g++-8
@@ -28,11 +29,13 @@ addons:
     packages:
       - libsdl2-dev
       - libsdl2-mixer-dev
+      - libsdl2-image-dev
       - libsdl2-net-dev
   homebrew:
     packages:
       - sdl2
       - sdl2_mixer
+      - sdl2_image
       - sdl2_net
 
 before_install:
@@ -40,18 +43,22 @@ before_install:
     if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
       SDL2_VERSION=2.0.6
       SDL2_MIXER_VERSION=2.0.4
+      SDL2_IMAGE_VERSION=2.0.4
       SDL2_NET_VERSION=2.0.1
 
       wget https://www.libsdl.org/release/SDL2-devel-$SDL2_VERSION-VC.zip
       wget https://www.libsdl.org/projects/SDL_mixer/release/SDL2_mixer-devel-$SDL2_MIXER_VERSION-VC.zip
+      wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-$SDL2_IMAGE_VERSION-VC.zip
       wget https://www.libsdl.org/projects/SDL_net/release/SDL2_net-devel-$SDL2_NET_VERSION-VC.zip
 
       7z x SDL2-devel-$SDL2_VERSION-VC.zip -oC:/SDL2/
       7z x SDL2_mixer-devel-$SDL2_MIXER_VERSION-VC.zip -oC:/SDL2/
+      7z x SDL2_image-devel-$SDL2_IMAGE_VERSION-VC.zip -oC:/SDL2/
       7z x SDL2_net-devel-$SDL2_NET_VERSION-VC.zip -oC:/SDL2/
 
       export SDL2DIR="C:/SDL2/SDL2-$SDL2_VERSION"
       export SDL2MIXERDIR="C:/SDL2/SDL2_mixer-$SDL2_MIXER_VERSION"
+      export SDL2IMAGEDIR="C:/SDL2/SDL2_image-$SDL2_IMAGE_VERSION"
       export SDL2NETDIR="C:/SDL2/SDL2_net-$SDL2_NET_VERSION"
     fi
 
