@@ -2242,7 +2242,7 @@ void game()
     int op[5], opcnt = 0, opcnt2 = 0;
     char match_level[50];
     char filename[50];
-    char text[10];
+    char text[30];
 
     for (a=0;a<MAX_PLAYERS;a++)
        player[a].tindex=a;
