@@ -19,7 +19,20 @@ extern void game();
 void save_options()
 {
     FILE *cfg;
-    cfg = fopen( "OPTIONS.CFG", "wb" );
+    std::string path;
+
+    if ( ensure_config_dir_exists() )
+    {
+        return;
+    }
+
+    path = config_path( "OPTIONS.CFG" );
+    cfg = fopen( path.c_str(), "wb" );
+    if ( !cfg )
+    {
+        return;
+    }
+
     fwrite( &keys1, sizeof( class Keys ), 1, cfg );
     fwrite( &keys2, sizeof( class Keys ), 1, cfg );
     fwrite( name1, sizeof( name1 ), 1, cfg );
@@ -40,8 +53,19 @@ void save_options()
 
 void load_options()
 {
-    FILE *cfg;
-    cfg = fopen( "OPTIONS.CFG", "rb" );
+    FILE *cfg = NULL;
+    std::string path;
+
+    // Try to read locally saved options
+    path = config_path( "OPTIONS.CFG" );
+    cfg = fopen( path.c_str(), "rb" );
+    if ( !cfg )
+    {
+        // Fall back to global default options
+        path = data_path( "OPTIONS.CFG" );
+        cfg = fopen( path.c_str(), "rb" );
+    }
+
     if ( cfg )
     {
         fread( &keys1, sizeof( class Keys ), 1, cfg );

@@ -4,13 +4,16 @@
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include <ERROR/ERROR.H>
-#include <INPUT/INPUT.H>
+#include <cctype>
+#include "ERROR/ERROR.H"
+#include "INPUT/INPUT.H"
+#include "MISCFUNC.H"
 
 
 void loadfonts( const char *name )
 {
-    const char *png_name = tk_port::replace_extension_with_png( name );
+    std::string path = data_path( name );
+    const char *png_name = tk_port::replace_extension_with_png( path.c_str() );
     tk_port::load_png_font( &thefonts[FONT_NUM], png_name );
 }
 

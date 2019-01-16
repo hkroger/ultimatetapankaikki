@@ -1,8 +1,11 @@
 #ifndef __TK__MISCFUNC__
 #define __TK__MISCFUNC__
 
+#include <string>
+#include <vector>
 #include <SDL.h>
 #include "INPUT/INPUT.H"
+#include "TYPES.H"
 
 void change_name( int num );
 char *k_2_c( const i::Input& input );
@@ -16,7 +19,11 @@ void two_to_one();
 void define_bullet_types();
 void define_effects();
 void explo( int x, int y, int size, int index);
-void list_files( int *no, vile *filelist, const char *wildcard, int type );
+std::string data_path( const std::string& pathname = "" );
+std::string config_path( const std::string& pathname = "" );
+std::string home_path( const std::string& pathname = "" );
+int ensure_config_dir_exists();
+void list_files( int *no, vile *filelist, const std::string& wildcard, int type );
 #define _A_SUBDIR 0
 #define _A_NORMAL 1
 #ifndef TK_PORT_MSVC

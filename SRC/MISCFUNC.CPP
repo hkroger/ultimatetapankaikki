@@ -14,14 +14,18 @@
 #include "MISCFUNC.H"
 
 #ifdef TK_PORT_POSIXISH
+#include <errno.h>
 #include <glob.h>
-#include <sys/stat.h>
 #include <libgen.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 #endif
 
 #ifdef TK_PORT_MSVC
 #include "MSVC/MISCFUNC_MSVC.H"
 #endif
+
+#include <CONFIG.H>
 
 bool filter_name_char( char c )
 {
@@ -557,11 +561,11 @@ void explo( int x, int y, int size, int index )
  * @param wildcard Wildcard pattern
  * @param type _A_SUBDIR or _A_NORMAL.
  */
-void list_files( int *no, vile *filelist, const char *wildcard, int type )
+void list_files( int *no, vile *filelist, const std::string& wildcard, int type )
 {
 #if defined(TK_PORT_POSIXISH)
     glob_t globp;
-    glob(wildcard, 0, NULL, &globp);
+    glob(wildcard.c_str(), 0, NULL, &globp);
     for (size_t i = 0; i < globp.gl_pathc; i++) {
         struct stat file_stat;
         char *file_path = globp.gl_pathv[i];
@@ -579,6 +583,68 @@ void list_files( int *no, vile *filelist, const char *wildcard, int type )
 #elif defined(TK_PORT_MSVC)
     return list_files_msvc( no, filelist, wildcard, type );
 #endif
+}
+
+std::string data_path( const std::string& pathname )
+{
+    std::string result = TK_DATADIR;
+    if ( pathname.size() )
+    {
+        result += "/" + pathname;
+    }
+    return result;
+}
+
+std::string config_path( const std::string& pathname )
+{
+    const char *XDG_DATA_HOME;
+    const char *HOME;
+    std::string result;
+
+    XDG_DATA_HOME = getenv( "XDG_DATA_HOME" );
+    HOME = getenv( "HOME" );
+
+    if ( XDG_DATA_HOME )
+    {
+        result += std::string(XDG_DATA_HOME) + "/ultimatetapankaikki";
+    }
+    else if ( HOME )
+    {
+        result += std::string(HOME) + "/.config/ultimatetapankaikki";
+    }
+
+    if ( pathname.size() )
+    {
+        result += "/" + pathname;
+    }
+
+    return result;
+}
+
+std::string home_path( const std::string& pathname )
+{
+    const char *HOME;
+    std::string result;
+
+    HOME = getenv("HOME");
+    if ( HOME )
+    {
+        result += HOME;
+    }
+
+    if ( pathname.size() )
+    {
+        result += "/" + pathname;
+    }
+
+    return result;
+}
+
+int ensure_config_dir_exists()
+{
+    int status = mkdir( config_path().c_str(),
+                        S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH );
+    return status != 0 && errno != EEXIST ? 1 : 0;
 }
 
 #ifndef TK_PORT_MSVC

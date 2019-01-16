@@ -1,6 +1,7 @@
 #ifndef __TK__MISCFUNC_MSVC__
 #define __TK__MISCFUNC_MSVC__
 
+#include <string>
 #include "TYPES.H"
 
 // windows.h and TK have define clashes so windows.h cannot be
@@ -8,6 +9,6 @@
 // was created to encapsulate the windows.h include to separate
 // source file.
 
-void list_files_msvc( int *no, vile *filelist, const char *wildcard, int type );
+void list_files_msvc( int *no, vile *filelist, const std::string& wildcard, int type );
 
 #endif

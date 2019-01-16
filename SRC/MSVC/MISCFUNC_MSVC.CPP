@@ -1,13 +1,13 @@
-#include "MISCFUNC_MSVC.h"
+#include "MISCFUNC_MSVC.H"
 #include "PORT.H"
 #include "MISCFUNC.h"
 
 #include "windows.h"
 
-void list_files_msvc( int *no, vile *filelist, const char *wildcard, int type )
+void list_files_msvc( int *no, vile *filelist, const std::string& wildcard, int type )
 {
     WIN32_FIND_DATA findData;
-    HANDLE handle = FindFirstFile( wildcard, &findData );
+    HANDLE handle = FindFirstFile( wildcard.c_str(), &findData );
 
     if ( handle != INVALID_HANDLE_VALUE )
     {

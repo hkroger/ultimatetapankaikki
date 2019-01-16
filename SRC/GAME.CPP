@@ -77,21 +77,6 @@ void make_floors()
     }
 }
 
-/*
-void load_tables()
-{
-    FILE *tab;
-    tab = fopen( "PALETTE.TAB", "rb" );
-    fread( trans_table, sizeof( trans_table ), 1, tab );
-    fread( shadow_table, sizeof( shadow_table ), 1, tab );
-    fread( &normal_l, sizeof( normal_l ), 1, tab );
-    fread( &red_l, sizeof( red_l ), 1, tab );
-    fread( &yellow_l, sizeof( yellow_l ), 1, tab );
-    fread( &explo_l, sizeof( explo_l ), 1, tab );
-    fclose( tab );
-}
-*/
-
 void alloc_net_mem()
 {
     int a;
@@ -130,7 +115,6 @@ void free_net_mem()
 void do_all()
 {
     int a;
-    char text[30];
     std::cout << "\n                ================== Starting TK =================\n\n";
     if ( tk_port::net::init()  )
     {
@@ -223,15 +207,15 @@ void do_all()
     make_floors();
     std::cout << "OK \n";
     load_options();std::cout << "Options loaded\n";
-    list_files( &dirs, dirlist, "LEVS/*", _A_SUBDIR );
+    list_files( &dirs, dirlist, data_path( "LEVS/*" ), _A_SUBDIR );
     std::cout << dirs << " episodes found\n";
-    list_files( &files_in_episode[0], filelist[0], "LEVS/*.LEV", _A_NORMAL );
+    list_files( &files_in_episode[0], filelist[0], data_path( "LEVS/*.LEV" ), _A_NORMAL );
     for ( a = 0; a < dirs && a < 256; a++ )
     {
-        strcpy( text, "LEVS/" );
-        strcat( text, dirlist[a].name );
-        strcat( text, "/*.LEV" );
-        list_files( &files_in_episode[a + 1], filelist[a + 1], text, _A_NORMAL );
+        std::string pattern = data_path( std::string( "LEVS/" ) +
+                                         dirlist[a].name +
+                                         "/*.LEV" );
+        list_files( &files_in_episode[a + 1], filelist[a + 1], pattern, _A_NORMAL );
     }
     define_bullet_types();
     define_effects();
@@ -578,7 +562,8 @@ void screen_capture()
         sprintf( text2, "%d", num );
         strcat( text1, text2 );
         strcat( text1, ".bmp" );
-        if ( ( sci = fopen( text1, "rb" )  )  == NULL ) free = 1;else fclose( sci );
+        std::string path = home_path( text1 );
+        if ( ( sci = fopen( path.c_str(), "rb" )  )  == NULL ) free = 1;else fclose( sci );
         num ++;
     }
     tk_port::save_screenshot( text1 );
