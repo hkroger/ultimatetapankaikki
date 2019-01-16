@@ -1,176 +1,32 @@
 #include "GLOBVAR.H"
+#include "PORT_TEXT.H"
+#include "PORT_IMAGE.H"
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
-#include <cctype>
 #include <ERROR/ERROR.H>
 #include <INPUT/INPUT.H>
 
-static int get_font_chr(char c)
-{
-    return tolower(c);
-}
-
-
-void pixeli( int x, int y, char col )
-{
-    virbuff[( y * 320 )  + x] = col;
-}
 
 void loadfonts( const char *name )
 {
-    FILE *fnt;
-    int a;
-    fnt = fopen( name, "rb" );
-    if ( !fnt ) error( "\nFile '%s' not found\n", name );
-    f_x_size[FONT_NUM] = fgetc( fnt );
-    f_y_size[FONT_NUM] = fgetc( fnt );
-    thefonts[FONT_NUM] = (char *) malloc( f_y_size[FONT_NUM] * f_x_size[FONT_NUM] * 256 );
-    fseek( fnt, 256 * 2, 0 );
-    for ( a = 0; a < f_x_size[FONT_NUM] * f_y_size[FONT_NUM] * 256; a++ )
-        thefonts[FONT_NUM][a] = (char) fgetc( fnt );
-    fclose( fnt );
+    const char *png_name = tk_port::replace_extension_with_png( name );
+    tk_port::load_png_font( &thefonts[FONT_NUM], png_name );
 }
 
 void writefonts( int x, int y, const char *str, int cq )
 {
-    int a, c, d, xpos1, xpos2, col, textcnt, fsize = f_x_size[FONT_NUM]*f_y_size[FONT_NUM];
-    int x1, x2, px, py;
-    textcnt = 0;
-    for ( a = 0; str[a]!= 0; a ++  )
-    {
-        int chr = get_font_chr(str[a]);
-        c = 0;
-        col = 0;
-        while ( col < 2 && c < f_x_size[FONT_NUM] )
-        {
-            // check from left
-            for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-                if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c)] > 1 ) col = 2;
-            if ( col < 2 ) c++;
-        }
-        xpos1 = c;
-        c = f_x_size[FONT_NUM];
-        col = 0;
-        while ( col < 2 && c > 0 )
-        {
-            // check from right
-            for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-                if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c - 1)] > 1 ) col = 2;
-            if ( col < 2 ) c--;
-        }
-        xpos2 = c;
-        if ( xpos1 > xpos2 )
-        {
-            xpos1 = 0;xpos2 = f_x_size[FONT_NUM] / 2;
-        }
-        x1 = xpos1 - 1;if ( x1 < 0 ) x1 = 0;
-        x2 = xpos2 + 1;if ( x2 > f_x_size[FONT_NUM] ) x2 = f_x_size[FONT_NUM];
-        for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-            for ( c = x1; c < x2; c++ )
-            {
-                px = (c - xpos1) + x + (textcnt);
-                py = d + y;
-                col = thefonts[FONT_NUM][chr * fsize + (d * f_x_size[FONT_NUM]) + c];
-                if ( px >= 0 && px < 320 && py >= 0 && py < scr_y_size && col != 0 )
-                {
-                    if ( cq != 0 && col != 1 ) pixeli( px, py, (char) (cq + d));
-                    else pixeli( px, py, 0 );
-                }
-            }
-        textcnt += xpos2 - xpos1 + 1;
-    }
-};
+    tk_port::draw_text( &thefonts[FONT_NUM], x, y, str, cq, tk_port::DrawGradientText );
+}
 
 void writefonts2( int x, int y, const char *str, int cq )
 {
-    int a, c, d, xpos1, xpos2, col, textcnt, fsize = f_x_size[FONT_NUM] * f_y_size[FONT_NUM];
-    textcnt = 0;
-    for ( a = 0; str[a] != 0; a++ )
-    {
-        int chr = get_font_chr(str[a]);
-        c = 0;
-        col = 0;
-        while (col == 0 && c < f_x_size[FONT_NUM])
-        {
-            // check from left
-            for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-                if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c)] != 0 ) col = 1;
-            if ( col == 0 ) c++;
-        }
-        xpos1 = c;
-        c = f_x_size[FONT_NUM];
-        col = 0;
-        while (col == 0 && c > 0)
-        {
-            // check from right
-            for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-                if ( thefonts[FONT_NUM][chr * fsize + d * f_x_size[FONT_NUM] + (c - 1)] != 0 ) col = 1;
-            if ( col == 0 ) c--;
-        }
-        xpos2 = c;
-        if ( xpos1 > xpos2 )
-        {
-            xpos1 = 0;
-            xpos2 = f_x_size[FONT_NUM] / 2;
-        }
-        for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-            for ( c = xpos1; c < xpos2; c++ )
-                if ( thefonts[FONT_NUM][chr * fsize + (d * f_x_size[FONT_NUM]) + c] != 0 )
-                {
-                    if ( cq != 0 )
-                    {
-                        pixeli((c - xpos1) + x + (textcnt), d + y,
-                               thefonts[FONT_NUM][chr * fsize + (d * f_x_size[FONT_NUM]) + c] );
-                    }
-                    else
-                    {
-                        pixeli((c - xpos1) + x + (textcnt), d + y, 0 );
-                    }
-                }
-        textcnt += xpos2 - xpos1 + 1;
-    }
-};
+    tk_port::draw_text( &thefonts[FONT_NUM], x, y, str, cq, tk_port::DrawBitmapText );
+}
 
 int str_length( const char *str )
 {
-    int length = 0;
-    int a, c, d, col, xpos1, xpos2;
-    for ( a = 0; str[a] != 0; a++ )
-    {
-        int chr = get_font_chr(str[a]);
-        c = 0;
-        col = 0;
-        while (col < 2 && c < f_x_size[FONT_NUM])
-        {
-            // check from left
-            for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-                if ( thefonts[FONT_NUM][chr * (f_x_size[FONT_NUM] * f_y_size[FONT_NUM]) + d * f_x_size[FONT_NUM] +
-                                        (c)] > 1 )
-                    col = 2;
-            if ( col < 2 ) c++;
-        };
-        xpos1 = c;
-        c = f_x_size[FONT_NUM];
-        col = 0;
-        while (col < 2 && c > 0)
-        {
-            // check from right
-            for ( d = 0; d < f_y_size[FONT_NUM]; d++ )
-                if ( thefonts[FONT_NUM][chr * (f_x_size[FONT_NUM] * f_y_size[FONT_NUM]) + d * f_x_size[FONT_NUM] +
-                                        (c - 1)] > 1 )
-                    col = 2;
-            if ( col < 2 ) c--;
-        };
-        xpos2 = c;
-        if ( xpos1 > xpos2 )
-        {
-            xpos1 = 0;
-            xpos2 = f_x_size[FONT_NUM] / 2;
-        }
-        length += xpos2 - xpos1 + 1;
-    }
-    return (length);
+    return tk_port::draw_text( &thefonts[FONT_NUM], 0, 0, str, 0, tk_port::DoNotDrawText );
 }
 
 void readline( int x, int y, int len, char *str, char *screen, bool (*filter_char)( char ))
@@ -178,19 +34,20 @@ void readline( int x, int y, int len, char *str, char *screen, bool (*filter_cha
     int done = 0, a, dy;
     char *bg;
     i::Input input;
-    bg = (char *) malloc( 320 * f_y_size[FONT_NUM] );
-    memcpy( bg, screen + x + (y * 320), 320 * f_y_size[FONT_NUM] );
+    tk_port::Font *f = &thefonts[FONT_NUM];
+    bg = (char *) malloc( 320 * f->glyph_height );
+    memcpy( bg, screen + x + (y * 320), 320 * f->glyph_height );
     while (!done)
     {
         writefonts2( x, y, str, 1 );
-        for ( dy = 0; dy < f_y_size[FONT_NUM]; dy++ )
-            memcpy( screen + x + ((dy + y) * 320), virbuff + x + ((dy + y) * 320), len * f_x_size[FONT_NUM] );
+        for ( dy = 0; dy < f->glyph_height; dy++ )
+            memcpy( screen + x + ((dy + y) * 320), virbuff + x + ((dy + y) * 320), len * f->glyph_width );
         input = i::wait_for_keypress();
         if ( input != k::ESC && input != k::BACKSPACE && input != k::ENTER && input.get_type() == i::Input::Keyboard )
-            if ( (int)strlen( str ) < (len - 1))
+            if ((int) strlen( str ) < (len - 1))
             {
                 char key = k::scancode_to_char( input.scancode );
-                if ( filter_char( key ) )
+                if ( filter_char( key ))
                 {
                     str[strlen( str ) + 1] = 0;
                     str[strlen( str )] = key;
@@ -210,8 +67,8 @@ void readline( int x, int y, int len, char *str, char *screen, bool (*filter_cha
             if ( strlen( str ) > 0 )
                 str[strlen( str ) - 1] = 0;
             a = str_length( str ) + x;
-            for ( dy = 0; dy < f_y_size[FONT_NUM]; dy++ )
-                memcpy( virbuff + a + ((dy + y) * 320), bg + (dy * 320) + str_length( str ), f_x_size[FONT_NUM] );
+            for ( dy = 0; dy < f->glyph_height; dy++ )
+                memcpy( virbuff + a + ((dy + y) * 320), bg + (dy * 320) + str_length( str ), f->glyph_width );
         }
     }
 }

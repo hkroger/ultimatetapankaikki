@@ -12,10 +12,10 @@ namespace tk_port
  * The return value is a static buffer, so the caller does not need
  * to bother with memory management.  This function is not reentrant.
  *
- * @param name Path to (probably) an EFP name
+ * @param name Path to (probably) an EFP/FNT name
  * @return PNG path
  */
-static char *replace_extension_with_png( const char *name )
+char *replace_extension_with_png( const char *name )
 {
     static char png_name[80];
     strncpy( png_name, name, 80 );
@@ -37,9 +37,11 @@ static char *replace_extension_with_png( const char *name )
  * @param paletti Optional pointer to a 768-byte char array to receive the palette data.
  *                The PNG's palette, ranging from 0..255 is rescaled down to 0..63 to match
  *                VGA hardware and other assumptions in the code.
+ * @param width Optional pointer to hold the width of the image.
+ * @param height Optional pointer to hold the width of the image.
  * @return True if the load succeeded, False if not.
  */
-bool load_png( const char *png_name, char *kuva, char *paletti )
+bool load_png( const char *png_name, char *kuva, char *paletti, int *width, int *height )
 {
     SDL_RWops *rwop = SDL_RWFromFile( png_name, "rb" );
     if ( !rwop )
@@ -61,6 +63,16 @@ bool load_png( const char *png_name, char *kuva, char *paletti )
         SDL_FreeSurface( image );
         error( "load_png(%s): image not palettized", png_name );
         return false;
+    }
+
+    if ( width != nullptr )
+    {  // Interested in width?
+        *width = image->w;
+    }
+
+    if ( height != nullptr )
+    {  // Interested in height?
+        *height = image->h;
     }
 
     if ( kuva != nullptr )  // Interested in image data?
@@ -101,7 +113,7 @@ bool load_png( const char *png_name, char *kuva, char *paletti )
 bool load_efp_replacement_png( const char *efp_name, char *kuva, char *paletti )
 {
     const char *png_name = replace_extension_with_png( efp_name );
-    return load_png( png_name, kuva, paletti );
+    return load_png( png_name, kuva, paletti, nullptr, nullptr );
 }
 
 }

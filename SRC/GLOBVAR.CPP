@@ -5,6 +5,7 @@
 #include <ctime>
 #include "INPUT/KEYB.H"
 #include "SOUND.H"
+#include "PORT_TEXT.H"
 
 int BACK_TO_MENU = 0;
 int scr_y_size = 200;
@@ -118,8 +119,7 @@ Effect_type effect_type[10];
 char *screen = NULL;
 char virbuff[320*240];
 float sini[360], cosi[360];
-char *thefonts[10];
-int f_x_size[10], f_y_size[10];
+tk_port::Font thefonts[10];
 int FONT_NUM;
 Keys keys1, keys2;
 Message_board message_board;

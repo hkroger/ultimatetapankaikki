@@ -8,6 +8,7 @@
 #include "TYPES.H"
 #include "CLASSES.H"
 #include "SOUND.H"
+#include "PORT_TEXT.H"
 
 extern int saved_game_mode;
 extern int saved_killing_mode;
@@ -49,8 +50,7 @@ extern Effect_type effect_type[10];
 extern char *screen;
 extern char virbuff[];
 extern float sini[], cosi[];
-extern char *thefonts[10];
-extern int f_x_size[10], f_y_size[10];
+extern tk_port::Font thefonts[10];
 extern int FONT_NUM;
 extern Keys keys1, keys2;
 extern Message_board message_board;
