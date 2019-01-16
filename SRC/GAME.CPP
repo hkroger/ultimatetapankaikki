@@ -6,7 +6,7 @@
 #include <ctime>
 #include <iostream>
 
-#include "KEYB.H"
+#include "INPUT/KEYB.H"
 #include "GRAPHICS.H"
 #include "DEFINES.H"
 #include "ERROR/ERROR.H"
@@ -15,8 +15,7 @@
 
 /*************************NET STUFF **************************************/
 #include "NET/NET.H"
-
-#include "NETDEFS.H"
+#include "NET/NETDEFS.H"
 
 int ipxofs[MAX_PLAYERS];
 char ipxstream[MAX_PLAYERS][MAXDATASIZE];

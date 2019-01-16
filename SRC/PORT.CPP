@@ -7,7 +7,7 @@
 #include "PORT.H"
 #include "GLOBVAR.H"
 #include "ERROR/ERROR.H"
-#include "CONTROLLERS.H"
+#include "INPUT/CONTROLLERS.H"
 
 extern int scr_y_size;
 

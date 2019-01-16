@@ -2,9 +2,9 @@
 #define __TK__GLOBVAR__
 #include <time.h>
 #include "PORT.H"
-#include "KEYB.H"
+#include "INPUT/KEYB.H"
 #include "DEFINES.H"
-#include "NETDEFS.H"
+#include "NET/NETDEFS.H"
 #include "TYPES.H"
 #include "CLASSES.H"
 #include "SOUND.H"

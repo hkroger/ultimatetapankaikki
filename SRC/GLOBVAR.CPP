@@ -1,9 +1,9 @@
 #include "DEFINES.H"
-#include "NETDEFS.H"
+#include "NET/NETDEFS.H"
 #include "TYPES.H"
 #include "CLASSES.H"
 #include <ctime>
-#include "KEYB.H"
+#include "INPUT/KEYB.H"
 #include "SOUND.H"
 
 int BACK_TO_MENU = 0;

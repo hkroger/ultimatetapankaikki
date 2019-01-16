@@ -4,7 +4,7 @@
 #include "DEFINES.H"
 #include "TYPES.H"
 #include "NET/NET.H"
-#include "INPUT.H"
+#include "INPUT/INPUT.H"
 
 class Crate_info
 {

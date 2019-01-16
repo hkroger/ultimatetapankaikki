@@ -4,7 +4,7 @@
 #include <cstring>
 #include <cctype>
 #include <ERROR/ERROR.H>
-#include <INPUT.H>
+#include <INPUT/INPUT.H>
 
 static int get_font_chr(char c)
 {

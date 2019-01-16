@@ -3,7 +3,7 @@
 #include <cstring>
 #include <cctype>
 #include <ctime>  // must be included before local headers due to clock() shenanigans
-#include "KEYB.H"
+#include "INPUT/KEYB.H"
 #include "EFP/EFP.H"
 #include "DRAW.H"
 #include "GLOBVAR.H"

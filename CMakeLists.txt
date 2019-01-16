@@ -25,7 +25,12 @@ else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -funsigned-char -Wall -Wno-pedantic -Wno-sign-compare")
 endif()
 
-file(GLOB SOURCES SRC/*.H SRC/*.CPP SRC/EFP/*.H SRC/EFP/*.CPP SRC/ERROR/*.H SRC/ERROR/*.CPP SRC/NET/*.H SRC/NET/*.CPP)
+file(GLOB SOURCES
+	SRC/*.H SRC/*.CPP
+	SRC/EFP/*.H SRC/EFP/*.CPP
+	SRC/ERROR/*.H SRC/ERROR/*.CPP
+	SRC/NET/*.H SRC/NET/*.CPP
+	SRC/INPUT/*.H SRC/INPUT/*.CPP)
 
 if (WIN32)
 	file(GLOB MSVC_SOURCES SRC/MSVC/*.H SRC/MSVC/*.CPP)

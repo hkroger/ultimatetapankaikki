@@ -2,7 +2,7 @@
 #define __TK__MISCFUNC__
 
 #include <SDL.h>
-#include "INPUT.H"
+#include "INPUT/INPUT.H"
 
 void change_name( int num );
 char *k_2_c( const i::Input& input );
