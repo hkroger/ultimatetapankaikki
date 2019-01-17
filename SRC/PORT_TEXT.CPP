@@ -49,16 +49,16 @@ void load_png_font( Font *font, const char *png_name )
         {
             error( "\nloading font %s: unable to allocate memory for glyph %d\n", png_name, glyph_index );
         }
-        for ( int y = 0; y < glyph_h; y++ )
+        for ( unsigned int y = 0; y < glyph_h; y++ )
         {
             unsigned int src_off = (grid_y * (glyph_h + 1) + y) * img_width + (grid_x * (glyph_w + 1));
             memcpy( glyph_data + y * glyph_w, buf + src_off, glyph_w );
         }
         bool empty = true;
         int left1 = glyph_w, right1 = 0;
-        for ( int x = 0; x < glyph_w; x++ )
+        for ( int x = 0; x < (int) glyph_w; x++ )
         {
-            for ( unsigned int y = 0; y < glyph_h; y++ )
+            for ( int y = 0; y < (int) glyph_h; y++ )
             {
                 int ix = glyph_w - 1 - x;
                 uint8_t *scanline = glyph_data + y * glyph_w;
@@ -136,8 +136,8 @@ int draw_text( Font *font, int x0, int y0, const char *str, int cq, TextDrawMode
             int x1 = xpos1 - 1;
             if ( x1 < 0 ) x1 = 0;
             int x2 = xpos2 + 2;
-            if ( x2 > font->glyph_width ) x2 = font->glyph_width;
-            for ( int y = 0; y < font->glyph_height; y++ )
+            if ( x2 > (int) font->glyph_width ) x2 = font->glyph_width;
+            for ( unsigned int y = 0; y < font->glyph_height; y++ )
             {
                 int py = y + y0;
                 if ( py >= scr_y_size ) break;  // nothing to draw beyond this point

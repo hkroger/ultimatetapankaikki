@@ -16,7 +16,7 @@ struct _MIDASsample {
 
     // Last resampled audio
     Mix_Chunk *mix_chunk;
-    int mix_rate;
+    unsigned int mix_rate;
 };
 
 struct _MIDASmodule {

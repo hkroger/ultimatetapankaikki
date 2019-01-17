@@ -562,7 +562,7 @@ void list_files( int *no, vile *filelist, const char *wildcard, int type )
 #if defined(TK_PORT_POSIXISH)
     glob_t globp;
     glob(wildcard, 0, NULL, &globp);
-    for (int i = 0; i < globp.gl_pathc; i++) {
+    for (size_t i = 0; i < globp.gl_pathc; i++) {
         struct stat file_stat;
         char *file_path = globp.gl_pathv[i];
         if (stat(file_path, &file_stat) == 0) {

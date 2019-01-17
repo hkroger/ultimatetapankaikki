@@ -40,7 +40,7 @@ void readline( int x, int y, int len, char *str, char *screen, bool (*filter_cha
     while (!done)
     {
         writefonts2( x, y, str, 1 );
-        for ( dy = 0; dy < f->glyph_height; dy++ )
+        for ( dy = 0; dy < (int)f->glyph_height; dy++ )
             memcpy( screen + x + ((dy + y) * 320), virbuff + x + ((dy + y) * 320), len * f->glyph_width );
         input = i::wait_for_keypress();
         if ( input != k::ESC && input != k::BACKSPACE && input != k::ENTER && input.get_type() == i::Input::Keyboard )
@@ -67,7 +67,7 @@ void readline( int x, int y, int len, char *str, char *screen, bool (*filter_cha
             if ( strlen( str ) > 0 )
                 str[strlen( str ) - 1] = 0;
             a = str_length( str ) + x;
-            for ( dy = 0; dy < f->glyph_height; dy++ )
+            for ( dy = 0; dy < (int)f->glyph_height; dy++ )
                 memcpy( virbuff + a + ((dy + y) * 320), bg + (dy * 320) + str_length( str ), f->glyph_width );
         }
     }

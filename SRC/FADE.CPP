@@ -30,7 +30,7 @@ void Draw_Phase( int phase, char *image, char *pal )
 void fadein( char *image, char *pal )
 {
     unsigned int alku;
-    int old_c = 0;
+    unsigned int old_c = 0;
     setpal( pal, 0 );
     alku = framecount;
     while( alku + ( 256 / FADE_SPEED )  > framecount )
@@ -48,7 +48,7 @@ void fadein( char *image, char *pal )
 void fadeout( char *image, char *pal )
 {
     unsigned int alku;
-    int old_c;
+    unsigned int old_c;
     alku = old_c = framecount;
     while( alku + ( 256 / FADE_SPEED )  > framecount )
     {

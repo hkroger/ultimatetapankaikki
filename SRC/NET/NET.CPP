@@ -320,7 +320,7 @@ void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len)
             auto& socket = sockets[i];
             if (socket != nullptr)
             {
-                if (SDLNet_TCP_Send(socket, packet.data(), (int)packet.size()) != packet.size())
+                if ((size_t) SDLNet_TCP_Send( socket, packet.data(), (int) packet.size()) != packet.size())
                 {
                     disconnect(i);
                 }
@@ -329,7 +329,7 @@ void sendpacket(struct nodeaddr destnode, struct packet *packetet, word len)
     }
     else if (sockets[destnode.node] != nullptr)
     {
-        if (SDLNet_TCP_Send(sockets[destnode.node], packet.data(), (int)packet.size()) != packet.size())
+        if ((size_t) SDLNet_TCP_Send( sockets[destnode.node], packet.data(), (int) packet.size()) != packet.size())
         {
             disconnect(destnode.node);
         }
