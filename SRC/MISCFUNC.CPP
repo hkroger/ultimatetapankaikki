@@ -10,6 +10,7 @@
 #include "FADE.H"
 #include "WRITE.H"
 #include "NEWFUNCS.H"
+#include "PORT.H"
 #include "ROUT.H"
 #include "MISCFUNC.H"
 
@@ -585,6 +586,34 @@ void list_files( int *no, vile *filelist, const std::string& wildcard, int type 
 #endif
 }
 
+#ifdef TK_PORT_MSVC
+// On Windows, use current working directory to read/write all files
+
+static std::string dummy_path( const std::string& pathname )
+{
+    return pathname.size() ? pathname : ".";
+}
+
+std::string data_path( const std::string& pathname )
+{
+    return dummy_path( pathname );
+}
+
+std::string config_path( const std::string& pathname )
+{
+    return dummy_path( pathname );
+}
+
+std::string home_path( const std::string& pathname )
+{
+    return dummy_path( pathname );
+}
+
+int ensure_config_dir_exists()
+{
+    return 0;
+}
+#else
 std::string data_path( const std::string& pathname )
 {
     std::string result = TK_DATADIR;
@@ -646,6 +675,7 @@ int ensure_config_dir_exists()
                         S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH );
     return status != 0 && errno != EEXIST ? 1 : 0;
 }
+#endif
 
 #ifndef TK_PORT_MSVC
 // windows.h has these already

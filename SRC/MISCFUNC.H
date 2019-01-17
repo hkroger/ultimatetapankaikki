@@ -5,6 +5,8 @@
 #include <vector>
 #include <SDL.h>
 #include "INPUT/INPUT.H"
+#include "PORT.H"
+
 #include "TYPES.H"
 
 void change_name( int num );
