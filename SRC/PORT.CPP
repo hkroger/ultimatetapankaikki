@@ -138,7 +138,7 @@ inline void refresh_rendering()
 int init_graphics()
 {
     window = SDL_CreateWindow(
-        "TK",
+        "Ultimate Tapan Kaikki",
         SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
         320 * TK_PORT_GRAPHICS_SCALE,
         240 * TK_PORT_GRAPHICS_SCALE,
