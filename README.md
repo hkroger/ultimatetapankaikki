@@ -108,7 +108,7 @@ Changes required to port the game:
 
 - Networking is now based on TCP/IP, originally it used IPX. When
   joining a network game, there's a new screen that allows typing the
-  server address.
+  server address. Port is 8099.
 
 - In-game screenshots are saved in BMP format as opposed to original
   PCX format.
