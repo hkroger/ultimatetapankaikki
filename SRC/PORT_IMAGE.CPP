@@ -7,7 +7,7 @@
 namespace tk_port
 {
 /**
- * Replace the extension in the path `name` with `.png`.
+ * Replace the extension in the path `name` with `.PNG`.
  *
  * The return value is a static buffer, so the caller does not need
  * to bother with memory management.  This function is not reentrant.
@@ -22,9 +22,9 @@ char *replace_extension_with_png( const char *name )
     size_t len = strlen( png_name );
     if ( len >= 3 )
     {
-        png_name[len - 3] = 'p';
-        png_name[len - 2] = 'n';
-        png_name[len - 1] = 'g';
+        png_name[len - 3] = 'P';
+        png_name[len - 2] = 'N';
+        png_name[len - 1] = 'G';
     }
     return png_name;
 }

@@ -55,7 +55,7 @@ def main():
         with open(filename, 'rb') as infp:
             print(filename, end=' ')
             img = read_fnt(infp, palette=palette)
-        out_filename = os.path.splitext(filename)[0] + '.png'
+        out_filename = os.path.splitext(filename)[0] + '.PNG'
         print('->', out_filename)
         img.save(out_filename)
 
