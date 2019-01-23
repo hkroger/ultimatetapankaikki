@@ -124,6 +124,10 @@ New features:
 - Setting the environment variable `TK_MUTE_MUSIC` mutes all music.
   Useful if you like your Tapan Kaikki with your favorite mixtape.
 
+- You can use the `-e` command line parameter to immediately jump
+  into single-player game in the given episode.  This works with
+  the `-l` switch too.  Mostly useful for development, of course.
+
 Bugfixes:
 
 - Many memory leaks and buffer overflows have been fixed.

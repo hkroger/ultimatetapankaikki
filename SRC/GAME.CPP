@@ -2664,6 +2664,10 @@ static void parse_cmdline( int argc, char *argv[], int *pause )
                     b = atoi( argv[++a] );
                     if ( b > 0 ) START_LEVEL = b - 1;
                     break;
+                case 'E':
+                    b = atoi( argv[++a] );
+                    if ( b > 0 ) episode = b - 1;
+                    break;
                 case 'P':
                     *pause = 1;
                     break;
@@ -2681,6 +2685,7 @@ static void parse_cmdline( int argc, char *argv[], int *pause )
                     std::cout << "-p    pause at startup" << std::endl;
                     std::cout << "-m    show enemies on map" << std::endl;
                     std::cout << "-l ## start at level ##" << std::endl;
+                    std::cout << "-e ## immediately start single-player episode ##" << std::endl;
                     std::cout << "-f ## set gamespeed to ## fps (def. 40)" << std::endl;
                     std::cout << std::endl;
                     exit( 1 );
@@ -2692,6 +2697,7 @@ static void parse_cmdline( int argc, char *argv[], int *pause )
 int main( int argc, char *argv[] )
 {
     int pause = 0;
+    episode = INVALID_EPISODE;
     parse_cmdline(argc, argv, &pause);
     if(tk_port::init() != 0) {
         return 1;
@@ -2700,9 +2706,15 @@ int main( int argc, char *argv[] )
     do_all();
     i::clear_stack();
     if ( pause ) i::wait_for_keypress();
-    logo();
-    menu();
-    if ( ph ) MIDASstopModule( ph );
+    if(episode != INVALID_EPISODE) {  // set by parse_cmdline()
+        GAME_MODE = ONE_PLAYER;
+        KILLING_MODE = COOPERATIVE;
+        game();
+    } else {
+        logo();
+        menu();
+        if ( ph ) MIDASstopModule( ph );
+    }
     free_all();
     tk_port::deinit();
 //  credits();
