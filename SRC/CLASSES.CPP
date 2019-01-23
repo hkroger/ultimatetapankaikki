@@ -404,17 +404,30 @@ void Player::change_weapon()
     load_cnt = 0;
 }
 
+// same behavior for Player and Enemy, but not going to bother giving them
+// a common superclass right now.
+static bool check_and_place_footprint(int footx, int footy) {
+    BLOCK *b = get_block_at_coord( footx, footy );
+    if ( b == nullptr || b->type != FLOOR )  // out of bounds, or wall
+    {
+        return false;
+    }
+    for ( int a = 0; a < DUST_BLOCKS; a++ )
+    {
+        if ( b->num == dust_blocks[a] )
+        {
+            new_effect( 0, FOOTPRINT, footx, footy, 0, 0 );
+            return true;
+        }
+    }
+    return false;
+}
+
 void Player::footprint( int side )
 {
-    int a, do_it = 0, footx, footy, footoffs;
-    footx = x + 15 + ( sini[( rangle2 + 90 + ( side*180 )  )  % 360]*4 );
-    footy = y + 15 + ( cosi[( rangle2 + 90 + ( side*180 )  )  % 360]*4 );
-    footoffs = ( footy / 20 ) *level_x_size + ( footx / 20 );
-    if ( level[footoffs].type == FLOOR )
-    for ( a = 0; a < DUST_BLOCKS &&do_it == 0; a ++  )
-    if ( level[footoffs].num == dust_blocks[a] ) do_it = 1;
-    if ( do_it )
-    new_effect( 0, FOOTPRINT, footx, footy, 0, 0 );
+    int footx = x + 15 + ( sini[( rangle2 + 90 + ( side*180 )  )  % 360]*4 );
+    int footy = y + 15 + ( cosi[( rangle2 + 90 + ( side*180 )  )  % 360]*4 );
+    check_and_place_footprint(footx, footy);
 }
 
 void Player::move( int angle, float spd, int index )
@@ -747,15 +760,9 @@ void Enemy::try_see_players()
 
 void Enemy::footprint( int side )
 {
-    int a, do_it = 0, footx, footy, footoffs;
-    footx = x + 15 + ( sini[( angle + 90 + ( side*180 )  )  % 360]*4 );
-    footy = y + 15 + ( cosi[( angle + 90 + ( side*180 )  )  % 360]*4 );
-    footoffs = ( footy / 20 ) *level_x_size + ( footx / 20 );
-    if ( level[footoffs].type == FLOOR )
-    for ( a = 0; a < DUST_BLOCKS &&do_it == 0; a ++  )
-    if ( level[footoffs].num == dust_blocks[a] ) do_it = 1;
-    if ( do_it )
-    new_effect( 0, FOOTPRINT, footx, footy, 0, 0 );
+    int footx = x + 15 + ( sini[( angle + 90 + ( side*180 )  )  % 360]*4 );
+    int footy = y + 15 + ( cosi[( angle + 90 + ( side*180 )  )  % 360]*4 );
+    check_and_place_footprint(footx, footy);
 }
 
 void Enemy::move( int angle, int spd )
