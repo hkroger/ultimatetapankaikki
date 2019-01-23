@@ -2,7 +2,6 @@
 #define __TK__MISCFUNC__
 
 #include <string>
-#include <vector>
 #include <SDL.h>
 #include "INPUT/INPUT.H"
 #include "PORT.H"
