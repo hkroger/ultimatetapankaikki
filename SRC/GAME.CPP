@@ -36,6 +36,7 @@ struct packet *snd, *rec[RECEIVERS];
 #include "OPTIONS.H"
 #include "I_FUNCS.H" // paska funkkareita
 #include "MAKET_IN.H"
+#include "PORT_LEVEL.H"
 
 void menu_biisi()
 {
@@ -247,16 +248,11 @@ void free_all()
 int check_place( int x, int y, int size )
 {
     int a, ret = 0;
+    if ( get_block_type_at_coord( x, y ) != FLOOR ) return 1;
+    if ( get_block_type_at_coord( x + size, y ) != FLOOR ) return 1;
+    if ( get_block_type_at_coord( x, y + size ) != FLOOR ) return 1;
+    if ( get_block_type_at_coord( x + size, y + size ) != FLOOR ) return 1;
 
-    // Check that the object fits to level vertically...
-    if ( ( ( y + size ) / 20 ) >= level_y_size ) return 1;
-    // ... and horizontally
-    if ( ( ( x + size ) / 20 ) >= level_x_size ) return 1;
-
-    if ( level[( y / 20 ) *level_x_size + ( x / 20 ) ].type!= FLOOR ) ret = 1;
-    if ( level[( ( y + size )  / 20 ) *level_x_size + ( x / 20 ) ].type!= FLOOR ) ret = 1;
-    if ( level[( y / 20 ) *level_x_size + ( ( x + size )  / 20 ) ].type!= FLOOR ) ret = 1;
-    if ( level[( ( y + size )  / 20 ) *level_x_size + ( ( x + size )  / 20 ) ].type!= FLOOR ) ret = 1;
     for ( a = 0; a < ACTIVE_PLAYERS; a ++ )
         if ( get_dist( x, y, aplayer[a]->x, aplayer[a]->y ) < 50 ) ret = 1;
     return (ret);
@@ -265,29 +261,31 @@ int check_place( int x, int y, int size )
 void place_enemies()
 
 {
-    int a, done, nx = 0, ny = 0, b, c;
-    for ( a = 0; a < ENEMIES; a ++  )
+    for ( int a = 0; a < ENEMIES; a ++  )
     {
-        done = 0;
+        int tile_x = 0, tile_y = 0;
+        int done = 0;
         while ( done == 0 )
         {
-            nx = ( rand()  % ( level_x_size - 2 )  )  + 1;
-            ny = ( rand()  % ( level_y_size - 2 )  )  + 1;
-            if ( level[ny*level_x_size + nx].type == FLOOR )
+            tile_x = ( rand()  % ( level_x_size - 2 )  )  + 1;
+            tile_y = ( rand()  % ( level_y_size - 2 )  )  + 1;
+            if ( get_block_type_at_coord(tile_x * 20, tile_y * 20) == FLOOR )
             {
                 done = 1;
                 if ( a > 0 )
-                    for ( b = 0; b < a; b++ )
-                        if ( nx == enemy[b].x && ny == enemy[b].y ) done = 0;
-                for ( c = 0; c < ACTIVE_PLAYERS && done == 1; c++ )
-                    if ( get_dist( nx, ny, pl_start_x[c], pl_start_y[c] ) < 8 ) done = 0;
+                    for ( int b = 0; b < a; b++ )
+                        if ( tile_x == enemy[b].x && tile_y == enemy[b].y ) done = 0;
+                for ( int c = 0; c < ACTIVE_PLAYERS && done == 1; c++ )
+                    if ( get_dist( tile_x, tile_y, pl_start_x[c], pl_start_y[c] ) < 8 ) done = 0;
             }
         }
-        enemy[a].x = nx;
-        enemy[a].y = ny;
+        enemy[a].x = tile_x;
+        enemy[a].y = tile_y;
     }
-    for ( a = 0; a < ENEMIES; a ++  )
+
+    for ( int a = 0; a < ENEMIES; a ++  )
     {
+        // convert tile coordinates into pixel coordinates
         enemy[a].x = ( ( enemy[a].x*20 )  - 5 );
         enemy[a].y = ( ( enemy[a].y*20 )  - 5 );
         enemy[a].angle = rand()  % 360;

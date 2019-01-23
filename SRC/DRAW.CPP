@@ -7,8 +7,9 @@
 #include "GLOBVAR.H"
 #include "CLASSES.H"
 #include "WRITE.H"
+#include "PORT_LEVEL.H"
 
- // 20 x 20
+// 20 x 20
 void draw_block( int x, int y, int type, int num, int mode )
 {
     int a, offs;
@@ -905,7 +906,7 @@ void draw_targets()
             x += sini[aplayer[0]->rangle2];
             y += cosi[aplayer[0]->rangle2];
         }
-        if ( a == dist ||level[( int ) ( y / 20 ) *level_x_size + ( int ) ( x / 20 ) ].type == WALLS ) draw_target( x - 3 - aplayer[0]->scr_x, y - 3 - aplayer[0]->scr_y, 0 );
+        if ( a == dist || get_block_type_at_coord(x, y) == WALLS ) draw_target( x - 3 - aplayer[0]->scr_x, y - 3 - aplayer[0]->scr_y, 0 );
     }
     if ( GAME_MODE == SPLIT_SCREEN )
     {
@@ -923,7 +924,7 @@ void draw_targets()
                 x += sini[aplayer[0]->rangle2];
                 y += cosi[aplayer[0]->rangle2];
             }
-            if ( a == dist ||level[( int ) ( y / 20 ) *level_x_size + ( int ) ( x / 20 ) ].type == WALLS ) draw_target( x - 3 - aplayer[0]->scr_x, y - 3 - aplayer[0]->scr_y, 1 );
+            if ( a == dist || get_block_type_at_coord(x, y) == WALLS ) draw_target( x - 3 - aplayer[0]->scr_x, y - 3 - aplayer[0]->scr_y, 1 );
         }
         if ( !aplayer[1]->DEAD )
         if ( weapon[aplayer[1]->curr_weapon].gun )
@@ -939,7 +940,7 @@ void draw_targets()
                 x += sini[aplayer[1]->rangle2];
                 y += cosi[aplayer[1]->rangle2];
             }
-            if ( a == dist ||level[( int ) ( y / 20 ) *level_x_size + ( int ) ( x / 20 ) ].type == WALLS ) draw_target( x - 3 - aplayer[1]->scr_x + 160, y - 3 - aplayer[1]->scr_y, 2 );
+            if ( a == dist || get_block_type_at_coord(x, y) == WALLS ) draw_target( x - 3 - aplayer[1]->scr_x + 160, y - 3 - aplayer[1]->scr_y, 2 );
         }
     }
 }

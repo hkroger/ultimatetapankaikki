@@ -20,6 +20,7 @@
 #define INCENDIARY 2
 #define FLOOR 0 // blockki tyyppejä
 #define WALLS 1
+#define OUTOFBOUNDS 0xFF
 #define MAX_ENEMIES 100  // max amount of enemies in game
 #define MAX_BODY_PARTS 300 // max amount of bodyparts in game
 #define MAX_EFFECTS 300  // max amount of effects in game

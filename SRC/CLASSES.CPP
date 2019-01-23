@@ -14,6 +14,7 @@
 #include "DRAW.H"
 #include "EFP/EFP.H"
 #include "FADE.H"
+#include "PORT_LEVEL.H"
 
 int ktexts=8;
 char killtexts[][MAX_MESSAGE_LENGTH-20]=
@@ -132,10 +133,10 @@ void Player::random_place()
         ret = 0;
         x = rand()  % level_x_size*20;
         y = rand()  % level_y_size*20;
-        if ( level[( int ) ( ( y / 20 ) *level_x_size + ( x / 20 )  ) ].type!= FLOOR ) ret = 1;
-        if ( level[( int ) ( ( ( y + size )  / 20 ) *level_x_size + ( x / 20 )  ) ].type!= FLOOR ) ret = 1;
-        if ( level[( int ) ( ( y / 20 ) *level_x_size + ( ( x + size )  / 20 )  ) ].type!= FLOOR ) ret = 1;
-        if ( level[( int ) ( ( ( y + size )  / 20 ) *level_x_size + ( ( x + size )  / 20 )  ) ].type!= FLOOR ) ret = 1;
+        if ( get_block_type_at_coord( x, y ) != FLOOR ) ret = 1;
+        if ( get_block_type_at_coord( x, y + size ) != FLOOR ) ret = 1;
+        if ( get_block_type_at_coord( x + size, y ) != FLOOR ) ret = 1;
+        if ( get_block_type_at_coord( x + size, y + size ) != FLOOR ) ret = 1;
         if ( ENEMIES_ON_GAME )
             for ( a = 0; a < ENEMIES && ret == 0; a++ )
                 if ( !enemy[a].DEAD )
@@ -388,7 +389,7 @@ void Effect::roll()
         {
             x += speed * sini[angle];
             y += speed * cosi[angle];
-            if ( level[(int) (y / 20) * level_x_size + (int) (x / 20)].type != FLOOR ) IN_USE = 0;
+            if ( get_block_type_at_coord(x, y) != FLOOR ) IN_USE = 0;
         }
         if ( IN_USE == 0 && type->index == BLOOD ) new_effect( 0, BLOOD2, x, y, 0, 0 );
     }
@@ -709,7 +710,7 @@ void Enemy::try_see_players()
         {
             rx = 14 + x + ( a*5*sini[angle_pl[b]] );
             ry = 14 + y + ( a*5*cosi[angle_pl[b]] );
-            if ( level[( ry / 20 ) *level_x_size + ( rx / 20 ) ].type!= FLOOR ) hit = 1;
+            if ( get_block_type_at_coord(rx, ry) != FLOOR ) hit = 1;
             if ( rx > player[b].x + 5 )
             if ( rx < player[b].x + 25 )
             if ( ry > player[b].y + 5 )
@@ -1026,7 +1027,7 @@ void Bullet::move()
         rx = x;
         ry = y;
         if ( type-> speed > 0 )
-        if ( level[ ( ry / 20 ) *level_x_size + ( rx / 20 ) ].type!= FLOOR )
+        if ( get_block_type_at_coord(rx, ry) != FLOOR )
         {
             kosh = 1;
         }
