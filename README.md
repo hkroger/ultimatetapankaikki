@@ -121,6 +121,9 @@ New features:
 
 - Game controller support.
 
+- Setting the environment variable `TK_MUTE_MUSIC` mutes all music.
+  Useful if you like your Tapan Kaikki with your favorite mixtape.
+
 Bugfixes:
 
 - Many memory leaks and buffer overflows have been fixed.

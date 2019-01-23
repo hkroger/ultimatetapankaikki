@@ -172,6 +172,9 @@ MIDASmodulePlayHandle MIDASplayModule( MIDASmodule module, int loopSong )
 {
     if (!started) return 0;
     Mix_HaltMusic();
+    if (getenv("TK_MUTE_MUSIC")) {
+        return 1;
+    }
     if ( Mix_PlayMusic( module->mix_music, loopSong ? -1 : 0 ) != 0 )
     {
         SDL_Log( "Error playing music:  %s", Mix_GetError());
