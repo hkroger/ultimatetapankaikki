@@ -81,8 +81,7 @@ MIDASsample MIDASloadWaveSample( const char *fileName, int loopSample )
 {
     if (!started) return NULL;
     MIDASsample smp = static_cast<MIDASsample>(calloc( 1, sizeof( _MIDASsample )));
-    std::string path = data_path( fileName );
-    if (!SDL_LoadWAV(path.c_str(), &smp->spec, &smp->audio_buf, &smp->audio_len))
+    if (!SDL_LoadWAV(data_path( fileName ).c_str(), &smp->spec, &smp->audio_buf, &smp->audio_len))
     {
         SDL_Log( "Error loading sound file %s:  %s", fileName, SDL_GetError());
         return NULL;
@@ -96,8 +95,7 @@ MIDASmodule MIDASloadModule( const char *fileName )
 {
     if (!started) return NULL;
     MIDASmodule mod = static_cast<MIDASmodule>(calloc( 1, sizeof( _MIDASmodule )));
-    std::string path = data_path( fileName );
-    Mix_Music *music = Mix_LoadMUS( path.c_str() );
+    Mix_Music *music = Mix_LoadMUS( data_path( fileName ).c_str() );
     if ( !music )
     {
         SDL_Log( "Error loading music file %s:  %s", fileName, Mix_GetError());

@@ -9,8 +9,7 @@
 
 void load_efp( const char *name, char *kuva, int offs )
 {
-    std::string path = data_path( name );
-    if ( !tk_port::load_efp_replacement_png( path.c_str(), kuva, nullptr ))
+    if ( !tk_port::load_efp_replacement_png( data_path( name ).c_str(), kuva, nullptr ))
     {
         error("Unable to load PNG replacement for %s\n", name);
     }
@@ -19,8 +18,7 @@ void load_efp( const char *name, char *kuva, int offs )
 
 void load_efp_pal( const char *name, char *paletti )
 {
-    std::string path = data_path( name );
-    if ( !tk_port::load_efp_replacement_png( path.c_str(), nullptr, paletti ))
+    if ( !tk_port::load_efp_replacement_png( data_path( name ).c_str(), nullptr, paletti ))
     {
         error("Unable to load palette from PNG replacement for %s\n", name);
     }

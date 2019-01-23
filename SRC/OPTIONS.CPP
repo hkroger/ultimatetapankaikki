@@ -19,15 +19,13 @@ extern void game();
 void save_options()
 {
     FILE *cfg;
-    std::string path;
 
     if ( ensure_config_dir_exists() )
     {
         return;
     }
 
-    path = config_path( "OPTIONS.CFG" );
-    cfg = fopen( path.c_str(), "wb" );
+    cfg = fopen( config_path( "OPTIONS.CFG" ).c_str(), "wb" );
     if ( !cfg )
     {
         return;
@@ -54,16 +52,13 @@ void save_options()
 void load_options()
 {
     FILE *cfg = NULL;
-    std::string path;
 
     // Try to read locally saved options
-    path = config_path( "OPTIONS.CFG" );
-    cfg = fopen( path.c_str(), "rb" );
+    cfg = fopen( config_path( "OPTIONS.CFG" ).c_str(), "rb" );
     if ( !cfg )
     {
         // Fall back to global default options
-        path = data_path( "OPTIONS.CFG" );
-        cfg = fopen( path.c_str(), "rb" );
+        cfg = fopen( data_path( "OPTIONS.CFG" ).c_str(), "rb" );
     }
 
     if ( cfg )

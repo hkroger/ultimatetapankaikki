@@ -1241,8 +1241,7 @@ void Level::load( char name[13] )
 {
     unsigned int a, bullets, weapons;
     FILE *dat;
-    std::string path = data_path( name );
-    dat = fopen( path.c_str(), "rb" );
+    dat = fopen( data_path( name ).c_str(), "rb" );
     if ( dat != NULL )
     {
         fread( &version, 4, 1, dat );

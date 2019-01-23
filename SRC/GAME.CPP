@@ -562,8 +562,7 @@ void screen_capture()
         sprintf( text2, "%d", num );
         strcat( text1, text2 );
         strcat( text1, ".bmp" );
-        std::string path = home_path( text1 );
-        if ( ( sci = fopen( path.c_str(), "rb" )  )  == NULL ) free = 1;else fclose( sci );
+        if ( ( sci = fopen( home_path( text1 ).c_str(), "rb" )  )  == NULL ) free = 1;else fclose( sci );
         num ++;
     }
     tk_port::save_screenshot( text1 );
