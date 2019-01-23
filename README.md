@@ -128,6 +128,10 @@ New features:
   into single-player game in the given episode.  This works with
   the `-l` switch too.  Mostly useful for development, of course.
 
+- Setting the environment variable `TK_SKIP_LEVEL_INFO` will skip the
+  screen that appears at the start of each level.  Useful for
+  impatient developers.
+
 Bugfixes:
 
 - Many memory leaks and buffer overflows have been fixed.

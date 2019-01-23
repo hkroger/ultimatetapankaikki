@@ -2333,7 +2333,7 @@ void game()
             else {
                 leveldata.load( match_level );
             }
-            if ( KILLING_MODE != DEATHMATCH )
+            if ( KILLING_MODE != DEATHMATCH && !getenv("TK_SKIP_LEVEL_INFO") )
                 level_info();
         }
         if ( !BACK_TO_MENU )
