@@ -283,32 +283,31 @@ void Player::chk_keys( int index )
 
 void Body_part::move()
 {
-    int offs[2*4]; //**
-    int reuna = 4; //**chk pointit on näin
-    int reuna2 = 4; //**
-    int rnx, rny; //**
-    float newx, newy;
-    newx = x + ( ( int ) speed*sini[angle] );
-    newy = y + ( ( int ) speed*cosi[angle] );
-    rnx = newx;
-    rny = newy;
-    if ( num < 12 )
-        if ( rand() % 3 != 0 ) new_effect( 0, BLOOD2, int( x ) + 10, int( y ) + 10, 0, 0 );
-    offs[0] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 10 - reuna2 )  / 20 );
-    offs[1] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 10 + reuna2 )  / 20 );
-    offs[2] = ( ( rny + 20 - reuna )  / 20 ) *level_x_size + ( ( rnx + 10 - reuna2 )  / 20 );
-    offs[3] = ( ( rny + 20 - reuna )  / 20 ) *level_x_size + ( ( rnx + 10 + reuna2 )  / 20 );
-    offs[4] = ( ( rny + 10 - reuna2 )  / 20 ) *level_x_size + ( ( rnx + reuna )  / 20 );
-    offs[5] = ( ( rny + 10 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + reuna )  / 20 );
-    offs[6] = ( ( rny + 10 - reuna2 )  / 20 ) *level_x_size + ( ( rnx + 20 - reuna )  / 20 );
-    offs[7] = ( ( rny + 10 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + 20 - reuna )  / 20 );
-    if ( newy < y && level[offs[0]].type == FLOOR && level[offs[1]].type == FLOOR )
+    int reuna = 4; //  * * chk pointit on näin
+    int reuna2 = 4; // * *
+    if ( num < 12 && rand() % 3 != 0 )
+    {
+        new_effect( 0, BLOOD2, int( x ) + 10, int( y ) + 10, 0, 0 );
+    }
+    float newx = x + ( ( int ) speed*sini[angle] );
+    float newy = y + ( ( int ) speed*cosi[angle] );
+    int rnx = newx;
+    int rny = newy;
+    int type0 = get_block_type_at_coord( rnx + 10 - reuna2, rny + reuna );
+    int type1 = get_block_type_at_coord( rnx + 10 + reuna2, rny + reuna );
+    int type2 = get_block_type_at_coord( rnx + 10 - reuna2, rny + 20 - reuna );
+    int type3 = get_block_type_at_coord( rnx + 10 + reuna2, rny + 20 - reuna );
+    int type4 = get_block_type_at_coord( rnx + reuna, rny + 10 - reuna2 );
+    int type5 = get_block_type_at_coord( rnx + reuna, rny + 10 + reuna2 );
+    int type6 = get_block_type_at_coord( rnx + 20 - reuna, rny + 10 - reuna2 );
+    int type7 = get_block_type_at_coord( rnx + 20 - reuna, rny + 10 + reuna2 );
+    if ( newy < y && type0 == FLOOR && type1 == FLOOR )
         y = newy;
-    if ( newy > y && level[offs[2]].type == FLOOR && level[offs[3]].type == FLOOR )
+    if ( newy > y && type2 == FLOOR && type3 == FLOOR )
         y = newy;
-    if ( newx < x && level[offs[4]].type == FLOOR && level[offs[5]].type == FLOOR )
+    if ( newx < x && type4 == FLOOR && type5 == FLOOR )
         x = newx;
-    if ( newx > x && level[offs[6]].type == FLOOR && level[offs[7]].type == FLOOR )
+    if ( newx > x && type6 == FLOOR && type7 == FLOOR )
         x = newx;
 }
 
@@ -420,12 +419,9 @@ void Player::footprint( int side )
 
 void Player::move( int angle, float spd, int index )
 {
-    int offs[2*4];   //  **
     int reuna = 6;   // *  * chk pointit on näin
     int reuna2 = 4;  // *  *
-    int rnx, rny;    //  **
     int crate_taken = 0;
-    float newx, newy;
     float speedi;
     int chk, a, b;
 
@@ -436,21 +432,22 @@ void Player::move( int angle, float spd, int index )
     if ( rand()  % 3 == 0 )
     new_effect( 0, BLOOD2, int( x )  + 15, int( y )  + 15, 0, 0 );
     speedi = spd;
-    newx = x + ( speedi*sini[angle] );
-    newy = y + ( speedi*cosi[angle] );
-    rnx = newx;
-    rny = newy;
-    offs[0] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 14 - reuna2 )  / 20 );
-    offs[1] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 14 + reuna2 )  / 20 );
-    offs[2] = ( ( rny + 28 - reuna )  / 20 ) *level_x_size + ( ( rnx + 14 - reuna2 )  / 20 );
-    offs[3] = ( ( rny + 28 - reuna )  / 20 ) *level_x_size + ( ( rnx + 14 + reuna2 )  / 20 );
-    offs[4] = ( ( rny + 14 - reuna2 )  / 20 ) *level_x_size + ( ( rnx + reuna )  / 20 );
-    offs[5] = ( ( rny + 14 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + reuna )  / 20 );
-    offs[6] = ( ( rny + 14 - reuna2 )  / 20 ) *level_x_size + ( ( rnx + 28 - reuna )  / 20 );
-    offs[7] = ( ( rny + 14 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + 28 - reuna )  / 20 );
+    float newx = x + ( speedi*sini[angle] );
+    float newy = y + ( speedi*cosi[angle] );
+    int rnx = newx;
+    int rny = newy;
+    int type0 = get_block_type_at_coord( rnx + 14 - reuna2, rny + reuna );
+    int type1 = get_block_type_at_coord( rnx + 14 + reuna2, rny + reuna );
+    int type2 = get_block_type_at_coord( rnx + 14 - reuna2, rny + 28 - reuna );
+    int type3 = get_block_type_at_coord( rnx + 14 + reuna2, rny + 28 - reuna );
+    int type4 = get_block_type_at_coord( rnx + reuna, rny + 14 - reuna2 );
+    int type5 = get_block_type_at_coord( rnx + reuna, rny + 14 + reuna2 );
+    int type6 = get_block_type_at_coord( rnx + 28 - reuna, rny + 14 - reuna2 );
+    int type7 = get_block_type_at_coord( rnx + 28 - reuna, rny + 14 + reuna2 );
+
     if ( newy < y )
-    if ( level[offs[0]].type == FLOOR )
-    if ( level[offs[1]].type == FLOOR )
+    if ( type0 == FLOOR )
+    if ( type1 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( !enemy[a].DEAD )
@@ -469,8 +466,8 @@ void Player::move( int angle, float spd, int index )
         if ( !chk ) y = newy;
     }
     if ( newy > y )
-    if ( level[offs[2]].type == FLOOR )
-    if ( level[offs[3]].type == FLOOR )
+    if ( type2 == FLOOR )
+    if ( type3 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( !enemy[a].DEAD )
@@ -489,8 +486,8 @@ void Player::move( int angle, float spd, int index )
         if ( !chk ) y = newy;
     }
     if ( newx < x )
-    if ( level[offs[4]].type == FLOOR )
-    if ( level[offs[5]].type == FLOOR )
+    if ( type4 == FLOOR )
+    if ( type5 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( !enemy[a].DEAD )
@@ -509,8 +506,8 @@ void Player::move( int angle, float spd, int index )
         if ( !chk ) x = newx;
     }
     if ( newx > x )
-    if ( level[offs[6]].type == FLOOR )
-    if ( level[offs[7]].type == FLOOR )
+    if ( type6 == FLOOR )
+    if ( type7 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( !enemy[a].DEAD )
@@ -763,7 +760,6 @@ void Enemy::footprint( int side )
 
 void Enemy::move( int angle, int spd )
 {
-    int offs[2*4];
     int reuna = 6; // päächk pointien etäisyys reunasta
     int reuna2 = 4; // sivu chk pointien etäisyys päächk pointeista
     int rnx, rny, speedi, chk, a;
@@ -780,18 +776,18 @@ void Enemy::move( int angle, int spd )
     newy = y + ( speedi*cosi[angle] );
     rnx = newx;
     rny = newy;
-    offs[0] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 14 - reuna2 )  / 20 );
-    offs[1] = ( ( rny + reuna )  / 20 ) *level_x_size + ( ( rnx + 14 + reuna2 )  / 20 );
-    offs[2] = ( ( rny + 28 - reuna )  / 20 ) *level_x_size + ( ( rnx + 14 - reuna2 )  / 20 );
-    offs[3] = ( ( rny + 28 - reuna )  / 20 ) *level_x_size + ( ( rnx + 14 + reuna2 )  / 20 );
-    offs[4] = ( ( rny + 14 - reuna2 )  / 20 ) *level_x_size + ( ( rnx + reuna )  / 20 );
-    offs[5] = ( ( rny + 14 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + reuna )  / 20 );
-    offs[6] = ( ( rny + 14 - reuna2 )  / 20 ) *level_x_size + ( ( rnx + 28 - reuna )  / 20 );
-    offs[7] = ( ( rny + 14 + reuna2 )  / 20 ) *level_x_size + ( ( rnx + 28 - reuna )  / 20 );
-    chk = 0;
+    int type0 = get_block_type_at_coord((rnx + 14 - reuna2), (rny + reuna));
+    int type1 = get_block_type_at_coord((rnx + 14 + reuna2), (rny + reuna));
+    int type2 = get_block_type_at_coord((rnx + 14 - reuna2), (rny + 28 - reuna));
+    int type3 = get_block_type_at_coord((rnx + 14 + reuna2), (rny + 28 - reuna));
+    int type4 = get_block_type_at_coord((rnx + reuna), (rny + 14 - reuna2));
+    int type5 = get_block_type_at_coord((rnx + reuna), (rny + 14 + reuna2));
+    int type6 = get_block_type_at_coord((rnx + 28 - reuna), (rny + 14 - reuna2));
+    int type7 = get_block_type_at_coord((rnx + 28 - reuna), (rny + 14 + reuna2));
+
     if ( newy < y )
-    if ( level[offs[0]].type == FLOOR )
-    if ( level[offs[1]].type == FLOOR )
+    if ( type0 == FLOOR )
+    if ( type1 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( &enemy[a]!= this )
@@ -809,10 +805,10 @@ void Enemy::move( int angle, int spd )
         if ( rny + reuna < player[a].y + 28 - reuna ) chk = 1;
         if ( !chk ) y = newy;
     }
-    chk = 0;
+
     if ( newy > y )
-    if ( level[offs[2]].type == FLOOR )
-    if ( level[offs[3]].type == FLOOR )
+    if ( type2 == FLOOR )
+    if ( type3 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( &enemy[a]!= this )
@@ -830,10 +826,10 @@ void Enemy::move( int angle, int spd )
         if ( rny + 28 - reuna < player[a].y + 28 - reuna ) chk = 1;
         if ( !chk ) y = newy;
     }
-    chk = 0;
+
     if ( newx < x )
-    if ( level[offs[4]].type == FLOOR )
-    if ( level[offs[5]].type == FLOOR )
+    if ( type4 == FLOOR )
+    if ( type5 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( &enemy[a]!= this )
@@ -851,10 +847,10 @@ void Enemy::move( int angle, int spd )
         if ( rny + 15 < player[a].y + 30 ) chk = 1;
         if ( !chk ) x = newx;
     }
-    chk = 0;
+
     if ( newx > x )
-    if ( level[offs[6]].type == FLOOR )
-    if ( level[offs[7]].type == FLOOR )
+    if ( type6 == FLOOR )
+    if ( type7 == FLOOR )
     {
         for ( chk = 0, a = 0; a < ENEMIES; a ++  )
         if ( &enemy[a]!= this )
