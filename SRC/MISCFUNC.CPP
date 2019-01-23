@@ -669,6 +669,7 @@ std::string home_path( const std::string& pathname )
     return result;
 }
 
+// Returns 1 if config directory doesn't exist and cannot be created
 int ensure_config_dir_exists()
 {
     int status = mkdir( config_path().c_str(),
