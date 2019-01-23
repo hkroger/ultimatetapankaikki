@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "EFP/EFP.H"
+#include "ERROR/ERROR.H"
 #include "DEFINES.H"
 #include "TYPES.H"
 #include "GLOBVAR.H"
@@ -22,6 +23,8 @@ void save_options()
 
     if ( ensure_config_dir_exists() )
     {
+        warn( "WARNING: Could not create config directory %s", config_path().c_str() );
+        warn( "WARNING: Options not saved!" );
         return;
     }
 
