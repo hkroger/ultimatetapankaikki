@@ -2647,42 +2647,52 @@ void logo()
     tk_port::event_tick();
 }
 
-int main( int argc, char *argv[] )
+static void parse_cmdline( int argc, char *argv[], int *pause )
 {
-    int a = 0, b;
-    int pause = 0;
-    for ( a = 1; a < argc; a ++  )
+    int b;
+    for ( int a = 1; a < argc; a++ )
     {
         strupr( argv[a] );
-        if ( ( argv[a][0] == '-')||( argv[a][0] == '/'))
-        switch( argv[a][1] )
-        {
-            case 'F':b = atoi( argv[ ++ a] );
-                     if ( b >= 30 &&b <= 500 ) target_frames = b;
-                     break;
-            case 'L':b = atoi( argv[ ++ a] );
-                     if ( b > 0 ) START_LEVEL = b - 1;
-                     break;
-            case 'P':pause = 1;
-                     break;
-            case 'M':SHOW_ENEMIES = 1;
-                     break;
-            case 'H':case '?':
-                     std::cout << std::endl;
-                     std::cout << "Ultimate Tapan Kaikki " << Version << std::endl;
-                     std::cout << "Compiled at "<< __DATE__<< ' ' << __TIME__ << std::endl;
-                     std::cout << "parameters:" << std::endl;
-                     std::cout << "-?,-h this help"<< std::endl;
-                     std::cout << "-v    force mcga mode" << std::endl;
-                     std::cout << "-p    pause at startup" << std::endl;
-                     std::cout << "-m    show enemies on map" << std::endl;
-                     std::cout << "-l ## start at level ##" << std::endl;
-                     std::cout << "-f ## set gamespeed to ## fps (def. 40)" << std::endl;
-                     std::cout << std::endl;
-                     exit( 1 );
-                     break;
-        }
+        if ((argv[a][0] == '-') || (argv[a][0] == '/'))
+            switch (argv[a][1])
+            {
+                case 'F':
+                    b = atoi( argv[++a] );
+                    if ( b >= 30 && b <= 500 ) target_frames = b;
+                    break;
+                case 'L':
+                    b = atoi( argv[++a] );
+                    if ( b > 0 ) START_LEVEL = b - 1;
+                    break;
+                case 'P':
+                    *pause = 1;
+                    break;
+                case 'M':
+                    SHOW_ENEMIES = 1;
+                    break;
+                case 'H':
+                case '?':
+                    std::cout << std::endl;
+                    std::cout << "Ultimate Tapan Kaikki " << Version << std::endl;
+                    std::cout << "Compiled at " << __DATE__ << ' ' << __TIME__ << std::endl;
+                    std::cout << "parameters:" << std::endl;
+                    std::cout << "-?,-h this help" << std::endl;
+                    std::cout << "-v    force mcga mode" << std::endl;
+                    std::cout << "-p    pause at startup" << std::endl;
+                    std::cout << "-m    show enemies on map" << std::endl;
+                    std::cout << "-l ## start at level ##" << std::endl;
+                    std::cout << "-f ## set gamespeed to ## fps (def. 40)" << std::endl;
+                    std::cout << std::endl;
+                    exit( 1 );
+                    break;
+            }
     }
+}
+
+int main( int argc, char *argv[] )
+{
+    int pause = 0;
+    parse_cmdline(argc, argv, &pause);
     if(tk_port::init() != 0) {
         return 1;
     }
