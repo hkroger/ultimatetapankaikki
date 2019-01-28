@@ -175,6 +175,12 @@ cmake -DSDL2_PATH="C:\\<path>\\SDL2-2.0.9" -DSDL2_MIXER_PATH="C:\\<path>\\SDL2_m
 ```
 which produces project files for 32-bit target. For 64-bit target, use e.g. `cmake -G "Visual Studio 15 2017 Win64"`.
 
+Releases
+--------
+
+**Version 1 - 2019-01-28**
+
+- Initial release
 
 [suomipelit-gh]: https://github.com/suomipelit
 [suomipelit-slack]: https://tinyurl.com/suomipelit-slack
