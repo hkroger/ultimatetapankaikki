@@ -3,6 +3,13 @@
 #include <SDL_surface.h>
 #include <SDL_image.h>
 #include <ERROR/ERROR.H>
+#include <climits>
+
+#ifdef _MSC_VER
+#ifndef PATH_MAX
+#define PATH_MAX 260
+#endif
+#endif
 
 namespace tk_port
 {
@@ -17,8 +24,8 @@ namespace tk_port
  */
 char *replace_extension_with_png( const char *name )
 {
-    static char png_name[80];
-    strncpy( png_name, name, 80 );
+    static char png_name[PATH_MAX];
+    strncpy( png_name, name, PATH_MAX );
     size_t len = strlen( png_name );
     if ( len >= 3 )
     {
