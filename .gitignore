@@ -17,3 +17,5 @@ install_manifest.txt
 /build
 /Debug
 /Release
+/Release-Bundle
+/dist

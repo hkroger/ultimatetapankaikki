@@ -33,6 +33,15 @@ else()
 endif()
 set(TK_SUFFIXED_DATADIR ${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME})
 
+if (CMAKE_MACOSX_BUNDLE)
+	set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME Runtime)
+	set(CMAKE_INSTALL_BINDIR ".")  # no bin/ directory under destination directory
+	set(CMAKE_INSTALL_DATADIR ${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}.app/Contents/Resources)
+	set(CMAKE_INSTALL_DOCDIR ${CMAKE_INSTALL_BINDIR}/${PROJECT_NAME}.app/Contents/Documentation)
+	set(TK_SUFFIXED_DATADIR ${CMAKE_INSTALL_DATADIR})  # within bundle, no suffix needed
+	set(TK_MACOSX_BUNDLE 1)
+	set(MACOSX_BUNDLE_IDENTIFIER "suomipelit.ultimatetapankaikki")
+endif()
 
 configure_file("${PROJECT_SOURCE_DIR}/CONFIG.H.IN" "${PROJECT_BINARY_DIR}/CONFIG.H")
 include_directories(${PROJECT_BINARY_DIR})
@@ -66,7 +75,18 @@ if (WIN32)
 	set_target_properties(${PROJECT_NAME} PROPERTIES OUTPUT_NAME "GAME" SUFFIX ".EXE")
 endif()
 
+
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(FILES OPTIONS.CFG DESTINATION ${TK_SUFFIXED_DATADIR})
 install(DIRECTORY EFPS FNTS LEVS MUSIC WAVS DESTINATION ${TK_SUFFIXED_DATADIR})
 install(FILES README.md README.ORIG.TXT EDITOR.TXT EPISODES.TXT LICENSE WHAT'S.NEW DESTINATION ${CMAKE_INSTALL_DOCDIR})
+if (CMAKE_MACOSX_BUNDLE)
+	INSTALL(CODE "
+	set(BU_CHMOD_BUNDLE_ITEMS ON)
+	include(BundleUtilities)
+	fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}.app\" \"\" \"\")
+	" COMPONENT Runtime)
+	# see e.g. https://cmake.org/pipermail/cmake/2011-March/043532.html
+endif()
+
+include(CPack)

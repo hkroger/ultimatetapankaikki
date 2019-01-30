@@ -175,6 +175,13 @@ cmake -DSDL2_PATH="C:\\<path>\\SDL2-2.0.9" -DSDL2_MIXER_PATH="C:\\<path>\\SDL2_m
 ```
 which produces project files for 32-bit target. For 64-bit target, use e.g. `cmake -G "Visual Studio 15 2017 Win64"`.
 
+Building releases
+-----------------
+
+* Linux: TBD (probably using `cpack` somehow)
+* Windows: TBD (probably using `cpack` somehow)
+* macOS: Run `./build-macos.sh`; you'll get a .dmg in `dist/`
+
 Releases
 --------
 
