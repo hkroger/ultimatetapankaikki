@@ -2,5 +2,6 @@
 #define _TK_CONFIG_H_
 
 #cmakedefine TK_DATADIR "@TK_DATADIR@"
+#cmakedefine TK_MACOSX_BUNDLE 1
 
 #endif

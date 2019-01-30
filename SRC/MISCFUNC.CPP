@@ -13,6 +13,7 @@
 #include "PORT.H"
 #include "ROUT.H"
 #include "MISCFUNC.H"
+#include "ERROR/ERROR.H"
 
 #ifdef TK_PORT_POSIXISH
 #include <errno.h>
@@ -27,6 +28,10 @@
 #endif
 
 #include <CONFIG.H>
+
+#ifdef TK_MACOSX_BUNDLE
+#include <CoreFoundation/CoreFoundation.h>
+#endif
 
 bool filter_name_char( char c )
 {
@@ -617,6 +622,28 @@ int ensure_config_dir_exists()
 std::string data_path( const std::string& pathname )
 {
     std::string result = TK_DATADIR;
+#ifdef TK_MACOSX_BUNDLE
+    static char resourcesDir[PATH_MAX] = {0};
+    if ( !resourcesDir[0] )
+    {
+        CFBundleRef bundle = CFBundleGetMainBundle();  // Get (no release)
+        if ( !bundle )
+        {
+            error( "Failed to get macOS bundle reference" );
+        }
+        CFURLRef resourcesDirURLRef = CFBundleCopyResourcesDirectoryURL( bundle );  // Copy (need release)
+        if ( !CFURLGetFileSystemRepresentation( resourcesDirURLRef, TRUE, (UInt8 *) resourcesDir, PATH_MAX ))
+        {
+            error( "Failed to get macOS bundle resources directory" );
+        }
+        CFRelease( resourcesDirURLRef );
+        if ( tk_port::debug )
+        {
+            printf( "macOS bundle resources dir = %s\n", resourcesDir );
+        }
+    }
+    result = std::string( resourcesDir );
+#endif
     if ( pathname.size() )
     {
         result += "/" + pathname;
