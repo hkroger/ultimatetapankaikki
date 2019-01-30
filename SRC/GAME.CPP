@@ -37,6 +37,7 @@ struct packet *snd, *rec[RECEIVERS];
 #include "I_FUNCS.H" // paska funkkareita
 #include "MAKET_IN.H"
 #include "PORT_LEVEL.H"
+#include "CONFIG.H"
 
 void menu_biisi()
 {
@@ -2650,9 +2651,13 @@ static void parse_cmdline( int argc, char *argv[], int *pause )
                     b = atoi( argv[++a] );
                     if ( b > 0 ) episode = b - 1;
                     break;
+#ifndef TK_MACOSX_BUNDLE
+// Disable the -p / -P parameter in bundle builds, as Finder passes in a "-PSN_0_XXXXXX" parameter:
+// https://stackoverflow.com/questions/10242115/os-x-strange-psn-command-line-parameter-when-launched-from-finder
                 case 'P':
                     *pause = 1;
                     break;
+#endif
                 case 'M':
                     SHOW_ENEMIES = 1;
                     break;
@@ -2664,7 +2669,9 @@ static void parse_cmdline( int argc, char *argv[], int *pause )
                     std::cout << "parameters:" << std::endl;
                     std::cout << "-?,-h this help" << std::endl;
                     std::cout << "-v    force mcga mode" << std::endl;
+#ifndef TK_MACOSX_BUNDLE
                     std::cout << "-p    pause at startup" << std::endl;
+#endif
                     std::cout << "-m    show enemies on map" << std::endl;
                     std::cout << "-l ## start at level ##" << std::endl;
                     std::cout << "-e ## immediately start single-player episode ##" << std::endl;
