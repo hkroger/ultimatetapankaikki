@@ -92,7 +92,7 @@ bool load_png( const char *png_name, char *kuva, char *paletti, int *width, int 
             {
                 size_t in_off = y * image->pitch;
                 size_t out_off = y * image->w;
-                memcpy( kuva + out_off, kuva + in_off, image->pitch );
+                memcpy( kuva + out_off, ( const char* ) image->pixels + in_off, image->pitch );
             }
         }
         else
