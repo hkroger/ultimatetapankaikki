@@ -1,6 +1,6 @@
 #ifndef __TK__DEFINES__
 #define __TK__DEFINES__
-#define Version "v1.21+sp1"
+#define Version "v1.21+sp2"
 #define pi 3.14159265358979
 #define CRATE_WAKE_UP_COUNT 500 // = 12.5 secs if 40 frames per sec
 #define MESSAGE_TIME_ON_SCREEN 200  // = 5 secs if 40 frames per sec
