@@ -189,7 +189,7 @@ Releases
 
 - Initial release
 
-**Version 1.0.2 - 2019-02-04**
+**Version 2 - 2019-02-04**
 
 - Fixed bug #131:
   Small sprites (crosshair, bomb, mine) were not being visible in the port.
