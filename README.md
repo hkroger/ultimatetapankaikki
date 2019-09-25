@@ -1,6 +1,8 @@
 Ultimate Tapan Kaikki
 =====================
 
+![Ultimate Tapan Kaikki GIF](https://github.com/suomipelit/suomipelit.github.io/blob/master/gifs/tk321.gif)
+
 :point_right: **The original README.TXT can be found as [README.ORIG.TXT](./README.ORIG.TXT).**
 
 This is the legendary 90s game Ultimate Tapan Kaikki, ported to
@@ -10,7 +12,6 @@ The port is maintained by the [Suomipelit][suomipelit-gh] organization,
 whose mission is to archive, port, and maintain classic Finnish freeware and
 shareware games.  Feel free to [join the Suomipelit Slack][suomipelit-slack]
 too!
-
 
 Key bindings
 ------------
@@ -150,6 +151,8 @@ Bugfixes:
 
 Building from source
 --------------------
+
+[![Build Status](https://api.travis-ci.org/suomipelit/ultimatetapankaikki.svg?branch=master)](https://travis-ci.org/suomipelit/ultimatetapankaikki)
 
 **Requirements:**
 
