@@ -181,9 +181,9 @@ which produces project files for 32-bit target. For 64-bit target, use e.g. `cma
 Building releases
 -----------------
 
-* Linux: TBD (probably using `cpack` somehow)
+* Linux: Run `./pkg/build-deb.sh` to build a .deb (Docker is required)
 * Windows: TBD (probably using `cpack` somehow)
-* macOS: Run `./pkg/build-macos.sh`; you'll get a .dmg in `dist/`
+* macOS: Run `./pkg/build-macos.sh` to build a .dmg
 
 Releases
 --------
