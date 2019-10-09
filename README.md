@@ -183,7 +183,7 @@ Building releases
 
 * Linux: TBD (probably using `cpack` somehow)
 * Windows: TBD (probably using `cpack` somehow)
-* macOS: Run `./build-macos.sh`; you'll get a .dmg in `dist/`
+* macOS: Run `./pkg/build-macos.sh`; you'll get a .dmg in `dist/`
 
 Releases
 --------
