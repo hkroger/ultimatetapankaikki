@@ -5,6 +5,8 @@ BUILDDEPS=(cmake libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-net-dev
 PKGNAME=ultimatetapankaikki
 PKGVERSION=3.21+sp2
 PKGDEPS=(libsdl2-2.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0)
+PKGDESC="The legendary 90s game Ultimate Tapan Kaikki"
+PKGURL="https://github.com/suomipelit/ultimatetapankaikki"
 
 function join_by {
     local IFS="$1"
@@ -42,6 +44,8 @@ fpm -s dir \
     -t deb \
     -n $PKGNAME \
     -v $PKGVERSION \
+    --description "$PKGDESC" \
+    --url "$PKGURL" \
     $(for dep in ${PKGDEPS[*]}; do echo -n "-d $dep "; done) \
     .
 chown \$ORIGUID:\$ORIGGID *.deb
