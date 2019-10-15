@@ -31,7 +31,7 @@ echo "Building..."
 mkdir /build
 cp -ar /mnt/* /build
 cd /build
-cmake -DCMAKE_BUILD_TYPE=Release .
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr .
 cmake --build .
 mkdir /dest
 make DESTDIR=/dest install
