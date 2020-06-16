@@ -1368,9 +1368,9 @@ void Keys::change()
         memcpy( screen, virbuff, 64000 );
         while ( !i::state(k::ESC)&&!i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 20, 45 + (selected * 8), cnt );
                 cnt++;
                 if ( cnt > 23 ) cnt = 0;

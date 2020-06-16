@@ -178,6 +178,26 @@ cmake -DSDL2_PATH="C:\\<path>\\SDL2-2.0.9" -DSDL2_MIXER_PATH="C:\\<path>\\SDL2_m
 ```
 which produces project files for 32-bit target. For 64-bit target, use e.g. `cmake -G "Visual Studio 15 2017 Win64"`.
 
+***On browser:***
+
+Emscripten JavaScript/WebAssembly build for browsers is also
+supported. It has limitation, like missing sound and online gaming
+support, and the port is considered as beta. You can try it live
+[here](https://suomipelit.github.io/ultimatetapankaikki-web/).
+
+``` shell
+cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=<path to>/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake .
+cmake --build .
+```
+
+It might be easiest to run local HTTP server with Python
+
+``` shell
+python -m http.server
+```
+
+and opening the game with supported browser at `http://localhost:8000/ultimatetapankaikki.html`.
+
 Building releases
 -----------------
 

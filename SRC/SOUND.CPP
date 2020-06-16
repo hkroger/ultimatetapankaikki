@@ -7,6 +7,7 @@
 #include <SDL_log.h>
 #include "MISCFUNC.H"
 #include "SOUND.H"
+#include "PORT.H"
 
 struct _MIDASsample {
     char *path;
@@ -29,6 +30,10 @@ static bool started = false;
 
 int MIDASstartup( void )
 {
+#ifdef TK_PORT_EMCC
+    // Mixer in EMCC is built without MikMod support
+    return false;
+#else
     if ((Mix_Init( MIX_INIT_MOD ) & MIX_INIT_MOD) != MIX_INIT_MOD )
     {
         SDL_Log( "Error initializing SDL_mixer:  %s", Mix_GetError());
@@ -42,6 +47,7 @@ int MIDASstartup( void )
     }
     started = true;
     return true;
+#endif
 }
 
 int MIDASinit( void )

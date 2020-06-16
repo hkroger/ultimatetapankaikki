@@ -30,12 +30,12 @@ int wanna_quit()
             }
         }
         memcpy( screen, virbuff, 64000 );
-        oclock = clock();
+        oclock = vclock();
         while ( !i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 65, starty + 15 + ( selected*15 )  - 2, cnt );
                 draw_ball( 320 - 85, starty + 15 + ( selected*15 )  - 2, cnt );
                 cnt ++;

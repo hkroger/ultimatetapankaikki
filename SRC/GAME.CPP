@@ -546,10 +546,10 @@ void quiti()
     writefonts( x, (scr_y_size / 2) - 4, quitstr, 1 );
     memcpy( screen, virbuff, 64000 );
     i::clear_stack();
-    time = clock();
+    time = vclock();
     if ( i::wait_for_keypress() == k::CHR_Y ) quit = 1;
 
-    st += clock()  - time;
+    st += vclock()  - time;
 }
 
 void screen_capture()
@@ -729,7 +729,7 @@ void kello()
 {
     char col = 1;
     if ( ! next_level )
-        complete_time = (clock() - st) / CLOCKS_PER_SEC;
+        complete_time = (vclock() - st) / CLOCKS_PER_SEC;
     if ( complete_time > general_level_info.time_limit * TIME_ADD ) col = 3 * 16;
     writefonts( 151, 10, c_2_c( complete_time ), col );
 }
@@ -982,20 +982,20 @@ void victory()
     load_efp_pal( "EFPS/SUNSET.EFP", pal );
     setpal( pal, 0 );
     memcpy( screen, picture, 64000 );
-    oclock = clock();
+    oclock = vclock();
     while (a < 255)
-        if ( oclock != clock())
+        if ( oclock != vclock())
         {
-            oclock = clock();
+            oclock = vclock();
             a += 10;
             setpal( pal, a );
         }
     i::clear(k::ESC);
     while (! i::state(k::ESC)) tk_port::event_tick();
     while (a > 0)
-        if ( oclock != clock())
+        if ( oclock != vclock())
         {
-            oclock = clock();
+            oclock = vclock();
             a -= 10;
             setpal( pal, a );
         }
@@ -2142,9 +2142,9 @@ int select_server()
                     first=0;
                 }
         tk_port::event_tick();
-        if ( clock() != oclock )
+        if ( vclock() != oclock )
         {
-            oclock = clock();
+            oclock = vclock();
            if (servers==0)
             draw_ball( 62,18, cnt );
              else draw_ball(70,45+select*10,cnt);
@@ -2373,8 +2373,8 @@ void game()
             }
             FONT_NUM = 1;
             frame_count = 0;
-            oclock = clock();
-            st = clock();
+            oclock = vclock();
+            st = vclock();
             first = 1;
             OVER_POWER = 0;
             Spot_count = 0;
@@ -2392,7 +2392,7 @@ void game()
             while( !all_dead &&!quit &&next_level < C_DELAY )
             {
                 // GAME loop
-                c = clock();
+                c = vclock();
                 if ( ( ( float ) c / CLOCKS_PER_SEC ) - ( ( float ) oclock / CLOCKS_PER_SEC ) > 2 )
                 {
                     F_PER_SEC = ( ( float ) frame_count / ( c - oclock )  ) *CLOCKS_PER_SEC;
@@ -2521,12 +2521,12 @@ void menu()
         }
         memcpy( screen, virbuff, 64000 );
         tk_port::event_tick();
-        oclock = clock();
+        oclock = vclock();
         while (!(quit || i::state(k::ARROW_UP) || i::state(k::ARROW_DOWN) || i::state(k::ENTER)))
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 55, 100 - starty + ( selected*15 )  - 2, cnt );
                 draw_ball( 320 - 75, 100 - starty + ( selected*15 )  - 2, cnt );
                 cnt ++;
@@ -2608,22 +2608,22 @@ void logo()
     setpal( pal, 0 );
     memcpy( screen, picture, 64000 );
     tk_port::event_tick();
-    oclock = clock();
+    oclock = vclock();
     while (a < 255)
-        if ( oclock != clock())
+        if ( oclock != vclock())
         {
-            oclock = clock();
+            oclock = vclock();
             a += 10;
             setpal( pal, a );
         }
-    while (i::get_last_key() == i::NOTHING && abs((int) (oclock - clock())) < 500)
+    while (i::get_last_key() == i::NOTHING && abs((int) (oclock - vclock())) < 500)
     {
         tk_port::event_tick();
     }
     while (a > 0)
-        if ( oclock != clock())
+        if ( oclock != vclock())
         {
-            oclock = clock();
+            oclock = vclock();
             a -= 10;
             setpal( pal, a );
         }

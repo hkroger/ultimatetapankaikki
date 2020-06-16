@@ -17,6 +17,11 @@
 #define TK_PORT_MSVC
 #endif
 
+#if defined (__EMSCRIPTEN__)
+#define TK_PORT_EMCC
+#include <emscripten.h>
+#endif
+
 namespace tk_port
 {
 int init( void );
@@ -42,8 +47,7 @@ extern uint32_t debug;
 }
 
 #ifndef _PORT_IMPL
-// Override `clock` everywhere with our vintage clock
-#define clock tk_port::vintage_clock
+#define vclock tk_port::vintage_clock
 #undef CLOCKS_PER_SEC
 #define CLOCKS_PER_SEC VINTAGE_CLOCKS_PER_SEC
 #endif

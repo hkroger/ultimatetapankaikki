@@ -1,6 +1,14 @@
 #ifndef __TK__DEFINES__
 #define __TK__DEFINES__
-#define Version "v1.21+sp2"
+#include "PORT.H"
+
+#ifdef TK_PORT_EMCC
+#define Remark " (web beta, no audio/net)"
+#else
+#define Remark ""
+#endif
+
+#define Version "v1.21+sp2" Remark
 #define pi 3.14159265358979
 #define CRATE_WAKE_UP_COUNT 500 // = 12.5 secs if 40 frames per sec
 #define MESSAGE_TIME_ON_SCREEN 200  // = 5 secs if 40 frames per sec

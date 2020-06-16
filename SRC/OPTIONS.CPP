@@ -114,9 +114,9 @@ int choose_load_file( char *name, int episode )
         memcpy( screen, virbuff, 64000 );
         while( !i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 65, 46 + ((sel - pos) * 8), cnt );
                 draw_ball( 320 - 85, 46 + ((sel - pos) * 8), cnt );
                 cnt++;
@@ -185,9 +185,9 @@ int choose_episode()
         memcpy( screen, virbuff, 64000 );
         while( !i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER)&&!i::state(k::ESC) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 65, 48 + ((sel - pos) * 16), cnt );
                 draw_ball( 320 - 85, 48 + ((sel - pos) * 16), cnt );
                 cnt++;
@@ -264,9 +264,9 @@ void player_options()
         memcpy( screen, virbuff, 64000 );
         while ( !i::state(k::ESC)&&!i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 65, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 draw_ball( 320 - 85, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 cnt ++;
@@ -349,9 +349,9 @@ void game_options()
         memcpy( screen, virbuff, 64000 );
         while ( !i::state(k::ESC)&&!i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 65, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 draw_ball( 320 - 85, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 cnt ++;
@@ -436,9 +436,9 @@ void sound_options()
         tk_port::event_tick();  // reset keystates before loop
         while ( !i::state(k::ESC)&&!i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ARROW_LEFT)&&!i::state(k::ARROW_RIGHT)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 55, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 draw_ball( 320 - 75, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 cnt ++;
@@ -528,9 +528,9 @@ int deathmatch_options()
         memcpy( screen, virbuff, 64000 );
         while ( !i::state(k::ESC)&&!i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 50, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 draw_ball( 320 - 70, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 cnt ++;
@@ -624,9 +624,9 @@ void multiplayer_options()
         memcpy( screen, virbuff, 64000 );
         while ( !i::state(k::ESC)&&!i::state(k::ARROW_UP)&&!i::state(k::ARROW_DOWN)&&!i::state(k::ENTER) )
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 20, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 cnt ++;
                 if ( cnt > 23 ) cnt = 0;
@@ -789,9 +789,9 @@ void options()
         memcpy( screen, virbuff, 64000 );
         while (!(quit || i::state(k::ESC) || i::state(k::ARROW_UP) || i::state(k::ARROW_DOWN) || i::state(k::ENTER)))
         {
-            if ( clock() != oclock )
+            if ( vclock() != oclock )
             {
-                oclock = clock();
+                oclock = vclock();
                 draw_ball( 50, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 draw_ball( 320 - 70, ( 98 - yoffs )  + ( selected*15 ), cnt );
                 cnt ++;

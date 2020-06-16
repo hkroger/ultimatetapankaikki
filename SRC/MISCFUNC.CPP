@@ -78,9 +78,9 @@ tk_port::input::Input get_key( int x, int y )
     int oclock = 0, cnt = 0, pressed = 0;
     while ( !pressed )
     {
-        if ( clock() != oclock )
+        if ( vclock() != oclock )
         {
-            oclock = clock();
+            oclock = vclock();
             draw_ball( x, y, cnt );
             cnt ++;
             if ( cnt > 23 ) cnt = 0;

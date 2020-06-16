@@ -418,13 +418,13 @@ static uint64_t nanoclock()
 #if defined(TK_PORT_MAC)
     uint64_t now = mach_absolute_time();
     return (now - timer_zero) * timer_timebase_info.numer / timer_timebase_info.denom;
+#elif defined(TK_PORT_MSVC) || defined(TK_PORT_EMCC)
+    // Not very accurate and wraps over if running for ~49 days but works
+    return static_cast<uint64_t>(SDL_GetTicks()) * TK_PORT_NSEC_PER_MSEC;
 #elif defined(TK_PORT_POSIX)
     struct timespec now;
     clock_gettime(CLOCK_MONOTONIC, &now);
     return (now.tv_sec * TK_PORT_NSEC_PER_SEC + now.tv_nsec) - timer_zero;
-#elif defined(TK_PORT_MSVC)
-    // Not very accurate and wraps over if running for ~49 days but works
-    return static_cast<uint64_t>(SDL_GetTicks()) * TK_PORT_NSEC_PER_MSEC;
 #else
 #error No nanoclock
 #endif
