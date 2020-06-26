@@ -48,7 +48,11 @@
 #define LIGHTS 10
 #define TARGET_FRAMES 40 // framerate
 #define DUST_BLOCKS 10
+#ifdef TK_PORT_EMCC
+#define Menu_texts 3 // No Quit
+#else
 #define Menu_texts 4
+#endif
 #define num_options 4
 #define num_player_options 5
 #define num_game_options 4

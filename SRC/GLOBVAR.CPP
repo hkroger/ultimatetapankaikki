@@ -6,6 +6,7 @@
 #include "INPUT/KEYB.H"
 #include "SOUND.H"
 #include "PORT_TEXT.H"
+#include "PORT.H"
 
 int BACK_TO_MENU = 0;
 int scr_y_size = 200;
@@ -73,7 +74,9 @@ const char *menu_text[Menu_texts] =
     "single pl game",
     "multiplayer game",
     "options",
+#ifndef TK_PORT_EMCC
     "exit to dos"
+#endif
 };
 
 int saved_game_mode;
