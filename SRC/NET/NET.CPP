@@ -7,6 +7,7 @@
 #include "NETDEFS.H"
 #include "DEFINES.H"
 #include "SDL_net.h"
+#include "PORT.H"
 
 #include <algorithm>
 #include <iterator>
@@ -36,6 +37,10 @@ namespace net
 
 bool init()
 {
+#ifdef TK_PORT_EMCC
+    // Raw TCP is not working in browser environment - WebRTC port would be needed
+    return false;
+#else
     if (SDLNet_Init() == -1)
     {
         printf("Error initializing net API: %s\n", SDLNet_GetError());
@@ -51,6 +56,7 @@ bool init()
     }
 
     return true;
+#endif
 }
 
 void deinit()
