@@ -1,11 +1,12 @@
 #ifndef __TK__DEFINES__
 #define __TK__DEFINES__
-#include "PORT.H"
 
-#ifdef TK_PORT_EMCC
+// Using __EMSCRIPTEN__ instead of TK_PORT_EMCC because including "PORT.H" in this file
+// can cause a clash with CLOCKS_PER_SEC define...
+#if defined (__EMSCRIPTEN__)
 #define Remark " (web beta, no audio/net)"
 #else
-#define Remark ""
+#define Remark
 #endif
 
 #define Version "v1.21+sp2" Remark
@@ -48,7 +49,7 @@
 #define LIGHTS 10
 #define TARGET_FRAMES 40 // framerate
 #define DUST_BLOCKS 10
-#ifdef TK_PORT_EMCC
+#if defined (__EMSCRIPTEN__)
 #define Menu_texts 3 // No Quit
 #else
 #define Menu_texts 4
