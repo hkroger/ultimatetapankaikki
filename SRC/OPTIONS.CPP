@@ -699,6 +699,10 @@ void multiplayer_options()
                 GAME_MODE = NETWORK;
                 NETWORK_MODE = CLIENT;
 
+                // Online games are always Deathmatch, make sure
+                // potential active COOPERATIVE mode is overridden
+                KILLING_MODE = DEATHMATCH;
+
                 setup_ipx();
                 save_options();
                 if (select_server()) game();
