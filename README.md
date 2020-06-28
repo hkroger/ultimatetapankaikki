@@ -181,7 +181,7 @@ which produces project files for 32-bit target. For 64-bit target, use e.g. `cma
 ***On browser:***
 
 Emscripten JavaScript/WebAssembly build for browsers is also
-supported. It has limitation, like missing sound and online gaming
+supported. It has limitations like missing sound and online gaming
 support, and the port is considered as beta. You can try it live
 [here](https://suomipelit.github.io/ultimatetapankaikki-web/).
 
@@ -189,6 +189,9 @@ support, and the port is considered as beta. You can try it live
 cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=<path to>/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake .
 cmake --build .
 ```
+
+For best performance it is recommended to build with
+`-DCMAKE_BUILD_TYPE=Release`.
 
 It might be easiest to run local HTTP server with Python
 
