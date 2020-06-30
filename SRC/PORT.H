@@ -28,7 +28,7 @@ int init( void );
 
 void deinit( void );
 
-void event_tick( void );
+void event_tick( bool draw_screen = true );
 
 void change_resolution( const unsigned int y );
 

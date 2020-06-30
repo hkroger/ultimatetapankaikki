@@ -348,7 +348,7 @@ void frame_rate_limiter( const unsigned int max_fps )
     frame_start_time = SDL_GetTicks();
 }
 
-void event_tick( void )
+void event_tick( bool draw_screen )
 {
     SDL_Event e;
     while (SDL_PollEvent( &e ))
@@ -379,7 +379,10 @@ void event_tick( void )
                 break;
         }
     }
-    present_screen();
+
+    if (draw_screen) {
+        present_screen();
+    }
 
     // To avoid running in busy loop taking all the CPU time,
     // limit the speed to nice multiple of target frame rate

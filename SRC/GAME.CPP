@@ -2436,8 +2436,11 @@ void game()
                     Spot_count += 2;
                     Spot_count%= 360;
                     frame_count ++;
+                    tk_port::event_tick();
+                } else {
+                    // No need to draw screen, just poll events
+                    tk_port::event_tick( false );
                 }
-                tk_port::event_tick();
 
                 if ( tk_port::quit_flag )
                 {
