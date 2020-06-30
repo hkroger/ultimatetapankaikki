@@ -205,6 +205,9 @@ int init()
 {
     int ret;
     read_tk_port_debug();
+#ifdef TK_PORT_EMCC
+    SDL_SetHint(SDL_HINT_EMSCRIPTEN_ASYNCIFY, "0");
+#endif
     if ( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_GAMECONTROLLER ) != 0 )
     {
         SDL_Log( "Error initializing SDL:  %s", SDL_GetError());
@@ -332,10 +335,15 @@ void frame_rate_limiter( const unsigned int max_fps )
     const unsigned int since_last_frame = SDL_GetTicks() - frame_start_time;
     const unsigned int delay = clamp( max_delay - since_last_frame, 0, max_delay );
 
+#ifdef TK_PORT_EMCC
+    // Yield control to the browser even if delay == 0
+    emscripten_sleep(delay);
+#else
     if ( delay > 0 )
     {
         SDL_Delay( delay );
     }
+#endif
 
     frame_start_time = SDL_GetTicks();
 }
